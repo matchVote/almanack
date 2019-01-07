@@ -8,8 +8,7 @@ defmodule Almanack.Application do
   def start(_type, _args) do
     # List all child processes to be supervised
     children = [
-      # Starts a worker by calling: Almanack.Worker.start_link(arg)
-      # {Almanack.Worker, arg},
+      Almanack.Repo
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

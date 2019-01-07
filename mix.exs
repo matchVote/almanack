@@ -22,9 +22,11 @@ defmodule Almanack.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:ecto_sql, "~> 3.0.4"},
       {:httpoison, "~> 1.4.0"},
       {:nimble_csv, "~> 0.5.0"},
-      {:poison, "~> 4.0.1"}
+      {:poison, "~> 3.1.0"},
+      {:postgrex, "~> 0.14.1"}
     ]
   end
 end
