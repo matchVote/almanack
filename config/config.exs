@@ -4,7 +4,7 @@ use Mix.Config
 
 config :almanack,
   voteview_url: "https://voteview.com/static/data/out/members/HSall_members.csv",
-  usio_url: "https://theunitedstates.io/congress-legislators/legislators-current.json"
+  usio_url: "https://theunitedstates.io/congress-legislators/"
 
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this

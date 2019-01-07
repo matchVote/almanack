@@ -3,7 +3,7 @@ defmodule Almanack.Sources.VoteView do
 
   def data do
     request_data()
-    |> convert_csv_rows_to_maps
+    |> convert_csv_rows_to_map
   end
 
   defp request_data do
@@ -14,8 +14,8 @@ defmodule Almanack.Sources.VoteView do
     response.body
   end
 
-  @spec convert_csv_rows_to_maps(String.t()) :: [map]
-  defp convert_csv_rows_to_maps(csv) do
+  @spec convert_csv_rows_to_map(String.t()) :: map
+  defp convert_csv_rows_to_map(csv) do
     headers = extract_headers(csv)
 
     csv
