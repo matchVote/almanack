@@ -1,19 +1,22 @@
 defmodule Almanack.Sources.USIO do
-  @current_legislators_resource "legislators-current.json"
-  @social_media_resource "legislators-social-media.json"
+  import Mockery.Macro
+  alias __MODULE__.API
 
   def data do
-    officials = request_data(@current_legislators_resource)
-    # social_media_ids = request_data(@social_media_resource)
-    officials
+    mockable(API).current_legislators()
   end
 
-  defp request_data(resource) do
-    response =
-      (Application.get_env(:almanack, :usio_url) <> resource)
-      |> HTTPoison.get!()
+  defmodule API do
+    @current_legislators "legislators-current.json"
+    # @social_media_resource "legislators-social-media.json"
 
-    response.body
-    |> Poison.decode!()
+    def current_legislators do
+      response =
+        (Application.get_env(:almanack, :usio_url) <> @current_legislators)
+        |> HTTPoison.get!()
+
+      response.body
+      |> Poison.decode!()
+    end
   end
 end

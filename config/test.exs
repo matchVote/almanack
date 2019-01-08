@@ -1,7 +1,8 @@
 use Mix.Config
 
 config :almanack, Almanack.Repo,
-  database: "almanack_dev",
+  database: "almanack_test",
   username: "postgres",
   password: "postgres",
-  hostname: "postgres"
+  hostname: "postgres",
+  pool: Ecto.Adapters.SQL.Sandbox

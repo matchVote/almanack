@@ -1,0 +1,31 @@
+[
+  {
+    "id": {
+      "bioguide": "B000944",
+      "thomas": "00136",
+      "govtrack": 400050
+    },
+    "social": {
+      "twitter": "SenSherrodBrown",
+      "facebook": "SenatorSherrodBrown",
+      "youtube": "SherrodBrownOhio",
+      "youtube_id": "UCgy8jfERh-t_ixkKKoCmglQ",
+      "twitter_id": "43910797"
+    }
+  },
+
+  {
+    "id": {
+      "bioguide": "C000127",
+      "thomas": "00172",
+      "govtrack": 300018
+    },
+    "social": {
+      "twitter": "SenatorCantwell",
+      "youtube": "SenatorCantwell",
+      "youtube_id": "UCN52UDqKgvHRk39ncySrIMw",
+      "twitter_id": "117501995",
+      "facebook": "senatorcantwell"
+    }
+  }
+]

@@ -7,7 +7,8 @@ defmodule Almanack.MixProject do
       version: "0.1.0",
       elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      aliases: aliases()
     ]
   end
 
@@ -24,9 +25,16 @@ defmodule Almanack.MixProject do
     [
       {:ecto_sql, "~> 3.0.4"},
       {:httpoison, "~> 1.4.0"},
+      {:mockery, "~> 2.3.0", runtime: false},
       {:nimble_csv, "~> 0.5.0"},
       {:poison, "~> 3.1.0"},
       {:postgrex, "~> 0.14.1"}
+    ]
+  end
+
+  defp aliases do
+    [
+      # test: ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
   end
 end
