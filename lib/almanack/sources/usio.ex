@@ -4,19 +4,40 @@ defmodule Almanack.Sources.USIO do
 
   def data do
     mockable(API).current_legislators()
+    |> include_social_media()
+  end
+
+  defp include_social_media(legislators) do
+    Enum.map(legislators, fn legislator ->
+      media = find_legislator_media(legislator)
+
+      Map.put(legislator, "social", Map.get(media, "social", %{}))
+    end)
+  end
+
+  defp find_legislator_media(legislator) do
+    mockable(API).social_media()
+    |> Enum.find(%{}, fn media ->
+      media["id"]["bioguide"] == legislator["id"]["bioguide"]
+    end)
   end
 
   defmodule API do
-    @current_legislators "legislators-current.json"
-    # @social_media_resource "legislators-social-media.json"
-
     def current_legislators do
-      response =
-        (Application.get_env(:almanack, :usio_url) <> @current_legislators)
-        |> HTTPoison.get!()
+      request(config(:legislators))
+    end
 
-      response.body
-      |> Poison.decode!()
+    def social_media do
+      request(config(:social_media))
+    end
+
+    defp request(resource) do
+      response = HTTPoison.get!(config(:base_url) <> resource)
+      Poison.decode!(response.body)
+    end
+
+    defp config(key) do
+      Application.get_env(:almanack, :usio_api)[key]
     end
   end
 end
