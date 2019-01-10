@@ -16,7 +16,7 @@ defmodule Almanack.Repo.Migrations.CreateOfficials do
       add(:gender, :string)
       add(:religion, :string)
 
-      add(:external_ids, :map)
+      add(:media, :map)
     end
 
     create(unique_index(:officials, [:bioguide_id]))
