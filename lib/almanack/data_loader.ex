@@ -1,5 +1,8 @@
 defmodule Almanack.DataLoader do
+  alias Almanack.Sources.USIO
+
   def run do
-    Almanack.Sources.USIO.legislators()
+    USIO.legislators()
+    |> USIO.include_social_media()
   end
 end

@@ -2,19 +2,10 @@ defmodule Almanack.Sources.USIO do
   import Mockery.Macro
   alias __MODULE__.API
 
+  @spec legislators() :: [%Almanack.Official{}]
   def legislators do
     mockable(API).current_legislators()
-    |> include_social_media()
     |> map_to_officials()
-  end
-
-  defp include_social_media(legislators) do
-    social_media = mockable(API).social_media()
-
-    Enum.map(legislators, fn legislator ->
-      media = find_legislator_media(social_media, legislator)
-      Map.put(legislator, "social_media", Map.get(media, "social", %{}))
-    end)
   end
 
   defp map_to_officials(legislators) do
@@ -29,9 +20,18 @@ defmodule Almanack.Sources.USIO do
     end)
   end
 
-  defp find_legislator_media(media, legislator) do
+  def include_social_media(officials) do
+    social_media = mockable(API).social_media()
+
+    Enum.map(officials, fn official ->
+      media = find_legislator_media(social_media, official)
+      Map.put(official, :media, Map.get(media, "social", %{}))
+    end)
+  end
+
+  defp find_legislator_media(media, official) do
     Enum.find(media, %{}, fn media_ids ->
-      media_ids["id"]["bioguide"] == legislator["id"]["bioguide"]
+      media_ids["id"]["bioguide"] == official.bioguide_id
     end)
   end
 
