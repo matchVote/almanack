@@ -1,5 +1,6 @@
 defmodule Almanack.Official do
   use Ecto.Schema
+  import Ecto.Changeset
 
   schema "officials" do
     field(:bioguide_id, :string)
@@ -16,5 +17,17 @@ defmodule Almanack.Official do
     field(:religion, :string)
 
     field(:media, :map)
+  end
+
+  def changeset(official, params \\ %{}) do
+    official
+    |> cast(params, [
+      :bioguide_id,
+      :first_name,
+      :last_name,
+      :media
+    ])
+    |> unique_constraint(:bioguide_id, name: "officials_bioguide_id_index")
+    |> validate_required([:bioguide_id])
   end
 end

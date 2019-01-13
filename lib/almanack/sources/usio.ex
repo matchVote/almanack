@@ -46,7 +46,7 @@ defmodule Almanack.Sources.USIO do
 
     defp request(resource) do
       response = HTTPoison.get!(config(:base_url) <> resource)
-      Poison.decode!(response.body)
+      Jason.decode!(response.body)
     end
 
     defp config(key) do

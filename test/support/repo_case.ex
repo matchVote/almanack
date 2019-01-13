@@ -3,6 +3,7 @@ defmodule Almanack.RepoCase do
 
   using do
     quote do
+      use Almanack.TestCase
       alias Almanack.Repo
 
       import Ecto
@@ -15,7 +16,7 @@ defmodule Almanack.RepoCase do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Almanack.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Almanack.Repo, {:shared, self})
+      Ecto.Adapters.SQL.Sandbox.mode(Almanack.Repo, {:shared, self()})
     end
 
     :ok
