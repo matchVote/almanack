@@ -25,9 +25,27 @@ defmodule Almanack.Official do
       :bioguide_id,
       :first_name,
       :last_name,
+      :middle_name,
+      :nickname,
+      :suffix,
+      :birthday,
+      :gender,
+      :religion,
       :media
     ])
     |> unique_constraint(:bioguide_id, name: "officials_bioguide_id_index")
     |> validate_required([:bioguide_id])
+  end
+
+  def new(params \\ []) do
+    changeset(%Almanack.Official{}, Map.new(params))
+  end
+
+  def change(official, params \\ []) do
+    Ecto.Changeset.change(official, Map.new(params))
+  end
+
+  def get_change(official, key) do
+    Ecto.Changeset.get_change(official, key, nil)
   end
 end
