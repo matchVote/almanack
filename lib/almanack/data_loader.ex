@@ -1,5 +1,10 @@
 defmodule Almanack.DataLoader do
+  use Task
   alias Almanack.Sources.USIO
+
+  def start_link([]) do
+    Task.start_link(__MODULE__, :run, [])
+  end
 
   def run do
     USIO.legislators()

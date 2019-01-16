@@ -8,7 +8,8 @@ defmodule Almanack.Application do
   def start(_type, _args) do
     # List all child processes to be supervised
     children = [
-      Almanack.Repo
+      Almanack.Repo,
+      Almanack.DataLoader
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
