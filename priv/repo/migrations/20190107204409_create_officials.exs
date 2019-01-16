@@ -2,7 +2,7 @@ defmodule Almanack.Repo.Migrations.CreateOfficials do
   use Ecto.Migration
 
   def change do
-    create table(:officials) do
+    create table(:representatives) do
       add(:bioguide_id, :string, null: false)
 
       add(:official_name, :text)
@@ -19,6 +19,6 @@ defmodule Almanack.Repo.Migrations.CreateOfficials do
       add(:media, :map)
     end
 
-    create(unique_index(:officials, [:bioguide_id]))
+    create(unique_index(:representatives, [:bioguide_id]))
   end
 end

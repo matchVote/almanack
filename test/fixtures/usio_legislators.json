@@ -232,5 +232,20 @@
         "phone": "202-224-3441"
       }
     ]
+  },
+
+  {
+    "id": {
+      "bioguide": "123ABC"
+    },
+    "name": {
+      "first": "Edge",
+      "last": "Case",
+      "official_full": "Edge Case"
+    },
+    "bio": {
+      "birthday": "1952-11-09",
+      "gender": "M"
+    }
   }
 ]

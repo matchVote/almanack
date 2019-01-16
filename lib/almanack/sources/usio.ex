@@ -8,6 +8,7 @@ defmodule Almanack.Sources.USIO do
     mockable(API).current_legislators()
     |> map_to_officials()
     |> format_gender()
+    |> downcase_religion()
   end
 
   defp map_to_officials(legislators) do
@@ -44,16 +45,26 @@ defmodule Almanack.Sources.USIO do
   defp expand_gender("F"), do: "female"
   defp expand_gender(_), do: nil
 
+  defp downcase_religion(officials) do
+    Enum.map(officials, fn official ->
+      religion =
+        Official.get_change(official, :religion, "")
+        |> String.downcase()
+
+      Official.change(official, %{religion: religion})
+    end)
+  end
+
   def include_social_media(officials) do
     social_media = mockable(API).social_media()
 
     Enum.map(officials, fn official ->
-      media = find_legislator_media(social_media, official)
+      media = find_official_media(social_media, official)
       Official.changeset(official, %{media: Map.get(media, "social", %{})})
     end)
   end
 
-  defp find_legislator_media(media, official) do
+  defp find_official_media(media, official) do
     Enum.find(media, %{}, fn media_ids ->
       media_ids["id"]["bioguide"] == official.changes.bioguide_id
     end)

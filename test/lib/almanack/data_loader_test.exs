@@ -17,7 +17,7 @@ defmodule Almanack.DataLoaderTest do
 
       DataLoader.run()
       officials = Repo.all(Official)
-      assert length(officials) == 2
+      assert length(officials) == 3
       assert Enum.find(officials, &(&1.first_name == "Sherrod"))
       assert Enum.find(officials, &(&1.first_name == "Maria"))
     end

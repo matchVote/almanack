@@ -2,7 +2,7 @@ defmodule Almanack.Official do
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "officials" do
+  schema "representatives" do
     field(:bioguide_id, :string)
 
     field(:official_name, :string)
@@ -45,7 +45,7 @@ defmodule Almanack.Official do
     Ecto.Changeset.change(official, Map.new(params))
   end
 
-  def get_change(official, key) do
-    Ecto.Changeset.get_change(official, key, nil)
+  def get_change(official, key, default \\ nil) do
+    Ecto.Changeset.get_change(official, key, default)
   end
 end
