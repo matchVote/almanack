@@ -1,4 +1,5 @@
 defmodule Almanack.DataLoader do
+  require Logger
   use Task
   alias Almanack.Sources.USIO
 
@@ -7,6 +8,8 @@ defmodule Almanack.DataLoader do
   end
 
   def run do
+    Logger.info("Starting data load...")
+
     USIO.legislators()
     |> USIO.include_social_media()
     |> upsert_officials()
@@ -20,5 +23,7 @@ defmodule Almanack.DataLoader do
         conflict_target: :bioguide_id
       )
     end)
+
+    Logger.info("Finished. #{length(officials)} officials upserted.")
   end
 end

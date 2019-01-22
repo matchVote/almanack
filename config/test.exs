@@ -6,5 +6,3 @@ config :almanack, Almanack.Repo,
   password: "postgres",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
-
-config :logger, level: :info
