@@ -14,6 +14,8 @@ defmodule Almanack.Official do
     field(:gender, :string)
     field(:religion, :string)
     field(:media, :map)
+
+    timestamps(inserted_at: :created_at)
   end
 
   def changeset(official, params \\ %{}) do
