@@ -22,6 +22,7 @@ defmodule Almanack.Official do
     official
     |> cast(params, [
       :bioguide_id,
+      :official_name,
       :first_name,
       :last_name,
       :middle_name,

@@ -19,6 +19,13 @@ defmodule Almanack.Sources.USIOTest do
       assert maria.changes.first_name == "Maria"
     end
 
+    test "collects official names", context do
+      mock(USIO.API, :current_legislators, context.legislators)
+      [sherrod | [maria]] = Enum.slice(USIO.legislators(), 0, 2)
+      assert sherrod.changes.official_name == "Sherrod Brown"
+      assert maria.changes.official_name == "Maria Cantwell"
+    end
+
     test "formats gender values", context do
       mock(USIO.API, :current_legislators, context.legislators)
       [sherrod | [maria]] = Enum.slice(USIO.legislators(), 0, 2)
