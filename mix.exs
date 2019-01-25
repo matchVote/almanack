@@ -5,7 +5,7 @@ defmodule Almanack.MixProject do
     [
       app: :almanack,
       version: "0.1.1",
-      elixir: "~> 1.7",
+      elixir: "~> 1.8.0",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -24,6 +24,7 @@ defmodule Almanack.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:distillery, "~> 2.0.12"},
       {:ecto_sql, "~> 3.0.4"},
       {:httpoison, "~> 1.4.0"},
       {:jason, "~> 1.1.0"},
