@@ -4,7 +4,7 @@ defmodule Almanack.MixProject do
   def project do
     [
       app: :almanack,
-      version: "0.1.1",
+      version: "0.1.0",
       elixir: "~> 1.8.0",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
