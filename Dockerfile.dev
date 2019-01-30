@@ -1,5 +1,7 @@
 FROM elixir:1.8.0
 
+ENV MIX_ENV=dev
+
 RUN mix local.hex --force && \
     mix local.rebar --force
 
