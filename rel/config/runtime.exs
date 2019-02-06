@@ -6,3 +6,7 @@ config :almanack, Almanack.Repo,
   password: System.get_env("DB_PASSWORD"),
   hostname: System.get_env("DB_HOST"),
   port: System.get_env("DB_PORT")
+
+config :almanack,
+  # 1 day default
+  data_load_cooldown: System.get_env("DATA_LOAD_COOLDOWN") || 86_400_000_000

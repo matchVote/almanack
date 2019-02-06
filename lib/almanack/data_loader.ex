@@ -1,10 +1,29 @@
 defmodule Almanack.DataLoader do
+  use GenServer
   require Logger
-  use Task
   alias Almanack.Sources.USIO
 
   def start_link([]) do
+    GenServer.start_link(__MODULE__, [])
+  end
+
+  def init([]) do
+    schedule_loader()
+    {:ok, []}
+  end
+
+  def handle_info(:work, state) do
     Task.start_link(__MODULE__, :run, [])
+    schedule_loader()
+    {:noreply, state}
+  end
+
+  defp schedule_loader() do
+    Process.send_after(
+      self(),
+      :work,
+      Application.get_env(:almanack, :data_load_cooldown)
+    )
   end
 
   def run do

@@ -6,3 +6,5 @@ config :almanack, Almanack.Repo,
   password: "postgres",
   hostname: "host.docker.internal",
   port: 5653
+
+config :almanack, data_load_cooldown: 10_000
