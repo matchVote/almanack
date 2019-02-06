@@ -5,11 +5,4 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     volumes:
-      - .:/usr/src/app
-    depends_on:
-      - postgres
-
-  postgres:
-    image: postgres:11.1
-    ports:
-      - "5643:5432"
+      - .:/opt/app

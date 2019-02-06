@@ -10,7 +10,7 @@ help:
 version: ## Show latest app version
 	@echo $(APP_VSN)
 
-build: ## Build the Docker image
+build: ## Build the production Docker image
 	docker build --build-arg APP_NAME=$(APP_NAME) \
 	--build-arg APP_VSN=$(APP_VSN) \
 	-t $(APP_NAME):$(APP_VSN) .

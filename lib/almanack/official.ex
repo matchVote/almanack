@@ -2,7 +2,9 @@ defmodule Almanack.Official do
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "representatives" do
+  @primary_key {:id, :binary_id, autogenerate: true}
+
+  schema "officials" do
     field(:bioguide_id, :string)
     field(:official_name, :string)
     field(:first_name, :string)

@@ -5,10 +5,10 @@ ENV MIX_ENV=dev
 RUN mix local.hex --force && \
     mix local.rebar --force
 
-WORKDIR /usr/src/app
+WORKDIR /opt/app
 COPY . .
 
 RUN rm -rf deps/* && \
     mix deps.get
 
-CMD ["elixir", "-S", "mix", "run", "--no-halt"]
+CMD ["mix", "run", "--no-halt"]

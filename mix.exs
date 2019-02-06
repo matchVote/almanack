@@ -8,8 +8,7 @@ defmodule Almanack.MixProject do
       elixir: "~> 1.8.0",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
-      deps: deps(),
-      aliases: aliases()
+      deps: deps()
     ]
   end
 
@@ -32,13 +31,6 @@ defmodule Almanack.MixProject do
       {:nimble_csv, "~> 0.5.0"},
       {:poison, "~> 3.1.0"},
       {:postgrex, "~> 0.14.1"}
-    ]
-  end
-
-  defp aliases do
-    [
-      test: ["ecto.create --quiet", "ecto.migrate", "test"],
-      reset: ["ecto.drop", "ecto.create", "ecto.migrate"]
     ]
   end
 

@@ -1,8 +1,8 @@
 use Mix.Config
 
 config :almanack, Almanack.Repo,
-  database: "almanack_dev",
+  database: "matchvote_dev",
   username: "postgres",
   password: "postgres",
-  hostname: "postgres",
-  port: 5432
+  hostname: "host.docker.internal",
+  port: 5653
