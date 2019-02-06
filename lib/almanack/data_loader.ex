@@ -19,7 +19,7 @@ defmodule Almanack.DataLoader do
     Enum.each(officials, fn official ->
       official
       |> Almanack.Repo.insert(
-        on_conflict: :replace_all_except_primary_key,
+        on_conflict: {:replace, Almanack.Official.replace_fields()},
         conflict_target: :bioguide_id
       )
     end)

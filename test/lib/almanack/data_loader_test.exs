@@ -33,5 +33,24 @@ defmodule Almanack.DataLoaderTest do
       official = Repo.get_by(Official, bioguide_id: "B000944")
       assert official.first_name == "Sherrod"
     end
+
+    test "only modifies 'updated_at' and not 'created_at'", context do
+      mock(USIO.API, :current_legislators, context.legislators)
+      mock(USIO.API, :social_media, context.media)
+
+      old_time =
+        NaiveDateTime.utc_now()
+        |> NaiveDateTime.add(-1)
+        |> NaiveDateTime.truncate(:second)
+
+      old_official =
+        %Official{bioguide_id: "B000944", created_at: old_time, updated_at: old_time}
+        |> Repo.insert!()
+
+      DataLoader.run()
+      official = Repo.get_by(Official, bioguide_id: "B000944")
+      assert old_official.created_at == official.created_at
+      refute old_official.updated_at == official.updated_at
+    end
   end
 end

@@ -16,13 +16,18 @@ defmodule Almanack.Official do
     field(:gender, :string)
     field(:religion, :string)
     field(:media, :map)
-
     timestamps(inserted_at: :created_at)
   end
 
   def changeset(official, params \\ %{}) do
     official
-    |> cast(params, [
+    |> cast(params, fields())
+    |> unique_constraint(:bioguide_id, name: "officials_bioguide_id_index")
+    |> validate_required([:bioguide_id])
+  end
+
+  defp fields do
+    [
       :bioguide_id,
       :official_name,
       :first_name,
@@ -34,9 +39,11 @@ defmodule Almanack.Official do
       :gender,
       :religion,
       :media
-    ])
-    |> unique_constraint(:bioguide_id, name: "officials_bioguide_id_index")
-    |> validate_required([:bioguide_id])
+    ]
+  end
+
+  def replace_fields do
+    [:updated_at | fields()]
   end
 
   def new(params \\ []) do

@@ -10,7 +10,3 @@ Collects and aggregates data for matchVote Officials
 ### Testing
 
     $ mix test
-
-### Bugs
-
-created_at is updated on every run
