@@ -10,3 +10,5 @@ config :almanack, Almanack.Repo,
 config :almanack,
   # 1 day default
   data_load_cooldown: System.get_env("DATA_LOAD_COOLDOWN") || 86_400_000_000
+
+config :logger, level: System.get_env("LOG_LEVEL") || :info
