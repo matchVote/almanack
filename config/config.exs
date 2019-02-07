@@ -12,5 +12,6 @@ config :almanack, :voteview_api,
 config :almanack, ecto_repos: [Almanack.Repo]
 
 config :logger, level: :info
+config :logger, :console, format: "$date $time $metadata[$level] $levelpad$message\n"
 
 import_config "#{Mix.env()}.exs"
