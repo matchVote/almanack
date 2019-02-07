@@ -8,7 +8,7 @@ defmodule Almanack.DataLoader do
   end
 
   def init([]) do
-    schedule_loader()
+    send(self(), :work)
     {:ok, []}
   end
 
