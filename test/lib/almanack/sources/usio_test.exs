@@ -39,6 +39,24 @@ defmodule Almanack.Sources.USIOTest do
       assert Official.get_change(sherrod, :religion) == "lutheran"
       assert Official.get_change(maria, :religion) == "roman catholic"
     end
+
+    test "defaults are set", context do
+      mock(USIO.API, :current_legislators, context.legislators)
+      [sherrod | _] = USIO.legislators()
+      assert Official.get_change(sherrod, :status) == "in_office"
+      assert Official.get_change(sherrod, :branch) == "legislative"
+    end
+
+    test "includes latest term values", context do
+      mock(USIO.API, :current_legislators, context.legislators)
+      [sherrod | _] = Enum.slice(USIO.legislators(), 0, 2)
+      {:ok, date} = Date.new(1993, 1, 5)
+      assert Official.get_change(sherrod, :party) == "Democrat"
+      assert Official.get_change(sherrod, :state) == "OH"
+      assert Official.get_change(sherrod, :state_rank) == "senior"
+      assert Official.get_change(sherrod, :seniority_date) == date
+      assert Official.get_change(sherrod, :government_role) == "Senator"
+    end
   end
 
   describe "include_social_media/1" do

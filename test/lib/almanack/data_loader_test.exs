@@ -9,7 +9,6 @@ defmodule Almanack.DataLoaderTest do
     {:ok, legislators: legislators, media: media}
   end
 
-  @tag :integration
   describe "run/1" do
     test "inserts new officials to DB", context do
       mock(USIO.API, :current_legislators, context.legislators)

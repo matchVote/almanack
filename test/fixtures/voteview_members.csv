@@ -1,7 +1,4 @@
 congress,chamber,icpsr,state_icpsr,district_code,state_abbrev,party_code,occupancy,last_means,bioname,bioguide_id,born,died,nominate_dim1,nominate_dim2,nominate_log_likelihood,nominate_geo_mean_probability,nominate_number_of_votes,nominate_number_of_errors,conditional,nokken_poole_dim1,nokken_poole_dim2
-24,House,10178,51,4,KY,1275,0,1,"WILLIAMS, Sherrod",W000536,1804.0,,-0.175,0.385,-217.02438,0.584,404,112,,-0.16,0.352
-25,House,10178,51,4,KY,29,0,1,"WILLIAMS, Sherrod",W000536,1804.0,,-0.175,0.385,-203.04498,0.618,422,108,,-0.167,0.449
-26,House,10178,51,4,KY,29,0,1,"WILLIAMS, Sherrod",W000536,1804.0,,-0.175,0.385,-95.38527,0.571,170,59,,-0.331,0.666
 103,House,29389,24,13,OH,100,0,1,"BROWN, Sherrod",B000944,1952,,-0.438,-0.136,-231.97693,0.78274,947,92,,-0.302,-0.204
 104,House,29389,24,13,OH,100,0,1,"BROWN, Sherrod",B000944,1952,,-0.438,-0.136,-286.29677,0.78046,1155,121,,-0.384,-0.346
 105,House,29389,24,13,OH,100,0,1,"BROWN, Sherrod",B000944,1952,,-0.438,-0.136,-218.72712,0.78758,916,101,,-0.481,-0.18

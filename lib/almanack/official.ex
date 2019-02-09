@@ -16,6 +16,13 @@ defmodule Almanack.Official do
     field(:gender, :string)
     field(:religion, :string)
     field(:media, :map)
+    field(:branch, :string)
+    field(:status, :string)
+    field(:party, :string)
+    field(:state, :string)
+    field(:state_rank, :string)
+    field(:government_role, :string)
+    field(:seniority_date, :date)
     timestamps(inserted_at: :created_at)
   end
 
@@ -38,7 +45,14 @@ defmodule Almanack.Official do
       :birthday,
       :gender,
       :religion,
-      :media
+      :media,
+      :branch,
+      :status,
+      :party,
+      :state,
+      :state_rank,
+      :seniority_date,
+      :government_role
     ]
   end
 

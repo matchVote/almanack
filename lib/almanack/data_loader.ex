@@ -43,6 +43,6 @@ defmodule Almanack.DataLoader do
       )
     end)
 
-    Logger.info("Finished. #{length(officials)} officials upserted.")
+    Logger.info("Finished. #{length(officials)} officials upserted.\n")
   end
 end
