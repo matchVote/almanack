@@ -1,7 +1,7 @@
 defmodule Almanack.Sources.USIO do
   import Mockery.Macro
   alias __MODULE__.API
-  alias Almanack.Official
+  alias Almanack.{AddressParsing, Official}
 
   @spec legislators() :: [Ecto.Changeset.t()]
   def legislators do
@@ -11,33 +11,34 @@ defmodule Almanack.Sources.USIO do
     |> format_gender()
     |> downcase_religion()
     |> set_latest_term_values()
+    # must be last
     |> return_changes()
   end
 
   @spec map_to_officials([map]) :: [{Official.t(), map}]
   defp map_to_officials(legislators) do
-    Enum.map(legislators, fn legislator ->
+    Enum.map(legislators, fn data ->
       {
         Official.new(
-          bioguide_id: legislator["id"]["bioguide"],
-          official_name: legislator["name"]["official_full"],
-          first_name: legislator["name"]["first"],
-          middle_name: legislator["name"]["middle"],
-          last_name: legislator["name"]["last"],
-          suffix: legislator["name"]["suffix"],
-          nickname: legislator["name"]["nickname"],
-          birthday: legislator["bio"]["birthday"],
-          gender: legislator["bio"]["gender"],
-          religion: legislator["bio"]["religion"],
-          media: legislator["social_media"]
+          bioguide_id: data["id"]["bioguide"],
+          official_name: data["name"]["official_full"],
+          first_name: data["name"]["first"],
+          middle_name: data["name"]["middle"],
+          last_name: data["name"]["last"],
+          suffix: data["name"]["suffix"],
+          nickname: data["name"]["nickname"],
+          birthday: data["bio"]["birthday"],
+          gender: data["bio"]["gender"],
+          religion: data["bio"]["religion"],
+          media: data["social_media"]
         ),
-        legislator
+        data
       }
     end)
   end
 
   defp set_defaults(officials) do
-    Enum.map(officials, fn {official, _} = data ->
+    Enum.map(officials, fn {official, _} = tuple ->
       official =
         Official.change(
           official,
@@ -45,19 +46,19 @@ defmodule Almanack.Sources.USIO do
           status: "in_office"
         )
 
-      :erlang.setelement(1, data, official)
+      :erlang.setelement(1, tuple, official)
     end)
   end
 
   defp format_gender(officials) do
-    Enum.map(officials, fn {official, _} = data ->
+    Enum.map(officials, fn {official, _} = tuple ->
       gender =
         Official.get_change(official, :gender)
         |> to_string()
         |> String.capitalize()
         |> expand_gender()
 
-      :erlang.setelement(1, data, Official.change(official, %{gender: gender}))
+      :erlang.setelement(1, tuple, Official.change(official, %{gender: gender}))
     end)
   end
 
@@ -66,18 +67,18 @@ defmodule Almanack.Sources.USIO do
   defp expand_gender(_), do: nil
 
   defp downcase_religion(officials) do
-    Enum.map(officials, fn {official, _} = data ->
+    Enum.map(officials, fn {official, _} = tuple ->
       religion =
         Official.get_change(official, :religion, "")
         |> String.downcase()
 
-      :erlang.setelement(1, data, Official.change(official, %{religion: religion}))
+      :erlang.setelement(1, tuple, Official.change(official, %{religion: religion}))
     end)
   end
 
   defp set_latest_term_values(officials) do
-    Enum.map(officials, fn {official, legislator} = data ->
-      terms = Map.get(legislator, "terms", [%{}])
+    Enum.map(officials, fn {official, data} = tuple ->
+      terms = Map.get(data, "terms", [%{}])
       latest_term = List.last(terms)
       [first_term | _] = terms
 
@@ -90,12 +91,13 @@ defmodule Almanack.Sources.USIO do
           contact_form: latest_term["contact_form"],
           emails: [],
           phone_number: latest_term["phone"],
-          website: latest_term["url"]
+          website: latest_term["url"],
+          address: AddressParsing.parse(latest_term["address"])
         })
         |> seniority_date(first_term["start"])
         |> government_role(latest_term["type"])
 
-      :erlang.setelement(1, data, official)
+      :erlang.setelement(1, tuple, official)
     end)
   end
 

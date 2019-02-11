@@ -24,7 +24,13 @@ defmodule Almanack.OfficialTest do
     contact_form: "somewhere.com/form",
     phone_number: "111-222-3334",
     emails: ["anything"],
-    website: "what.io"
+    website: "what.io",
+    address: %{
+      "line1" => "123",
+      "city" => "Texas",
+      "state" => "WY",
+      "zip" => "12345"
+    }
   }
 
   test "all fields are accounted for" do
@@ -37,5 +43,9 @@ defmodule Almanack.OfficialTest do
     assert official.media["arb"] == "itrary"
     assert official.government_role == "Representative"
     assert official.emails == ["anything"]
+    assert official.address["line1"] == "123"
+    assert official.address["city"] == "Texas"
+    assert official.address["state"] == "WY"
+    assert official.address["zip"] == "12345"
   end
 end

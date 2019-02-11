@@ -27,6 +27,7 @@ defmodule Almanack.Official do
     field(:phone_number, :string)
     field(:website, :string)
     field(:emails, {:array, :string})
+    field(:address, :map)
     timestamps(inserted_at: :created_at)
   end
 
@@ -60,7 +61,8 @@ defmodule Almanack.Official do
       :contact_form,
       :phone_number,
       :website,
-      :emails
+      :emails,
+      :address
     ]
   end
 

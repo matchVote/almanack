@@ -61,6 +61,16 @@ defmodule Almanack.Sources.USIOTest do
       assert Official.get_change(sherrod, :emails) == []
       assert Official.get_change(sherrod, :website) == "https://www.brown.senate.gov"
     end
+
+    test "parses office address", context do
+      mock(USIO.API, :current_legislators, context.legislators)
+      [sherrod | _] = Enum.slice(USIO.legislators(), 0, 2)
+      address = Official.get_change(sherrod, :address)
+      assert address["line1"] == "713 Hart Senate Office Building"
+      assert address["city"] == "Washington"
+      assert address["state"] == "DC"
+      assert address["zip"] == "20510"
+    end
   end
 
   describe "include_social_media/1" do
