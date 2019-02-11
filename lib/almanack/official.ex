@@ -23,6 +23,10 @@ defmodule Almanack.Official do
     field(:state_rank, :string)
     field(:government_role, :string)
     field(:seniority_date, :date)
+    field(:contact_form, :string)
+    field(:phone_number, :string)
+    field(:website, :string)
+    field(:emails, {:array, :string})
     timestamps(inserted_at: :created_at)
   end
 
@@ -52,7 +56,11 @@ defmodule Almanack.Official do
       :state,
       :state_rank,
       :seniority_date,
-      :government_role
+      :government_role,
+      :contact_form,
+      :phone_number,
+      :website,
+      :emails
     ]
   end
 

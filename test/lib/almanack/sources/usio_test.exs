@@ -56,6 +56,10 @@ defmodule Almanack.Sources.USIOTest do
       assert Official.get_change(sherrod, :state_rank) == "senior"
       assert Official.get_change(sherrod, :seniority_date) == date
       assert Official.get_change(sherrod, :government_role) == "Senator"
+      assert Official.get_change(sherrod, :contact_form) == "http://www.brown.senate.gov/contact/"
+      assert Official.get_change(sherrod, :phone_number) == "202-224-2315"
+      assert Official.get_change(sherrod, :emails) == []
+      assert Official.get_change(sherrod, :website) == "https://www.brown.senate.gov"
     end
   end
 

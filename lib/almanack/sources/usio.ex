@@ -86,7 +86,11 @@ defmodule Almanack.Sources.USIO do
         |> Official.change(%{
           party: latest_term["party"],
           state: latest_term["state"],
-          state_rank: latest_term["state_rank"]
+          state_rank: latest_term["state_rank"],
+          contact_form: latest_term["contact_form"],
+          emails: [],
+          phone_number: latest_term["phone"],
+          website: latest_term["url"]
         })
         |> seniority_date(first_term["start"])
         |> government_role(latest_term["type"])
