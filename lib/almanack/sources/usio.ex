@@ -3,8 +3,8 @@ defmodule Almanack.Sources.USIO do
   alias __MODULE__.API
   alias Almanack.{AddressParsing, Official}
 
-  @spec legislators() :: [Ecto.Changeset.t()]
-  def legislators do
+  @spec officials() :: [Ecto.Changeset.t()]
+  def officials do
     mockable(API).current_legislators()
     |> map_to_officials()
     |> set_defaults()

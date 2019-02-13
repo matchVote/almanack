@@ -9,10 +9,10 @@ defmodule Almanack.Sources.USIOTest do
     {:ok, legislators: legislators, media: media}
   end
 
-  describe "legislators/0" do
+  describe "officials/0" do
     test "returns list of Official structs", context do
       mock(USIO.API, :current_legislators, context.legislators)
-      [sherrod | [maria]] = Enum.slice(USIO.legislators(), 0, 2)
+      [sherrod | [maria]] = Enum.slice(USIO.officials(), 0, 2)
       %{last_name: last_name} = sherrod.changes
       assert last_name == "Brown"
       assert sherrod.changes.bioguide_id == "B000944"
@@ -21,35 +21,35 @@ defmodule Almanack.Sources.USIOTest do
 
     test "collects official names", context do
       mock(USIO.API, :current_legislators, context.legislators)
-      [sherrod | [maria]] = Enum.slice(USIO.legislators(), 0, 2)
+      [sherrod | [maria]] = Enum.slice(USIO.officials(), 0, 2)
       assert sherrod.changes.official_name == "Sherrod Brown"
       assert maria.changes.official_name == "Maria Cantwell"
     end
 
     test "formats gender values", context do
       mock(USIO.API, :current_legislators, context.legislators)
-      [sherrod | [maria]] = Enum.slice(USIO.legislators(), 0, 2)
+      [sherrod | [maria]] = Enum.slice(USIO.officials(), 0, 2)
       assert Official.get_change(sherrod, :gender) == "male"
       assert Official.get_change(maria, :gender) == "female"
     end
 
     test "downcases religion values", context do
       mock(USIO.API, :current_legislators, context.legislators)
-      [sherrod | [maria]] = Enum.slice(USIO.legislators(), 0, 2)
+      [sherrod | [maria]] = Enum.slice(USIO.officials(), 0, 2)
       assert Official.get_change(sherrod, :religion) == "lutheran"
       assert Official.get_change(maria, :religion) == "roman catholic"
     end
 
     test "defaults are set", context do
       mock(USIO.API, :current_legislators, context.legislators)
-      [sherrod | _] = USIO.legislators()
+      [sherrod | _] = USIO.officials()
       assert Official.get_change(sherrod, :status) == "in_office"
       assert Official.get_change(sherrod, :branch) == "legislative"
     end
 
     test "includes latest term values", context do
       mock(USIO.API, :current_legislators, context.legislators)
-      [sherrod | _] = Enum.slice(USIO.legislators(), 0, 2)
+      [sherrod | _] = Enum.slice(USIO.officials(), 0, 2)
       {:ok, date} = Date.new(1993, 1, 5)
       assert Official.get_change(sherrod, :party) == "Democrat"
       assert Official.get_change(sherrod, :state) == "OH"
@@ -64,7 +64,7 @@ defmodule Almanack.Sources.USIOTest do
 
     test "parses office address", context do
       mock(USIO.API, :current_legislators, context.legislators)
-      [sherrod | _] = Enum.slice(USIO.legislators(), 0, 2)
+      [sherrod | _] = Enum.slice(USIO.officials(), 0, 2)
       address = Official.get_change(sherrod, :address)
       assert address["line1"] == "713 Hart Senate Office Building"
       assert address["city"] == "Washington"
@@ -74,7 +74,7 @@ defmodule Almanack.Sources.USIOTest do
   end
 
   describe "include_social_media/1" do
-    test "social media IDs are merged with legislators data", context do
+    test "social media IDs are added officials media", context do
       mock(USIO.API, :social_media, context.media)
 
       [sherrod | [maria]] =
