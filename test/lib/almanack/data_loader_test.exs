@@ -1,7 +1,8 @@
 defmodule Almanack.DataLoaderTest do
   use Almanack.RepoCase
+  alias Almanack.DataLoader
   alias Almanack.Sources.USIO
-  alias Almanack.{DataLoader, Official}
+  alias Almanack.Officials.Official
 
   setup_all do
     legislators = Fixtures.load("usio_legislators.json")
@@ -50,6 +51,14 @@ defmodule Almanack.DataLoaderTest do
       official = Repo.get_by(Official, bioguide_id: "B000944")
       assert old_official.created_at == official.created_at
       refute old_official.updated_at == official.updated_at
+    end
+
+    test "official slug is added", context do
+      mock(USIO.API, :current_legislators, context.legislators)
+      mock(USIO.API, :social_media, context.media)
+      DataLoader.run()
+      official = Repo.get_by(Official, bioguide_id: "B000944")
+      assert official.slug == "sherrod-brown"
     end
   end
 end

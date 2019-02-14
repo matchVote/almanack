@@ -1,6 +1,6 @@
 defmodule Almanack.OfficialTest do
   use Almanack.RepoCase
-  alias Almanack.Official
+  alias Almanack.Officials.Official
 
   @data %{
     bioguide_id: "X",
@@ -30,7 +30,8 @@ defmodule Almanack.OfficialTest do
       "city" => "Texas",
       "state" => "WY",
       "zip" => "12345"
-    }
+    },
+    slug: "dilgore-kilgore"
   }
 
   test "all fields are accounted for" do
@@ -47,5 +48,6 @@ defmodule Almanack.OfficialTest do
     assert official.address["city"] == "Texas"
     assert official.address["state"] == "WY"
     assert official.address["zip"] == "12345"
+    assert official.slug == "dilgore-kilgore"
   end
 end

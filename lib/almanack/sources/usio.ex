@@ -1,7 +1,8 @@
 defmodule Almanack.Sources.USIO do
   import Mockery.Macro
   alias __MODULE__.API
-  alias Almanack.{AddressParsing, Official}
+  alias Almanack.AddressParsing
+  alias Almanack.Officials.Official
 
   @spec officials() :: [Ecto.Changeset.t()]
   def officials do

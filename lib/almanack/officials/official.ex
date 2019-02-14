@@ -1,4 +1,4 @@
-defmodule Almanack.Official do
+defmodule Almanack.Officials.Official do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -6,6 +6,7 @@ defmodule Almanack.Official do
 
   schema "officials" do
     field(:bioguide_id, :string)
+    field(:slug, :string)
     field(:official_name, :string)
     field(:first_name, :string)
     field(:last_name, :string)
@@ -62,7 +63,8 @@ defmodule Almanack.Official do
       :phone_number,
       :website,
       :emails,
-      :address
+      :address,
+      :slug
     ]
   end
 
@@ -71,7 +73,7 @@ defmodule Almanack.Official do
   end
 
   def new(params \\ []) do
-    changeset(%Almanack.Official{}, Map.new(params))
+    changeset(%__MODULE__{}, Map.new(params))
   end
 
   def change(official, params \\ []) do
