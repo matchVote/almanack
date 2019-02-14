@@ -28,14 +28,6 @@ defmodule Almanack.Sources.USIOTest do
       assert maria.changes.official_name == "Maria Cantwell"
     end
 
-    test "downcases religion values", context do
-      mock(USIO.API, :current_legislators, context.legislators)
-      mock(USIO.API, :social_media, context.media)
-      [sherrod | [maria]] = Enum.slice(USIO.officials(), 0, 2)
-      assert Official.get_change(sherrod, :religion) == "lutheran"
-      assert Official.get_change(maria, :religion) == "roman catholic"
-    end
-
     test "includes latest term values", context do
       mock(USIO.API, :current_legislators, context.legislators)
       mock(USIO.API, :social_media, context.media)

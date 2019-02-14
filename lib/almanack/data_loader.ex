@@ -21,6 +21,7 @@ defmodule Almanack.DataLoader do
       |> Enrichment.generate_slug()
       |> Enrichment.set_defaults()
       |> Enrichment.format_gender()
+      |> Enrichment.downcase_religion()
     end)
   end
 

@@ -87,5 +87,15 @@ defmodule Almanack.DataLoaderTest do
       maria = Repo.get_by(Official, bioguide_id: "C000127")
       assert maria.gender == "female"
     end
+
+    test "downcases religion values", context do
+      mock(USIO.API, :current_legislators, context.legislators)
+      mock(USIO.API, :social_media, context.media)
+      DataLoader.run()
+      sherrod = Repo.get_by(Official, bioguide_id: "B000944")
+      assert sherrod.religion == "lutheran"
+      maria = Repo.get_by(Official, bioguide_id: "C000127")
+      assert maria.religion == "roman catholic"
+    end
   end
 end

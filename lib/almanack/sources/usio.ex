@@ -9,7 +9,6 @@ defmodule Almanack.Sources.USIO do
     mockable(API).current_legislators()
     |> map_to_officials()
     |> set_latest_term_values()
-    |> downcase_religion()
     |> include_social_media()
     # must be last
     |> return_changes()
@@ -62,32 +61,6 @@ defmodule Almanack.Sources.USIO do
     end)
   end
 
-  defp include_social_media(officials) do
-    social_media = mockable(API).social_media()
-
-    Enum.map(officials, fn {official, _} = tuple ->
-      media = find_official_media(social_media, official)
-      official = Official.changeset(official, %{media: Map.get(media, "social", %{})})
-      :erlang.setelement(1, tuple, official)
-    end)
-  end
-
-  defp find_official_media(media, official) do
-    Enum.find(media, %{}, fn media_ids ->
-      media_ids["id"]["bioguide"] == official.changes.bioguide_id
-    end)
-  end
-
-  defp downcase_religion(officials) do
-    Enum.map(officials, fn {official, _} = tuple ->
-      religion =
-        Official.get_change(official, :religion, "")
-        |> String.downcase()
-
-      :erlang.setelement(1, tuple, Official.change(official, %{religion: religion}))
-    end)
-  end
-
   defp seniority_date(official, nil), do: official
 
   defp seniority_date(official, date) do
@@ -111,6 +84,22 @@ defmodule Almanack.Sources.USIO do
       end
 
     Official.change(official, %{government_role: role})
+  end
+
+  defp include_social_media(officials) do
+    social_media = mockable(API).social_media()
+
+    Enum.map(officials, fn {official, _} = tuple ->
+      media = find_official_media(social_media, official)
+      official = Official.changeset(official, %{media: Map.get(media, "social", %{})})
+      :erlang.setelement(1, tuple, official)
+    end)
+  end
+
+  defp find_official_media(media, official) do
+    Enum.find(media, %{}, fn media_ids ->
+      media_ids["id"]["bioguide"] == official.changes.bioguide_id
+    end)
   end
 
   defp return_changes(officials) do

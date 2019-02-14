@@ -45,4 +45,13 @@ defmodule Almanack.Officials.Enrichment do
   defp expand_gender("M"), do: "male"
   defp expand_gender("F"), do: "female"
   defp expand_gender(_), do: nil
+
+  @spec downcase_religion(Ecto.Changeset.t()) :: Ecto.Changeset.t()
+  def downcase_religion(official) do
+    religion =
+      Official.get_change(official, :religion, "")
+      |> String.downcase()
+
+    Official.change(official, %{religion: religion})
+  end
 end
