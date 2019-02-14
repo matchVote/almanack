@@ -12,6 +12,7 @@ defmodule Almanack.Sources.USIOTest do
   describe "officials/0" do
     test "returns list of Official structs", context do
       mock(USIO.API, :current_legislators, context.legislators)
+      mock(USIO.API, :social_media, context.media)
       [sherrod | [maria]] = Enum.slice(USIO.officials(), 0, 2)
       %{last_name: last_name} = sherrod.changes
       assert last_name == "Brown"
@@ -21,6 +22,7 @@ defmodule Almanack.Sources.USIOTest do
 
     test "collects official names", context do
       mock(USIO.API, :current_legislators, context.legislators)
+      mock(USIO.API, :social_media, context.media)
       [sherrod | [maria]] = Enum.slice(USIO.officials(), 0, 2)
       assert sherrod.changes.official_name == "Sherrod Brown"
       assert maria.changes.official_name == "Maria Cantwell"
@@ -28,6 +30,7 @@ defmodule Almanack.Sources.USIOTest do
 
     test "formats gender values", context do
       mock(USIO.API, :current_legislators, context.legislators)
+      mock(USIO.API, :social_media, context.media)
       [sherrod | [maria]] = Enum.slice(USIO.officials(), 0, 2)
       assert Official.get_change(sherrod, :gender) == "male"
       assert Official.get_change(maria, :gender) == "female"
@@ -35,6 +38,7 @@ defmodule Almanack.Sources.USIOTest do
 
     test "downcases religion values", context do
       mock(USIO.API, :current_legislators, context.legislators)
+      mock(USIO.API, :social_media, context.media)
       [sherrod | [maria]] = Enum.slice(USIO.officials(), 0, 2)
       assert Official.get_change(sherrod, :religion) == "lutheran"
       assert Official.get_change(maria, :religion) == "roman catholic"
@@ -42,6 +46,7 @@ defmodule Almanack.Sources.USIOTest do
 
     test "defaults are set", context do
       mock(USIO.API, :current_legislators, context.legislators)
+      mock(USIO.API, :social_media, context.media)
       [sherrod | _] = USIO.officials()
       assert Official.get_change(sherrod, :status) == "in_office"
       assert Official.get_change(sherrod, :branch) == "legislative"
@@ -49,6 +54,7 @@ defmodule Almanack.Sources.USIOTest do
 
     test "includes latest term values", context do
       mock(USIO.API, :current_legislators, context.legislators)
+      mock(USIO.API, :social_media, context.media)
       [sherrod | _] = Enum.slice(USIO.officials(), 0, 2)
       {:ok, date} = Date.new(1993, 1, 5)
       assert Official.get_change(sherrod, :party) == "Democrat"
@@ -64,6 +70,7 @@ defmodule Almanack.Sources.USIOTest do
 
     test "parses office address", context do
       mock(USIO.API, :current_legislators, context.legislators)
+      mock(USIO.API, :social_media, context.media)
       [sherrod | _] = Enum.slice(USIO.officials(), 0, 2)
       address = Official.get_change(sherrod, :address)
       assert address["line1"] == "713 Hart Senate Office Building"
@@ -71,30 +78,19 @@ defmodule Almanack.Sources.USIOTest do
       assert address["state"] == "DC"
       assert address["zip"] == "20510"
     end
-  end
 
-  describe "include_social_media/1" do
     test "social media IDs are added officials media", context do
+      mock(USIO.API, :current_legislators, context.legislators)
       mock(USIO.API, :social_media, context.media)
-
-      [sherrod | [maria]] =
-        [
-          Official.changeset(%Official{}, %{bioguide_id: "B000944"}),
-          Official.changeset(%Official{}, %{bioguide_id: "C000127"})
-        ]
-        |> USIO.include_social_media()
-
+      [sherrod | [maria]] = Enum.slice(USIO.officials(), 0, 2)
       assert sherrod.changes.media["twitter"] == "SenSherrodBrownTest"
       assert maria.changes.media["facebook"] == "senatorcantwell_test"
     end
 
     test "social key is set to empty map if no social media is found", context do
+      mock(USIO.API, :current_legislators, context.legislators)
       mock(USIO.API, :social_media, context.media)
-
-      [fake | _] =
-        [Official.changeset(%Official{}, %{bioguide_id: "UNKNOWN"})]
-        |> USIO.include_social_media()
-
+      fake = List.last(USIO.officials())
       assert fake.changes.media == %{}
     end
   end

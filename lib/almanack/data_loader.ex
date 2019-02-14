@@ -9,9 +9,10 @@ defmodule Almanack.DataLoader do
     Logger.info("Starting data load...")
 
     USIO.officials()
-    |> USIO.include_social_media()
     |> enrich_officials()
     |> upsert_officials()
+
+    Logger.info("Finished.\n")
   end
 
   defp enrich_officials(officials) do
@@ -30,7 +31,7 @@ defmodule Almanack.DataLoader do
       )
     end)
 
-    Logger.info("Finished. #{length(officials)} officials upserted.\n")
+    Logger.info("#{length(officials)} officials upserted")
   end
 
   def start_link([]) do

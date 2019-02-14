@@ -53,6 +53,14 @@ defmodule Almanack.DataLoaderTest do
       refute old_official.updated_at == official.updated_at
     end
 
+    test "includes social media ids", context do
+      mock(USIO.API, :current_legislators, context.legislators)
+      mock(USIO.API, :social_media, context.media)
+      DataLoader.run()
+      official = Repo.get_by(Official, bioguide_id: "B000944")
+      assert official.media["twitter_id"] == "43910797"
+    end
+
     test "official slug is added", context do
       mock(USIO.API, :current_legislators, context.legislators)
       mock(USIO.API, :social_media, context.media)
