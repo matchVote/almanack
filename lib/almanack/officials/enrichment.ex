@@ -21,4 +21,12 @@ defmodule Almanack.Officials.Enrichment do
     |> String.downcase()
     |> String.replace(".", "")
   end
+
+  def set_defaults(official) do
+    official
+    |> Official.change(
+      branch: "legislative",
+      status: "in_office"
+    )
+  end
 end

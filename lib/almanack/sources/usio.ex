@@ -9,7 +9,6 @@ defmodule Almanack.Sources.USIO do
     mockable(API).current_legislators()
     |> map_to_officials()
     |> set_latest_term_values()
-    |> set_defaults()
     |> format_gender()
     |> downcase_religion()
     |> include_social_media()
@@ -77,19 +76,6 @@ defmodule Almanack.Sources.USIO do
   defp find_official_media(media, official) do
     Enum.find(media, %{}, fn media_ids ->
       media_ids["id"]["bioguide"] == official.changes.bioguide_id
-    end)
-  end
-
-  defp set_defaults(officials) do
-    Enum.map(officials, fn {official, _} = tuple ->
-      official =
-        Official.change(
-          official,
-          branch: "legislative",
-          status: "in_office"
-        )
-
-      :erlang.setelement(1, tuple, official)
     end)
   end
 

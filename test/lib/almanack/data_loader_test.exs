@@ -68,5 +68,14 @@ defmodule Almanack.DataLoaderTest do
       official = Repo.get_by(Official, bioguide_id: "B000944")
       assert official.slug == "sherrod-brown"
     end
+
+    test "defaults are set", context do
+      mock(USIO.API, :current_legislators, context.legislators)
+      mock(USIO.API, :social_media, context.media)
+      DataLoader.run()
+      official = Repo.get_by(Official, bioguide_id: "B000944")
+      assert official.branch == "legislative"
+      assert official.status == "in_office"
+    end
   end
 end

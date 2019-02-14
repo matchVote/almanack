@@ -44,14 +44,6 @@ defmodule Almanack.Sources.USIOTest do
       assert Official.get_change(maria, :religion) == "roman catholic"
     end
 
-    test "defaults are set", context do
-      mock(USIO.API, :current_legislators, context.legislators)
-      mock(USIO.API, :social_media, context.media)
-      [sherrod | _] = USIO.officials()
-      assert Official.get_change(sherrod, :status) == "in_office"
-      assert Official.get_change(sherrod, :branch) == "legislative"
-    end
-
     test "includes latest term values", context do
       mock(USIO.API, :current_legislators, context.legislators)
       mock(USIO.API, :social_media, context.media)

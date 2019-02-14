@@ -19,6 +19,7 @@ defmodule Almanack.DataLoader do
     Enum.map(officials, fn official ->
       official
       |> Enrichment.generate_slug()
+      |> Enrichment.set_defaults()
     end)
   end
 
