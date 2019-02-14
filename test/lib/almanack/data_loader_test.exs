@@ -77,5 +77,15 @@ defmodule Almanack.DataLoaderTest do
       assert official.branch == "legislative"
       assert official.status == "in_office"
     end
+
+    test "formats gender values", context do
+      mock(USIO.API, :current_legislators, context.legislators)
+      mock(USIO.API, :social_media, context.media)
+      DataLoader.run()
+      sherrod = Repo.get_by(Official, bioguide_id: "B000944")
+      assert sherrod.gender == "male"
+      maria = Repo.get_by(Official, bioguide_id: "C000127")
+      assert maria.gender == "female"
+    end
   end
 end

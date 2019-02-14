@@ -20,6 +20,7 @@ defmodule Almanack.DataLoader do
       official
       |> Enrichment.generate_slug()
       |> Enrichment.set_defaults()
+      |> Enrichment.format_gender()
     end)
   end
 

@@ -22,6 +22,7 @@ defmodule Almanack.Officials.Enrichment do
     |> String.replace(".", "")
   end
 
+  @spec set_defaults(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def set_defaults(official) do
     official
     |> Official.change(
@@ -29,4 +30,19 @@ defmodule Almanack.Officials.Enrichment do
       status: "in_office"
     )
   end
+
+  @spec format_gender(Ecto.Changeset.t()) :: Ecto.Changeset.t()
+  def format_gender(official) do
+    gender =
+      Official.get_change(official, :gender)
+      |> to_string()
+      |> String.capitalize()
+      |> expand_gender()
+
+    Official.change(official, %{gender: gender})
+  end
+
+  defp expand_gender("M"), do: "male"
+  defp expand_gender("F"), do: "female"
+  defp expand_gender(_), do: nil
 end

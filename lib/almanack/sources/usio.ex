@@ -9,7 +9,6 @@ defmodule Almanack.Sources.USIO do
     mockable(API).current_legislators()
     |> map_to_officials()
     |> set_latest_term_values()
-    |> format_gender()
     |> downcase_religion()
     |> include_social_media()
     # must be last
@@ -78,22 +77,6 @@ defmodule Almanack.Sources.USIO do
       media_ids["id"]["bioguide"] == official.changes.bioguide_id
     end)
   end
-
-  defp format_gender(officials) do
-    Enum.map(officials, fn {official, _} = tuple ->
-      gender =
-        Official.get_change(official, :gender)
-        |> to_string()
-        |> String.capitalize()
-        |> expand_gender()
-
-      :erlang.setelement(1, tuple, Official.change(official, %{gender: gender}))
-    end)
-  end
-
-  defp expand_gender("M"), do: "male"
-  defp expand_gender("F"), do: "female"
-  defp expand_gender(_), do: nil
 
   defp downcase_religion(officials) do
     Enum.map(officials, fn {official, _} = tuple ->
