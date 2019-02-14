@@ -10,8 +10,7 @@ defmodule Almanack.Sources.USIO do
     |> map_to_officials()
     |> set_latest_term_values()
     |> include_social_media()
-    # must be last
-    |> return_changes()
+    |> Enum.map(fn {official, _} -> official end)
   end
 
   @spec map_to_officials([map]) :: [{Official.t(), map}]
@@ -100,9 +99,5 @@ defmodule Almanack.Sources.USIO do
     Enum.find(media, %{}, fn media_ids ->
       media_ids["id"]["bioguide"] == official.changes.bioguide_id
     end)
-  end
-
-  defp return_changes(officials) do
-    Enum.map(officials, fn {official, _} -> official end)
   end
 end
