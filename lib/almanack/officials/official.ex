@@ -83,4 +83,8 @@ defmodule Almanack.Officials.Official do
   def get_change(official, key, default \\ nil) do
     Ecto.Changeset.get_change(official, key, default)
   end
+
+  def update_change(official, key, func) do
+    Ecto.Changeset.update_change(official, key, func)
+  end
 end

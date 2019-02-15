@@ -33,13 +33,12 @@ defmodule Almanack.Officials.Enrichment do
 
   @spec format_gender(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def format_gender(official) do
-    gender =
-      Official.get_change(official, :gender)
+    Official.update_change(official, :gender, fn value ->
+      value
       |> to_string()
       |> String.capitalize()
       |> expand_gender()
-
-    Official.change(official, %{gender: gender})
+    end)
   end
 
   defp expand_gender("M"), do: "male"
@@ -48,10 +47,8 @@ defmodule Almanack.Officials.Enrichment do
 
   @spec downcase_religion(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def downcase_religion(official) do
-    religion =
-      Official.get_change(official, :religion, "")
-      |> String.downcase()
-
-    Official.change(official, %{religion: religion})
+    Official.update_change(official, :religion, fn value ->
+      String.downcase(value)
+    end)
   end
 end
