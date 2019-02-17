@@ -34,3 +34,52 @@ Collects and aggregates data for matchVote Officials
   - slug: "earl-ray-tomblin", url: "2015/governors/Earl_Ray_Tomblin.jpeg"
 - Load wikipedia bios
 - Name recognition
+
+Official structure
+
+- id # uuid
+- mv_key # unique key (first_name-middle_name-last_name-suffix-birthdate)
+- identifiers:
+  - bioguide_id
+  - twitter_id
+  - facebook_id
+- official_name
+- first_name
+- last_name
+- middle_name
+- nickname
+- suffix
+- slug
+- birthday
+- gender
+- religion
+- sexual_orientation
+- status
+- profile_pic
+- created_at
+- updated_at
+- has_many terms
+- has_one current_term
+
+terms:
+
+- id # uuid
+- start_date
+- end_date
+- role # representative, senator, governor, president, mayor, justice, etc...
+- party
+- state
+- state_rank
+- seniority_date
+- contact_form
+- phone_number
+- fax_number
+- emails
+- website
+- address:
+  - line1
+  - city
+  - state
+  - zip
+- level # federal, state, county, city
+- branch # executive, legislative, judicial (only if level is federal)
