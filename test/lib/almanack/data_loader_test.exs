@@ -26,11 +26,11 @@ defmodule Almanack.DataLoaderTest do
       mock(USIO.API, :current_legislators, context.legislators)
       mock(USIO.API, :social_media, context.media)
 
-      %Official{bioguide_id: "B000944", first_name: "Clancy"}
+      %Official{mv_key: "sherrod-brown", first_name: "Clancy"}
       |> Repo.insert()
 
       DataLoader.run()
-      official = Repo.get_by(Official, bioguide_id: "B000944")
+      official = Repo.get_by(Official, mv_key: "sherrod-brown")
       assert official.first_name == "Sherrod"
     end
 
@@ -44,11 +44,11 @@ defmodule Almanack.DataLoaderTest do
         |> NaiveDateTime.truncate(:second)
 
       old_official =
-        %Official{bioguide_id: "B000944", created_at: old_time, updated_at: old_time}
+        %Official{mv_key: "B000944", created_at: old_time, updated_at: old_time}
         |> Repo.insert!()
 
       DataLoader.run()
-      official = Repo.get_by(Official, bioguide_id: "B000944")
+      official = Repo.get_by(Official, mv_key: "B000944")
       assert old_official.created_at == official.created_at
       refute old_official.updated_at == official.updated_at
     end
@@ -57,7 +57,7 @@ defmodule Almanack.DataLoaderTest do
       mock(USIO.API, :current_legislators, context.legislators)
       mock(USIO.API, :social_media, context.media)
       DataLoader.run()
-      official = Repo.get_by(Official, bioguide_id: "B000944")
+      official = Repo.get_by(Official, mv_key: "B000944")
       assert official.media["twitter_id"] == "43910797"
     end
 
@@ -65,7 +65,7 @@ defmodule Almanack.DataLoaderTest do
       mock(USIO.API, :current_legislators, context.legislators)
       mock(USIO.API, :social_media, context.media)
       DataLoader.run()
-      official = Repo.get_by(Official, bioguide_id: "B000944")
+      official = Repo.get_by(Official, mv_key: "B000944")
       assert official.slug == "sherrod-brown"
     end
 
@@ -73,7 +73,7 @@ defmodule Almanack.DataLoaderTest do
       mock(USIO.API, :current_legislators, context.legislators)
       mock(USIO.API, :social_media, context.media)
       DataLoader.run()
-      official = Repo.get_by(Official, bioguide_id: "B000944")
+      official = Repo.get_by(Official, mv_key: "B000944")
       assert official.branch == "legislative"
       assert official.status == "in_office"
     end
@@ -82,9 +82,9 @@ defmodule Almanack.DataLoaderTest do
       mock(USIO.API, :current_legislators, context.legislators)
       mock(USIO.API, :social_media, context.media)
       DataLoader.run()
-      sherrod = Repo.get_by(Official, bioguide_id: "B000944")
+      sherrod = Repo.get_by(Official, mv_key: "B000944")
       assert sherrod.gender == "male"
-      maria = Repo.get_by(Official, bioguide_id: "C000127")
+      maria = Repo.get_by(Official, mv_key: "C000127")
       assert maria.gender == "female"
     end
 
@@ -92,9 +92,9 @@ defmodule Almanack.DataLoaderTest do
       mock(USIO.API, :current_legislators, context.legislators)
       mock(USIO.API, :social_media, context.media)
       DataLoader.run()
-      sherrod = Repo.get_by(Official, bioguide_id: "B000944")
+      sherrod = Repo.get_by(Official, mv_key: "B000944")
       assert sherrod.religion == "lutheran"
-      maria = Repo.get_by(Official, bioguide_id: "C000127")
+      maria = Repo.get_by(Official, mv_key: "C000127")
       assert maria.religion == "roman catholic"
     end
   end

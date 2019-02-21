@@ -8,7 +8,7 @@ defmodule Almanack.Sources.USIO do
   def officials do
     mockable(API).current_legislators()
     |> map_to_officials()
-    |> set_latest_term_values()
+    |> include_terms()
     |> include_social_media()
     |> Enum.map(fn {official, _} -> official end)
   end
@@ -18,7 +18,7 @@ defmodule Almanack.Sources.USIO do
     Enum.map(legislators, fn data ->
       {
         Official.new(
-          bioguide_id: data["id"]["bioguide"],
+          identifiers: data["id"],
           official_name: data["name"]["official_full"],
           first_name: data["name"]["first"],
           middle_name: data["name"]["middle"],
@@ -27,62 +27,64 @@ defmodule Almanack.Sources.USIO do
           nickname: data["name"]["nickname"],
           birthday: data["bio"]["birthday"],
           gender: data["bio"]["gender"],
-          religion: data["bio"]["religion"],
-          media: data["social_media"]
+          religion: data["bio"]["religion"]
         ),
         data
       }
     end)
   end
 
-  defp set_latest_term_values(officials) do
+  defp include_terms(officials) do
     Enum.map(officials, fn {official, data} = tuple ->
-      terms = Map.get(data, "terms", [%{}])
-      latest_term = List.last(terms)
-      [first_term | _] = terms
-
-      official =
-        official
-        |> Official.change(%{
-          party: latest_term["party"],
-          state: latest_term["state"],
-          state_rank: latest_term["state_rank"],
-          contact_form: latest_term["contact_form"],
-          emails: [],
-          phone_number: latest_term["phone"],
-          website: latest_term["url"],
-          address: AddressParsing.parse(latest_term["address"])
-        })
-        |> seniority_date(first_term["start"])
-        |> government_role(latest_term["type"])
-
+      terms = cleanse_terms(data["terms"])
+      official = Official.changeset(official, %{terms: terms})
       :erlang.setelement(1, tuple, official)
     end)
+  end
+
+  defp cleanse_terms(nil), do: [%{}]
+
+  defp cleanse_terms(terms) do
+    terms
+    |> Enum.map(fn term ->
+      %{
+        start_date: term["start"],
+        end_date: term["end"],
+        role: government_role(term["type"]),
+        party: term["party"],
+        state: term["state"],
+        state_rank: term["state_rank"],
+        contact_form: term["contact_form"],
+        phone_number: term["phone"],
+        fax_number: term["fax"],
+        website: term["url"],
+        address: AddressParsing.parse(term["address"]),
+        level: "federal",
+        branch: "legislative"
+      }
+    end)
+  end
+
+  defp government_role(role) do
+    case role do
+      "sen" ->
+        "Senator"
+
+      "rep" ->
+        "Representative"
+
+      nil ->
+        ""
+
+      _ ->
+        role
+    end
   end
 
   defp seniority_date(official, nil), do: official
 
   defp seniority_date(official, date) do
     Official.change(official, %{seniority_date: Date.from_iso8601!(date)})
-  end
-
-  defp government_role(official, role) do
-    role =
-      case role do
-        "sen" ->
-          "Senator"
-
-        "rep" ->
-          "Representative"
-
-        nil ->
-          ""
-
-        _ ->
-          role
-      end
-
-    Official.change(official, %{government_role: role})
   end
 
   defp include_social_media(officials) do
@@ -97,7 +99,7 @@ defmodule Almanack.Sources.USIO do
 
   defp find_official_media(media, official) do
     Enum.find(media, %{}, fn media_ids ->
-      media_ids["id"]["bioguide"] == official.changes.bioguide_id
+      media_ids["id"]["bioguide"] == official.changes.identifiers["bioguide_id"]
     end)
   end
 end

@@ -38,7 +38,6 @@ Collects and aggregates data for matchVote Officials
 Official structure
 
 - id # uuid
-- mv_key # unique key (first_name-middle_name-last_name-suffix-birthdate)
 - identifiers:
   - bioguide_id
   - twitter_id

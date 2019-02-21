@@ -14,9 +14,8 @@ defmodule Almanack.Sources.USIOTest do
       mock(USIO.API, :current_legislators, context.legislators)
       mock(USIO.API, :social_media, context.media)
       [sherrod | [maria]] = Enum.slice(USIO.officials(), 0, 2)
-      %{last_name: last_name} = sherrod.changes
-      assert last_name == "Brown"
-      assert sherrod.changes.bioguide_id == "B000944"
+      assert sherrod.changes.last_name == "Brown"
+      assert sherrod.changes.mv_key == "sherrod-brown"
       assert maria.changes.first_name == "Maria"
     end
 
@@ -28,20 +27,22 @@ defmodule Almanack.Sources.USIOTest do
       assert maria.changes.official_name == "Maria Cantwell"
     end
 
-    test "includes latest term values", context do
+    test "includes terms", context do
       mock(USIO.API, :current_legislators, context.legislators)
       mock(USIO.API, :social_media, context.media)
       [sherrod | _] = Enum.slice(USIO.officials(), 0, 2)
-      {:ok, date} = Date.new(1993, 1, 5)
-      assert Official.get_change(sherrod, :party) == "Democrat"
-      assert Official.get_change(sherrod, :state) == "OH"
-      assert Official.get_change(sherrod, :state_rank) == "senior"
-      assert Official.get_change(sherrod, :seniority_date) == date
-      assert Official.get_change(sherrod, :government_role) == "Senator"
-      assert Official.get_change(sherrod, :contact_form) == "http://www.brown.senate.gov/contact/"
-      assert Official.get_change(sherrod, :phone_number) == "202-224-2315"
-      assert Official.get_change(sherrod, :emails) == []
-      assert Official.get_change(sherrod, :website) == "https://www.brown.senate.gov"
+      {:ok, start_date} = Date.new(2019, 1, 3)
+      {:ok, end_date} = Date.new(2025, 1, 3)
+      latest_term = List.last(sherrod.changes.terms)
+      assert latest_term.changes.start_date == start_date
+      assert latest_term.changes.end_date == end_date
+      assert latest_term.changes.party == "Democrat"
+      assert latest_term.changes.state == "OH"
+      assert latest_term.changes.state_rank == "senior"
+      assert latest_term.changes.role == "Senator"
+      assert latest_term.changes.contact_form == "http://www.brown.senate.gov/contact/"
+      assert latest_term.changes.phone_number == "202-224-2315"
+      assert latest_term.changes.website == "https://www.brown.senate.gov"
     end
 
     test "parses office address", context do
@@ -55,19 +56,19 @@ defmodule Almanack.Sources.USIOTest do
       assert address["zip"] == "20510"
     end
 
-    test "social media IDs are added officials media", context do
+    test "social media IDs are added to identifiers map", context do
       mock(USIO.API, :current_legislators, context.legislators)
       mock(USIO.API, :social_media, context.media)
       [sherrod | [maria]] = Enum.slice(USIO.officials(), 0, 2)
-      assert sherrod.changes.media["twitter"] == "SenSherrodBrownTest"
-      assert maria.changes.media["facebook"] == "senatorcantwell_test"
+      assert sherrod.changes.identifiers["twitter"] == "SenSherrodBrownTest"
+      assert maria.changes.identifiers["facebook"] == "senatorcantwell_test"
     end
 
     test "social key is set to empty map if no social media is found", context do
       mock(USIO.API, :current_legislators, context.legislators)
       mock(USIO.API, :social_media, context.media)
       fake = List.last(USIO.officials())
-      assert fake.changes.media == %{}
+      assert fake.changes.identifiers == %{}
     end
   end
 end

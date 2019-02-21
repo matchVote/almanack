@@ -1,9 +1,13 @@
-defmodule Almanack.OfficialTest do
+defmodule Almanack.Officials.OfficialTest do
   use Almanack.RepoCase
   alias Almanack.Officials.Official
 
   @data %{
-    bioguide_id: "X",
+    mv_key: "doobert-hugh-kilgore",
+    identifiers: %{
+      "bioguide_id" => "X",
+      "twitter" => "DoobieTweets"
+    },
     official_name: "Doobie",
     first_name: "Doobert",
     last_name: "Kilgore",
@@ -13,24 +17,8 @@ defmodule Almanack.OfficialTest do
     birthday: NaiveDateTime.utc_now(),
     gender: "M",
     religion: "Atheist",
-    media: %{"arb" => "itrary"},
-    branch: "somebranch",
+    sexual_orientation: "Heterosexual",
     status: "not_dead!",
-    party: "Green",
-    state: "OH",
-    state_rank: "senior",
-    seniority_date: NaiveDateTime.utc_now(),
-    government_role: "Representative",
-    contact_form: "somewhere.com/form",
-    phone_number: "111-222-3334",
-    emails: ["anything"],
-    website: "what.io",
-    address: %{
-      "line1" => "123",
-      "city" => "Texas",
-      "state" => "WY",
-      "zip" => "12345"
-    },
     slug: "dilgore-kilgore"
   }
 
@@ -39,15 +27,53 @@ defmodule Almanack.OfficialTest do
       Official.changeset(%Official{}, @data)
       |> Repo.insert!()
 
-    assert official.branch == "somebranch"
+    assert official.mv_key == "doobert-hugh-kilgore"
+    assert official.identifiers["bioguide_id"] == "X"
+    assert official.official_name == "Doobie"
+    assert official.first_name == "Doobert"
+    assert official.last_name == "Kilgore"
+    assert official.middle_name == "Hugh"
+    assert official.nickname == "Dilgore"
+    assert official.suffix == nil
+    assert official.birthday != nil
+    assert official.gender == "M"
+    assert official.religion == "Atheist"
+    assert official.sexual_orientation == "Heterosexual"
     assert official.status == "not_dead!"
-    assert official.media["arb"] == "itrary"
-    assert official.government_role == "Representative"
-    assert official.emails == ["anything"]
-    assert official.address["line1"] == "123"
-    assert official.address["city"] == "Texas"
-    assert official.address["state"] == "WY"
-    assert official.address["zip"] == "12345"
     assert official.slug == "dilgore-kilgore"
+  end
+
+  test "new/1 includes mv_key" do
+    result = Official.new(first_name: "Bo", last_name: "Berry", suffix: "Sr.")
+    assert result.changes.mv_key == "bo-berry-sr"
+  end
+
+  test "changeset/2 casts terms" do
+    official =
+      Official.new(first_name: "Bo", last_name: "Berry")
+      |> Official.changeset(%{
+        terms: [
+          %{
+            "role" => "Senator",
+            "level" => "federal",
+            "address" => %{
+              "line1" => "123 Way",
+              "city" => "Seattle",
+              "state" => "WA"
+            }
+          },
+          %{
+            "start_date" => "1993-01-04",
+            "emails" => ["some@one.com"]
+          }
+        ]
+      })
+
+    [first | [second]] = official.changes.terms
+    assert first.changes.role == "Senator"
+    assert first.changes.address["city"] == "Seattle"
+    {:ok, date} = Date.new(1993, 01, 04)
+    assert second.changes.start_date == date
+    assert second.changes.emails == ["some@one.com"]
   end
 end

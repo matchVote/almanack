@@ -5,8 +5,8 @@ defmodule Almanack.Officials.Official do
   @primary_key {:id, :binary_id, autogenerate: true}
 
   schema "officials" do
-    field(:bioguide_id, :string)
-    field(:slug, :string)
+    field(:mv_key, :string)
+    field(:identifiers, :map)
     field(:official_name, :string)
     field(:first_name, :string)
     field(:last_name, :string)
@@ -16,32 +16,26 @@ defmodule Almanack.Officials.Official do
     field(:birthday, :date)
     field(:gender, :string)
     field(:religion, :string)
-    field(:media, :map)
-    field(:branch, :string)
+    field(:sexual_orientation, :string)
     field(:status, :string)
-    field(:party, :string)
-    field(:state, :string)
-    field(:state_rank, :string)
-    field(:government_role, :string)
-    field(:seniority_date, :date)
-    field(:contact_form, :string)
-    field(:phone_number, :string)
-    field(:website, :string)
-    field(:emails, {:array, :string})
-    field(:address, :map)
+    field(:slug, :string)
     timestamps(inserted_at: :created_at)
+
+    has_many(:terms, Almanack.Officials.Term)
   end
 
   def changeset(official, params \\ %{}) do
     official
     |> cast(params, fields())
-    |> unique_constraint(:bioguide_id, name: "officials_bioguide_id_index")
-    |> validate_required([:bioguide_id])
+    |> unique_constraint(:mv_key, name: "officials_mv_key_index")
+    |> validate_required([:mv_key])
+    |> cast_assoc(:terms)
   end
 
   defp fields do
     [
-      :bioguide_id,
+      :mv_key,
+      :identifiers,
       :official_name,
       :first_name,
       :last_name,
@@ -51,21 +45,14 @@ defmodule Almanack.Officials.Official do
       :birthday,
       :gender,
       :religion,
-      :media,
-      :branch,
+      :sexual_orientation,
       :status,
-      :party,
-      :state,
-      :state_rank,
-      :seniority_date,
-      :government_role,
-      :contact_form,
-      :phone_number,
-      :website,
-      :emails,
-      :address,
       :slug
     ]
+  end
+
+  def mv_key_fields do
+    [:first_name, :middle_name, :last_name, :suffix]
   end
 
   def replace_fields do
@@ -74,6 +61,7 @@ defmodule Almanack.Officials.Official do
 
   def new(params \\ []) do
     changeset(%__MODULE__{}, Map.new(params))
+    |> Almanack.Officials.Enrichment.generate_mv_key()
   end
 
   def change(official, params \\ []) do

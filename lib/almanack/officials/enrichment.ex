@@ -1,6 +1,22 @@
 defmodule Almanack.Officials.Enrichment do
   alias Almanack.Officials.Official
 
+  @spec generate_mv_key(Ecto.Changeset.t()) :: Ecto.Changeset.t()
+  def generate_mv_key(official) do
+    key =
+      Official.mv_key_fields()
+      |> Enum.map(fn field ->
+        Official.get_change(official, field, "")
+        |> normalize()
+      end)
+      |> Enum.reduce(fn
+        "", mv_key -> mv_key
+        value, mv_key -> "#{mv_key}-#{value}"
+      end)
+
+    Official.change(official, mv_key: key)
+  end
+
   @spec generate_slug(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def generate_slug(official) do
     first_name = slug_first_name(official)
