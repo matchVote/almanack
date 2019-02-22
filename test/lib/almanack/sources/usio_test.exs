@@ -45,15 +45,15 @@ defmodule Almanack.Sources.USIOTest do
       assert latest_term.changes.website == "https://www.brown.senate.gov"
     end
 
-    test "parses office address", context do
+    test "parses office addresses for terms", context do
       mock(USIO.API, :current_legislators, context.legislators)
       mock(USIO.API, :social_media, context.media)
       [sherrod | _] = Enum.slice(USIO.officials(), 0, 2)
-      address = Official.get_change(sherrod, :address)
-      assert address["line1"] == "713 Hart Senate Office Building"
-      assert address["city"] == "Washington"
-      assert address["state"] == "DC"
-      assert address["zip"] == "20510"
+      latest_term = List.last(sherrod.changes.terms)
+      assert latest_term.changes.address["line1"] == "713 Hart Senate Office Building"
+      assert latest_term.changes.address["city"] == "Washington"
+      assert latest_term.changes.address["state"] == "DC"
+      assert latest_term.changes.address["zip"] == "20510"
     end
 
     test "social media IDs are added to identifiers map", context do
@@ -62,13 +62,6 @@ defmodule Almanack.Sources.USIOTest do
       [sherrod | [maria]] = Enum.slice(USIO.officials(), 0, 2)
       assert sherrod.changes.identifiers["twitter"] == "SenSherrodBrownTest"
       assert maria.changes.identifiers["facebook"] == "senatorcantwell_test"
-    end
-
-    test "social key is set to empty map if no social media is found", context do
-      mock(USIO.API, :current_legislators, context.legislators)
-      mock(USIO.API, :social_media, context.media)
-      fake = List.last(USIO.officials())
-      assert fake.changes.identifiers == %{}
     end
   end
 end

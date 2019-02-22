@@ -81,25 +81,26 @@ defmodule Almanack.Sources.USIO do
     end
   end
 
-  defp seniority_date(official, nil), do: official
-
-  defp seniority_date(official, date) do
-    Official.change(official, %{seniority_date: Date.from_iso8601!(date)})
-  end
-
   defp include_social_media(officials) do
     social_media = mockable(API).social_media()
 
     Enum.map(officials, fn {official, _} = tuple ->
       media = find_official_media(social_media, official)
-      official = Official.changeset(official, %{media: Map.get(media, "social", %{})})
+
+      official =
+        Official.update_change(official, :identifiers, fn ids ->
+          Map.merge(ids, Map.get(media, "social", %{}))
+        end)
+
       :erlang.setelement(1, tuple, official)
     end)
   end
 
   defp find_official_media(media, official) do
+    ids = Official.get_change(official, :identifiers)
+
     Enum.find(media, %{}, fn media_ids ->
-      media_ids["id"]["bioguide"] == official.changes.identifiers["bioguide_id"]
+      media_ids["id"]["bioguide"] == ids["bioguide"]
     end)
   end
 end
