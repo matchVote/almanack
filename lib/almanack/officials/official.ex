@@ -1,8 +1,10 @@
 defmodule Almanack.Officials.Official do
   use Ecto.Schema
   import Ecto.Changeset
+  alias Almanack.Officials.Enrichment
 
   @primary_key {:id, :binary_id, autogenerate: true}
+  @mv_key_fields [:first_name, :middle_name, :last_name, :suffix]
 
   schema "officials" do
     field(:mv_key, :string)
@@ -51,17 +53,14 @@ defmodule Almanack.Officials.Official do
     ]
   end
 
-  def mv_key_fields do
-    [:first_name, :middle_name, :last_name, :suffix]
-  end
-
   def replace_fields do
     [:updated_at | fields()]
   end
 
   def new(params \\ []) do
-    changeset(%__MODULE__{}, Map.new(params))
-    |> Almanack.Officials.Enrichment.generate_mv_key()
+    params = Map.new(params)
+    key = Enrichment.generate_mv_key(params, @mv_key_fields)
+    changeset(%__MODULE__{}, Map.put(params, :mv_key, key))
   end
 
   def change(official, params \\ []) do

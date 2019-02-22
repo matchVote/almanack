@@ -44,11 +44,11 @@ defmodule Almanack.DataLoaderTest do
         |> NaiveDateTime.truncate(:second)
 
       old_official =
-        %Official{mv_key: "B000944", created_at: old_time, updated_at: old_time}
+        %Official{mv_key: "sherrod-brown", created_at: old_time, updated_at: old_time}
         |> Repo.insert!()
 
       DataLoader.run()
-      official = Repo.get_by(Official, mv_key: "B000944")
+      official = Repo.get_by(Official, mv_key: "sherrod-brown")
       assert old_official.created_at == official.created_at
       refute old_official.updated_at == official.updated_at
     end
@@ -57,34 +57,25 @@ defmodule Almanack.DataLoaderTest do
       mock(USIO.API, :current_legislators, context.legislators)
       mock(USIO.API, :social_media, context.media)
       DataLoader.run()
-      official = Repo.get_by(Official, mv_key: "B000944")
-      assert official.media["twitter_id"] == "43910797"
+      official = Repo.get_by(Official, mv_key: "sherrod-brown")
+      assert official.identifiers["twitter_id"] == "43910797"
     end
 
     test "official slug is added", context do
       mock(USIO.API, :current_legislators, context.legislators)
       mock(USIO.API, :social_media, context.media)
       DataLoader.run()
-      official = Repo.get_by(Official, mv_key: "B000944")
+      official = Repo.get_by(Official, mv_key: "sherrod-brown")
       assert official.slug == "sherrod-brown"
-    end
-
-    test "defaults are set", context do
-      mock(USIO.API, :current_legislators, context.legislators)
-      mock(USIO.API, :social_media, context.media)
-      DataLoader.run()
-      official = Repo.get_by(Official, mv_key: "B000944")
-      assert official.branch == "legislative"
-      assert official.status == "in_office"
     end
 
     test "formats gender values", context do
       mock(USIO.API, :current_legislators, context.legislators)
       mock(USIO.API, :social_media, context.media)
       DataLoader.run()
-      sherrod = Repo.get_by(Official, mv_key: "B000944")
+      sherrod = Repo.get_by(Official, mv_key: "sherrod-brown")
       assert sherrod.gender == "male"
-      maria = Repo.get_by(Official, mv_key: "C000127")
+      maria = Repo.get_by(Official, mv_key: "maria-cantwell")
       assert maria.gender == "female"
     end
 
@@ -92,10 +83,23 @@ defmodule Almanack.DataLoaderTest do
       mock(USIO.API, :current_legislators, context.legislators)
       mock(USIO.API, :social_media, context.media)
       DataLoader.run()
-      sherrod = Repo.get_by(Official, mv_key: "B000944")
+      sherrod = Repo.get_by(Official, mv_key: "sherrod-brown")
       assert sherrod.religion == "lutheran"
-      maria = Repo.get_by(Official, mv_key: "C000127")
+      maria = Repo.get_by(Official, mv_key: "maria-cantwell")
       assert maria.religion == "roman catholic"
+    end
+
+    test "persists terms for officials", context do
+      mock(USIO.API, :current_legislators, context.legislators)
+      mock(USIO.API, :social_media, context.media)
+      DataLoader.run()
+
+      sherrod =
+        Repo.get_by(Official, mv_key: "sherrod-brown")
+        |> Repo.preload(:terms)
+
+      assert length(sherrod.terms) == 10
+      assert List.last(sherrod.terms).role == "Senator"
     end
   end
 end

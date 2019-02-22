@@ -23,33 +23,47 @@ defmodule Almanack.Officials.EnrichmentTest do
   end
 
   describe "generate_mv_key/1" do
-    test " creates unique official identifier" do
-      result =
-        Official.new(
+    setup do
+      {:ok, %{fields: [:first_name, :middle_name, :last_name, :suffix]}}
+    end
+
+    test "creates unique official identifier", %{fields: fields} do
+      key =
+        %{
           first_name: "Bob",
           middle_name: "Humphrey",
           last_name: "Jones",
           suffix: "Jr."
-        )
-        |> Enrichment.generate_mv_key()
+        }
+        |> Enrichment.generate_mv_key(fields)
 
-      assert result.changes.mv_key == "bob-humphrey-jones-jr"
+      assert key == "bob-humphrey-jones-jr"
     end
 
-    test "middle_name is optional" do
-      result =
-        Official.new(first_name: "Bob", last_name: "Jones", suffix: "Jr.")
-        |> Enrichment.generate_mv_key()
+    test "middle_name is optional", %{fields: fields} do
+      key =
+        %{
+          first_name: "Bob",
+          middle_name: nil,
+          last_name: "Jones",
+          suffix: "Jr."
+        }
+        |> Enrichment.generate_mv_key(fields)
 
-      assert result.changes.mv_key == "bob-jones-jr"
+      assert key == "bob-jones-jr"
     end
 
-    test "suffix is optional" do
-      result =
-        Official.new(first_name: "Bob", last_name: "Jones")
-        |> Enrichment.generate_mv_key()
+    test "suffix is optional", %{fields: fields} do
+      key =
+        %{
+          first_name: "Bob",
+          middle_name: nil,
+          last_name: "Jones",
+          suffix: nil
+        }
+        |> Enrichment.generate_mv_key(fields)
 
-      assert result.changes.mv_key == "bob-jones"
+      assert key == "bob-jones"
     end
   end
 end

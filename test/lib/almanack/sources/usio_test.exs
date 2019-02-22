@@ -1,7 +1,6 @@
 defmodule Almanack.Sources.USIOTest do
   use Almanack.TestCase
   alias Almanack.Sources.USIO
-  alias Almanack.Officials.Official
 
   setup_all do
     legislators = Fixtures.load("usio_legislators.json")

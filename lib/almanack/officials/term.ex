@@ -40,7 +40,9 @@ defmodule Almanack.Officials.Term do
       :website,
       :address,
       :level,
-      :branch
+      :branch,
+      :official_id
     ])
+    |> foreign_key_constraint(:official_id)
   end
 end

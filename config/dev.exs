@@ -7,4 +7,5 @@ config :almanack, Almanack.Repo,
   hostname: "host.docker.internal",
   port: 5653
 
-config :almanack, data_load_cooldown: 10_000
+# 10 minutes
+config :almanack, data_load_cooldown: 600_000

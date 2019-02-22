@@ -1,20 +1,14 @@
 defmodule Almanack.Officials.Enrichment do
   alias Almanack.Officials.Official
 
-  @spec generate_mv_key(Ecto.Changeset.t()) :: Ecto.Changeset.t()
-  def generate_mv_key(official) do
-    key =
-      Official.mv_key_fields()
-      |> Enum.map(fn field ->
-        Official.get_change(official, field, "")
-        |> normalize()
-      end)
-      |> Enum.reduce(fn
-        "", mv_key -> mv_key
-        value, mv_key -> "#{mv_key}-#{value}"
-      end)
-
-    Official.change(official, mv_key: key)
+  @spec generate_mv_key(map, [atom]) :: String.t()
+  def generate_mv_key(data, fields) do
+    fields
+    |> Enum.map(&normalize(data[&1]))
+    |> Enum.reduce(fn
+      "", mv_key -> mv_key
+      value, mv_key -> "#{mv_key}-#{value}"
+    end)
   end
 
   @spec generate_slug(Ecto.Changeset.t()) :: Ecto.Changeset.t()
@@ -32,19 +26,12 @@ defmodule Almanack.Officials.Enrichment do
     end
   end
 
+  defp normalize(nil), do: ""
+
   defp normalize(name) do
     name
     |> String.downcase()
     |> String.replace(".", "")
-  end
-
-  @spec set_defaults(Ecto.Changeset.t()) :: Ecto.Changeset.t()
-  def set_defaults(official) do
-    official
-    |> Official.change(
-      branch: "legislative",
-      status: "in_office"
-    )
   end
 
   @spec format_gender(Ecto.Changeset.t()) :: Ecto.Changeset.t()

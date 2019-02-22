@@ -19,7 +19,6 @@ defmodule Almanack.DataLoader do
     Enum.map(officials, fn official ->
       official
       |> Enrichment.generate_slug()
-      |> Enrichment.set_defaults()
       |> Enrichment.format_gender()
       |> Enrichment.downcase_religion()
     end)
@@ -27,10 +26,13 @@ defmodule Almanack.DataLoader do
 
   defp upsert_officials(officials) do
     Enum.each(officials, fn official ->
+      terms = Official.get_change(official, :terms)
+      official = Ecto.Changeset.delete_change(official, :terms)
+
       official
-      |> Almanack.Repo.insert(
+      |> Almanack.Repo.insert!(
         on_conflict: {:replace, Official.replace_fields()},
-        conflict_target: :bioguide_id
+        conflict_target: :mv_key
       )
     end)
 
