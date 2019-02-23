@@ -2,7 +2,7 @@ defmodule Almanack.DataLoaderTest do
   use Almanack.RepoCase
   alias Almanack.DataLoader
   alias Almanack.Sources.USIO
-  alias Almanack.Officials.Official
+  alias Almanack.Officials.{Official, Term}
 
   setup_all do
     legislators = Fixtures.load("usio_legislators.json")
@@ -99,7 +99,44 @@ defmodule Almanack.DataLoaderTest do
         |> Repo.preload(:terms)
 
       assert length(sherrod.terms) == 10
-      assert List.last(sherrod.terms).role == "Senator"
+    end
+
+    test "official terms have the proper values", context do
+      mock(USIO.API, :current_legislators, context.legislators)
+      mock(USIO.API, :social_media, context.media)
+      DataLoader.run()
+
+      term =
+        from(t in Term,
+          join: o in Official,
+          where: t.official_id == o.id and o.mv_key == "sherrod-brown",
+          order_by: [desc: t.start_date],
+          limit: 1
+        )
+        |> Repo.one()
+
+      {:ok, date} = Date.new(2019, 1, 3)
+      assert term.start_date == date
+      assert term.role == "Senator"
+      assert term.address["line1"] == "713 Hart Senate Office Building"
+      assert term.address["city"] == "Washington"
+      assert term.address["state"] == "DC"
+      assert term.address["zip"] == "20510"
+      assert term.party == "Democrat"
+      assert term.state == "OH"
+    end
+
+    test "official terms are not duplicated", context do
+      mock(USIO.API, :current_legislators, context.legislators)
+      mock(USIO.API, :social_media, context.media)
+      DataLoader.run()
+      DataLoader.run()
+
+      sherrod =
+        Repo.get_by(Official, mv_key: "sherrod-brown")
+        |> Repo.preload(:terms)
+
+      assert length(sherrod.terms) == 10
     end
   end
 end

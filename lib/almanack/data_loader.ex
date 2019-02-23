@@ -1,6 +1,7 @@
 defmodule Almanack.DataLoader do
   use GenServer
   require Logger
+  alias Almanack.Repo
   alias Almanack.Sources.USIO
   alias Almanack.Officials.{Enrichment, Official}
 
@@ -27,16 +28,28 @@ defmodule Almanack.DataLoader do
   defp upsert_officials(officials) do
     Enum.each(officials, fn official ->
       terms = Official.get_change(official, :terms)
-      official = Ecto.Changeset.delete_change(official, :terms)
 
-      official
-      |> Almanack.Repo.insert!(
-        on_conflict: {:replace, Official.replace_fields()},
-        conflict_target: :mv_key
-      )
+      official =
+        official
+        |> Ecto.Changeset.delete_change(:terms)
+        |> Repo.insert!(
+          on_conflict: {:replace, Official.replace_fields()},
+          conflict_target: :mv_key,
+          returning: true
+        )
+
+      insert_or_ignore_terms(terms, official.id)
     end)
 
     Logger.info("#{length(officials)} officials upserted")
+  end
+
+  defp insert_or_ignore_terms(terms, official_id) do
+    terms
+    |> Enum.each(fn term ->
+      Ecto.Changeset.put_change(term, :official_id, official_id)
+      |> Repo.insert!(on_conflict: :nothing)
+    end)
   end
 
   def start_link([]) do

@@ -44,5 +44,10 @@ defmodule Almanack.Officials.Term do
       :official_id
     ])
     |> foreign_key_constraint(:official_id)
+    |> unique_constraint(:official_id, name: :terms_official_id_start_date_index)
+  end
+
+  def new(params \\ []) do
+    changeset(%__MODULE__{}, Map.new(params))
   end
 end
