@@ -1,13 +1,16 @@
-defmodule Almanack.DataLoader do
-  use GenServer
+defmodule Almanack.Loaders.Congress do
   require Logger
   alias Almanack.Repo
   alias Almanack.Sources.USIO
   alias Almanack.Officials.{Enrichment, Official}
 
+  def start do
+    Task.Supervisor.start_child(Almanack.LoaderSupervisor, __MODULE__, :run, [])
+  end
+
   @spec run() :: any
   def run do
-    Logger.info("Starting data load...")
+    Logger.info("Starting Congress loader...")
 
     USIO.officials()
     |> enrich_officials()
@@ -50,28 +53,5 @@ defmodule Almanack.DataLoader do
       Ecto.Changeset.put_change(term, :official_id, official_id)
       |> Repo.insert!(on_conflict: :nothing)
     end)
-  end
-
-  def start_link([]) do
-    GenServer.start_link(__MODULE__, [])
-  end
-
-  def init([]) do
-    send(self(), :work)
-    {:ok, []}
-  end
-
-  def handle_info(:work, state) do
-    Task.start_link(__MODULE__, :run, [])
-    schedule_loader()
-    {:noreply, state}
-  end
-
-  defp schedule_loader() do
-    Process.send_after(
-      self(),
-      :work,
-      Application.get_env(:almanack, :data_load_cooldown)
-    )
   end
 end
