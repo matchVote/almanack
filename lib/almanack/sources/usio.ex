@@ -4,6 +4,11 @@ defmodule Almanack.Sources.USIO do
   alias Almanack.AddressParsing
   alias Almanack.Officials.Official
 
+  @doc """
+  Retrieves data on all current Congressional officials (House and Senate) from
+  unitedstates.io and converts that data into Official changesets for further
+  processing by the Almanack domain.
+  """
   @spec officials() :: [Ecto.Changeset.t()]
   def officials do
     mockable(API).current_legislators()

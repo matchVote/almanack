@@ -1,92 +1,89 @@
-defmodule Almanack.Loaders.CongressTest do
+defmodule Almanack.SchedulerTest do
   use Almanack.RepoCase
-  alias Almanack.Loaders.Congress
-  alias Almanack.Sources.USIO
+  alias Almanack.Scheduler
   alias Almanack.Officials.{Official, Term}
+  alias Almanack.Sources.USIO
 
   setup_all do
     legislators = Fixtures.load("usio_legislators.json")
     media = Fixtures.load("usio_social_media.json")
-    {:ok, legislators: legislators, media: media}
+
+    official =
+      Official.new(
+        first_name: "Sherrod",
+        last_name: "Brown",
+        gender: "male",
+        terms: []
+      )
+
+    {:ok, legislators: legislators, media: media, official: official}
   end
 
-  describe "run/1" do
-    test "inserts new officials to DB", context do
+  describe "run_workflow/0" do
+    test "loads officials from sources and persists them to DB", context do
       mock(USIO.API, :current_legislators, context.legislators)
       mock(USIO.API, :social_media, context.media)
 
-      Congress.run()
+      Scheduler.run_workflow()
       officials = Repo.all(Official)
       assert length(officials) == 3
       assert Enum.find(officials, &(&1.first_name == "Sherrod"))
       assert Enum.find(officials, &(&1.first_name == "Maria"))
     end
+  end
 
-    test "updates existing officials in DB", context do
-      mock(USIO.API, :current_legislators, context.legislators)
-      mock(USIO.API, :social_media, context.media)
-
-      %Official{mv_key: "sherrod-brown", first_name: "Clancy"}
-      |> Repo.insert()
-
-      Congress.run()
-      official = Repo.get_by(Official, mv_key: "sherrod-brown")
-      assert official.first_name == "Sherrod"
+  describe "enrich_officials/1" do
+    test "official slug is added", %{official: official} do
+      [official | _] = Scheduler.enrich_officials([official])
+      assert official.changes.slug == "sherrod-brown"
     end
 
-    test "only modifies 'updated_at' and not 'created_at'", context do
-      mock(USIO.API, :current_legislators, context.legislators)
-      mock(USIO.API, :social_media, context.media)
+    test "formats gender values", %{official: official} do
+      [sherrod | [maria]] =
+        [
+          Official.change(official, gender: "M"),
+          Official.change(official, first_name: "Maria", gender: "F")
+        ]
+        |> Scheduler.enrich_officials()
 
+      assert sherrod.changes.gender == "male"
+      assert maria.changes.gender == "female"
+    end
+
+    test "downcases religion values", context do
+      Congress.run()
+      sherrod = Repo.get_by(Official, mv_key: "sherrod-brown")
+      assert sherrod.religion == "lutheran"
+      maria = Repo.get_by(Official, mv_key: "maria-cantwell")
+      assert maria.religion == "roman catholic"
+    end
+  end
+
+  describe "persist_officials/1" do
+    test "updates existing officials in DB", %{official: official} do
+      assert Repo.insert!(official).gender == "male"
+
+      [Official.change(official, gender: "female")]
+      |> Scheduler.persist_officials()
+
+      official = Repo.get_by(Official, mv_key: "sherrod-brown")
+      assert official.gender == "female"
+    end
+
+    test "only modifies 'updated_at' and not 'created_at'", %{official: official} do
       old_time =
         NaiveDateTime.utc_now()
         |> NaiveDateTime.add(-1)
         |> NaiveDateTime.truncate(:second)
 
       old_official =
-        %Official{mv_key: "sherrod-brown", created_at: old_time, updated_at: old_time}
+        Official.change(official, created_at: old_time, updated_at: old_time)
         |> Repo.insert!()
 
-      Congress.run()
+      Scheduler.persist_officials([official])
       official = Repo.get_by(Official, mv_key: "sherrod-brown")
       assert old_official.created_at == official.created_at
       refute old_official.updated_at == official.updated_at
-    end
-
-    test "includes social media ids", context do
-      mock(USIO.API, :current_legislators, context.legislators)
-      mock(USIO.API, :social_media, context.media)
-      Congress.run()
-      official = Repo.get_by(Official, mv_key: "sherrod-brown")
-      assert official.identifiers["twitter_id"] == "43910797"
-    end
-
-    test "official slug is added", context do
-      mock(USIO.API, :current_legislators, context.legislators)
-      mock(USIO.API, :social_media, context.media)
-      Congress.run()
-      official = Repo.get_by(Official, mv_key: "sherrod-brown")
-      assert official.slug == "sherrod-brown"
-    end
-
-    test "formats gender values", context do
-      mock(USIO.API, :current_legislators, context.legislators)
-      mock(USIO.API, :social_media, context.media)
-      Congress.run()
-      sherrod = Repo.get_by(Official, mv_key: "sherrod-brown")
-      assert sherrod.gender == "male"
-      maria = Repo.get_by(Official, mv_key: "maria-cantwell")
-      assert maria.gender == "female"
-    end
-
-    test "downcases religion values", context do
-      mock(USIO.API, :current_legislators, context.legislators)
-      mock(USIO.API, :social_media, context.media)
-      Congress.run()
-      sherrod = Repo.get_by(Official, mv_key: "sherrod-brown")
-      assert sherrod.religion == "lutheran"
-      maria = Repo.get_by(Official, mv_key: "maria-cantwell")
-      assert maria.religion == "roman catholic"
     end
 
     test "persists terms for officials", context do

@@ -6,7 +6,6 @@ defmodule Almanack.Application do
   def start(_type, _args) do
     children = [
       Almanack.Repo,
-      {Task.Supervisor, name: Almanack.LoaderSupervisor},
       Almanack.Scheduler
     ]
 
