@@ -13,7 +13,25 @@ defmodule Almanack.SchedulerTest do
         first_name: "Sherrod",
         last_name: "Brown",
         gender: "male",
-        terms: []
+        religion: "Lutheran",
+        terms: [
+          %{
+            start_date: "2015-01-03",
+            role: "Supreme Burger",
+            party: "of 5",
+            state: "OH",
+            address: %{
+              line1: "123 Pocky Way",
+              city: "Washington",
+              state: "DC",
+              zip: "20501"
+            }
+          },
+          %{
+            start_date: "2010-01-03",
+            role: "Junior Burger"
+          }
+        ]
       )
 
     {:ok, legislators: legislators, media: media, official: official}
@@ -50,12 +68,16 @@ defmodule Almanack.SchedulerTest do
       assert maria.changes.gender == "female"
     end
 
-    test "downcases religion values", context do
-      Congress.run()
-      sherrod = Repo.get_by(Official, mv_key: "sherrod-brown")
-      assert sherrod.religion == "lutheran"
-      maria = Repo.get_by(Official, mv_key: "maria-cantwell")
-      assert maria.religion == "roman catholic"
+    test "downcases religion values", %{official: official} do
+      [sherrod | [maria]] =
+        [
+          official,
+          Official.change(official, first_name: "Maria", religion: "Roman Catholic")
+        ]
+        |> Scheduler.enrich_officials()
+
+      assert sherrod.changes.religion == "lutheran"
+      assert maria.changes.religion == "roman catholic"
     end
   end
 
@@ -86,22 +108,18 @@ defmodule Almanack.SchedulerTest do
       refute old_official.updated_at == official.updated_at
     end
 
-    test "persists terms for officials", context do
-      mock(USIO.API, :current_legislators, context.legislators)
-      mock(USIO.API, :social_media, context.media)
-      Congress.run()
+    test "persists terms for officials", %{official: official} do
+      Scheduler.persist_officials([official])
 
       sherrod =
         Repo.get_by(Official, mv_key: "sherrod-brown")
         |> Repo.preload(:terms)
 
-      assert length(sherrod.terms) == 10
+      assert length(sherrod.terms) == 2
     end
 
-    test "official terms have the proper values", context do
-      mock(USIO.API, :current_legislators, context.legislators)
-      mock(USIO.API, :social_media, context.media)
-      Congress.run()
+    test "official terms have the proper values", %{official: official} do
+      Scheduler.persist_officials([official])
 
       term =
         from(t in Term,
@@ -112,28 +130,26 @@ defmodule Almanack.SchedulerTest do
         )
         |> Repo.one()
 
-      {:ok, date} = Date.new(2019, 1, 3)
+      {:ok, date} = Date.new(2015, 1, 3)
       assert term.start_date == date
-      assert term.role == "Senator"
-      assert term.address["line1"] == "713 Hart Senate Office Building"
+      assert term.role == "Supreme Burger"
+      assert term.address["line1"] == "123 Pocky Way"
       assert term.address["city"] == "Washington"
       assert term.address["state"] == "DC"
-      assert term.address["zip"] == "20510"
-      assert term.party == "Democrat"
+      assert term.address["zip"] == "20501"
+      assert term.party == "of 5"
       assert term.state == "OH"
     end
 
-    test "official terms are not duplicated", context do
-      mock(USIO.API, :current_legislators, context.legislators)
-      mock(USIO.API, :social_media, context.media)
-      Congress.run()
-      Congress.run()
+    test "official terms are not duplicated", %{official: official} do
+      Scheduler.persist_officials([official])
+      Scheduler.persist_officials([official])
 
       sherrod =
         Repo.get_by(Official, mv_key: "sherrod-brown")
         |> Repo.preload(:terms)
 
-      assert length(sherrod.terms) == 10
+      assert length(sherrod.terms) == 2
     end
   end
 end
