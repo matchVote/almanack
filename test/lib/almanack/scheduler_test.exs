@@ -7,6 +7,7 @@ defmodule Almanack.SchedulerTest do
   setup_all do
     legislators = Fixtures.load("usio_legislators.json")
     media = Fixtures.load("usio_social_media.json")
+    exec = Fixtures.load("usio_executives.json")
 
     official =
       Official.new(
@@ -34,17 +35,18 @@ defmodule Almanack.SchedulerTest do
         ]
       )
 
-    {:ok, legislators: legislators, media: media, official: official}
+    {:ok, legislators: legislators, media: media, official: official, executives: exec}
   end
 
   describe "run_workflow/0" do
     test "loads officials from sources and persists them to DB", context do
       mock(USIO.API, :current_legislators, context.legislators)
       mock(USIO.API, :social_media, context.media)
+      mock(USIO.API, :executives, context.executives)
 
       Scheduler.run_workflow()
       officials = Repo.all(Official)
-      assert length(officials) == 3
+      assert length(officials) == 5
       assert Enum.find(officials, &(&1.first_name == "Sherrod"))
       assert Enum.find(officials, &(&1.first_name == "Maria"))
     end

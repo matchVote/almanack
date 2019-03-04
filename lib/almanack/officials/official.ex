@@ -29,8 +29,8 @@ defmodule Almanack.Officials.Official do
   def changeset(official, params \\ %{}) do
     official
     |> cast(params, [:mv_key | fields()])
-    |> unique_constraint(:mv_key, name: "officials_mv_key_index")
     |> validate_required([:mv_key])
+    |> unique_constraint(:mv_key)
     |> cast_assoc(:terms)
   end
 

@@ -5,13 +5,15 @@ defmodule Almanack.Sources.USIOTest do
   setup_all do
     legislators = Fixtures.load("usio_legislators.json")
     media = Fixtures.load("usio_social_media.json")
-    {:ok, legislators: legislators, media: media}
+    executives = Fixtures.load("usio_executives.json")
+    {:ok, legislators: legislators, media: media, executives: executives}
   end
 
   describe "officials/0" do
     test "returns list of Official structs", context do
       mock(USIO.API, :current_legislators, context.legislators)
       mock(USIO.API, :social_media, context.media)
+      mock(USIO.API, :executives, context.executives)
       [sherrod | [maria]] = Enum.slice(USIO.officials(), 0, 2)
       assert sherrod.changes.last_name == "Brown"
       assert sherrod.changes.mv_key == "sherrod-brown"
@@ -21,6 +23,7 @@ defmodule Almanack.Sources.USIOTest do
     test "collects official names", context do
       mock(USIO.API, :current_legislators, context.legislators)
       mock(USIO.API, :social_media, context.media)
+      mock(USIO.API, :executives, context.executives)
       [sherrod | [maria]] = Enum.slice(USIO.officials(), 0, 2)
       assert sherrod.changes.official_name == "Sherrod Brown"
       assert maria.changes.official_name == "Maria Cantwell"
@@ -29,6 +32,7 @@ defmodule Almanack.Sources.USIOTest do
     test "includes terms", context do
       mock(USIO.API, :current_legislators, context.legislators)
       mock(USIO.API, :social_media, context.media)
+      mock(USIO.API, :executives, context.executives)
       [sherrod | _] = Enum.slice(USIO.officials(), 0, 2)
       {:ok, start_date} = Date.new(2019, 1, 3)
       {:ok, end_date} = Date.new(2025, 1, 3)
@@ -47,6 +51,7 @@ defmodule Almanack.Sources.USIOTest do
     test "parses office addresses for terms", context do
       mock(USIO.API, :current_legislators, context.legislators)
       mock(USIO.API, :social_media, context.media)
+      mock(USIO.API, :executives, context.executives)
       [sherrod | _] = Enum.slice(USIO.officials(), 0, 2)
       latest_term = List.last(sherrod.changes.terms)
       assert latest_term.changes.address["line1"] == "713 Hart Senate Office Building"
@@ -58,9 +63,23 @@ defmodule Almanack.Sources.USIOTest do
     test "social media IDs are added to identifiers map", context do
       mock(USIO.API, :current_legislators, context.legislators)
       mock(USIO.API, :social_media, context.media)
+      mock(USIO.API, :executives, context.executives)
       [sherrod | [maria]] = Enum.slice(USIO.officials(), 0, 2)
       assert sherrod.changes.identifiers["twitter"] == "SenSherrodBrownTest"
       assert maria.changes.identifiers["facebook"] == "senatorcantwell_test"
+    end
+
+    test "presidents are included through the executive API", context do
+      mock(USIO.API, :current_legislators, context.legislators)
+      mock(USIO.API, :social_media, context.media)
+      mock(USIO.API, :executives, context.executives)
+      [trump | [pence]] = Enum.slice(USIO.officials(), 3, 2)
+      trump_term = List.first(trump.changes.terms)
+      pence_term = List.first(pence.changes.terms)
+
+      assert trump_term.changes.role == "President"
+      assert pence_term.changes.role == "Vice President"
+      assert pence_term.changes.branch == "executive"
     end
   end
 end

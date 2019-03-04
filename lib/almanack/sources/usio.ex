@@ -12,6 +12,7 @@ defmodule Almanack.Sources.USIO do
   @spec officials() :: [Ecto.Changeset.t()]
   def officials do
     mockable(API).current_legislators()
+    |> Enum.concat(mockable(API).executives())
     |> map_to_officials()
     |> include_terms()
     |> include_social_media()
@@ -52,10 +53,12 @@ defmodule Almanack.Sources.USIO do
   defp cleanse_terms(terms) do
     terms
     |> Enum.map(fn term ->
+      {role, branch} = parse_role_and_branch(term["type"])
+
       %{
         start_date: term["start"],
         end_date: term["end"],
-        role: government_role(term["type"]),
+        role: role,
         party: term["party"],
         state: term["state"],
         state_rank: term["state_rank"],
@@ -65,24 +68,30 @@ defmodule Almanack.Sources.USIO do
         website: term["url"],
         address: AddressParsing.parse(term["address"]),
         level: "federal",
-        branch: "legislative"
+        branch: branch
       }
     end)
   end
 
-  defp government_role(role) do
-    case role do
+  defp parse_role_and_branch(type) do
+    case type do
       "sen" ->
-        "Senator"
+        {"Senator", "legislative"}
 
       "rep" ->
-        "Representative"
+        {"Representative", "legislative"}
+
+      "prez" ->
+        {"President", "executive"}
+
+      "viceprez" ->
+        {"Vice President", "executive"}
 
       nil ->
-        ""
+        {"", ""}
 
       _ ->
-        role
+        {type, ""}
     end
   end
 

@@ -4,7 +4,7 @@ config :almanack, :usio_api,
   base_url: "https://theunitedstates.io/congress-legislators/",
   legislators: "legislators-current.json",
   social_media: "legislators-social-media.json",
-  executives: "executives.json"
+  executives: "executive.json"
 
 config :almanack, ecto_repos: [Almanack.Repo]
 
