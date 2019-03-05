@@ -36,7 +36,7 @@ defmodule Almanack.Scheduler do
 
     # Async by external source
     Sources.USIO.officials()
-    # GoogleCivicData
+    # Sources.GoogleCivicInfo.officials()
     # BallotPedia
   end
 

@@ -2,6 +2,13 @@ defmodule Almanack.Officials.Term do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @moduledoc """
+  Enum values:
+  - role: President, Vice President, Representative, Senator, Governor, Mayor
+  - level: federal, state, county, city
+  - branch: executive, legislative, judicial
+  """
+
   @primary_key {:id, :binary_id, autogenerate: true}
 
   schema "terms" do

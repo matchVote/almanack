@@ -10,7 +10,7 @@ defmodule Almanack.Sources.USIOTest do
   end
 
   describe "officials/0" do
-    test "returns list of Official structs", context do
+    test "returns list of Official changesets", context do
       mock(USIO.API, :current_legislators, context.legislators)
       mock(USIO.API, :social_media, context.media)
       mock(USIO.API, :executives, context.executives)
