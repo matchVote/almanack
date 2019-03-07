@@ -1,0 +1,59 @@
+{
+  "offices": [
+    {
+      "name": "United States Senate",
+      "divisionId": "ocd-division/country:us/state:nc",
+      "levels": ["country"],
+      "roles": ["legislatorUpperBody"],
+      "officialIndices": [0, 1]
+    },
+    {
+      "name": "United States House of Representatives NC-08",
+      "divisionId": "ocd-division/country:us/state:nc/cd:8",
+      "levels": ["country"],
+      "roles": ["legislatorLowerBody"],
+      "officialIndices": [2]
+    },
+    {
+      "name": "Governor",
+      "divisionId": "ocd-division/country:us/state:nc",
+      "levels": ["administrativeArea1"],
+      "roles": ["headOfGovernment"],
+      "officialIndices": [3]
+    },
+    {
+      "name": "Lieutenant Governor",
+      "divisionId": "ocd-division/country:us/state:nc",
+      "levels": ["administrativeArea1"],
+      "roles": ["deputyHeadOfGovernment"],
+      "officialIndices": [4]
+    }
+  ],
+  "officials": [
+    { "name": "Fah Roo Roo Lobster" },
+    { "name": "Deepak Mulligan" },
+    { "name": "Arcus Training Post" },
+    {
+      "name": "Bobeck Kuberdoodles",
+      "address": [
+        {
+          "line1": "20301 Mail Service Center",
+          "city": "Raleigh",
+          "state": "NC",
+          "zip": "27699"
+        }
+      ],
+      "party": "Democratic Party",
+      "phones": ["(920) 815-1999"],
+      "urls": ["https://governor.nc.gov/"],
+      "emails": ["bobeck.kb@nc.gov"],
+      "channels": [
+        {
+          "type": "Twitter",
+          "id": "NC_Governor"
+        }
+      ]
+    },
+    { "name": "Jeff Griffinhouse" }
+  ]
+}

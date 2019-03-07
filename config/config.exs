@@ -10,6 +10,10 @@ config :almanack, :nga_api,
   governors_addresses:
     "https://www.nga.org/wp-content/uploads/2019/01/Governors-Mailing-Addresses.xlsx"
 
+config :almanack, :gci_api,
+  base_url: "https://www.googleapis.com/civicinfo/v2/",
+  representatives: "representatives"
+
 config :almanack, ecto_repos: [Almanack.Repo]
 
 config :logger, level: :info

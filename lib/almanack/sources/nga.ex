@@ -1,30 +1,47 @@
 defmodule Almanack.Sources.NGA do
   alias __MODULE__.API
 
+  defstruct [:line1, :city, :state, :zip]
+
   @temp_xlsx_file "gvn_adds.xlsx"
 
-  @spec governors_addresses() :: [map]
+  @doc """
+  Returns a list of structs containing address data points.
+  """
+  @spec governors_addresses() :: [%__MODULE__{}]
   def governors_addresses do
-    download_addresses()
-    extract_addresses()
+    download_address_file()
+    [headers | addresses] = parse_file()
+    remove_file()
+    standardize(headers, addresses)
   end
 
-  defp download_addresses do
+  defp download_address_file do
     File.write!(@temp_xlsx_file, API.governors_addresses())
   end
 
-  defp extract_addresses do
-    [headers | addresses] = parse_xlsx()
-
-    Enum.map(addresses, fn address ->
-      Enum.zip(headers, address)
-      |> Map.new()
-    end)
-  end
-
-  defp parse_xlsx do
+  defp parse_file do
     Xlsxir.multi_extract(@temp_xlsx_file)[:ok]
     |> Xlsxir.get_list()
+  end
+
+  defp remove_file do
+    File.rm!(@temp_xlsx_file)
+  end
+
+  defp standardize(headers, addresses) do
+    Enum.map(addresses, fn address ->
+      data =
+        Enum.zip(headers, address)
+        |> Map.new()
+
+      %__MODULE__{
+        line1: data["Mailing Address Line 1"],
+        city: data["City"],
+        state: data["State"],
+        zip: data["Zip Code"]
+      }
+    end)
   end
 
   defmodule API do

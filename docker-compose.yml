@@ -6,3 +6,5 @@ services:
       dockerfile: Dockerfile.dev
     volumes:
       - .:/opt/app
+    env_file:
+      - .env
