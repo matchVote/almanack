@@ -66,4 +66,23 @@ defmodule Almanack.Officials.EnrichmentTest do
       assert key == "bob-jones"
     end
   end
+
+  @tag :PropEr
+  describe "standardize_party/1" do
+    test "converts known variations into standard enum values" do
+      assert Enrichment.standardize_party("Democratic Party") == "Democrat"
+      assert Enrichment.standardize_party("Republican Party") == "Republican"
+    end
+
+    test "does not modify unknown values" do
+      assert Enrichment.standardize_party("Frat Party") == "Frat Party"
+    end
+  end
+
+  @tag :PropEr
+  describe "standardize_media_key/1" do
+    test "downcases key" do
+      assert Enrichment.standardize_media_key("Twitter") == "twitter"
+    end
+  end
 end

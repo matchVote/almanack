@@ -7,6 +7,7 @@ defmodule Almanack.Officials.Term do
   - role: President, Vice President, Representative, Senator, Governor, Mayor
   - level: federal, state, county, city
   - branch: executive, legislative, judicial
+  - party: democrat, republican, independent
   """
 
   @primary_key {:id, :binary_id, autogenerate: true}

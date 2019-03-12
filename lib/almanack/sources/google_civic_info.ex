@@ -2,6 +2,7 @@ defmodule Almanack.Sources.GoogleCivicInfo do
   import Mockery.Macro
   alias __MODULE__.API
   alias Almanack.Sources.NGA
+  alias Almanack.Officials.{Enrichment, Official}
 
   @spec officials() :: [Ecto.Changeset.t()]
   def officials do
@@ -9,13 +10,77 @@ defmodule Almanack.Sources.GoogleCivicInfo do
     |> Enum.map(fn address ->
       normalize_address(address)
       |> mockable(API).representatives()
-      |> IO.inspect()
+      |> extract_governor()
+      |> map_to_official()
+      |> include_terms()
     end)
   end
 
   @spec normalize_address(%NGA{}) :: String.t()
   def normalize_address(address) do
     "#{address.line1} #{address.city} #{address.state} #{address.zip}"
+  end
+
+  defp extract_governor(data) do
+    governor_index =
+      data["offices"]
+      |> Enum.find(&(&1["name"] == "Governor"))
+      |> Map.get("officialIndices")
+      |> List.first()
+
+    Enum.at(data["officials"], governor_index)
+    |> Map.put("role", "Governor")
+  end
+
+  defp map_to_official(data) do
+    name_parts = split_name(data["name"])
+
+    {Official.new(
+       official_name: data["name"],
+       first_name: name_parts.first_name,
+       middle_name: name_parts.middle_name,
+       last_name: name_parts.last_name,
+       identifiers: standardize_ids(data["channels"])
+     ), data}
+  end
+
+  @spec split_name(String.t()) :: map
+  def split_name(name) do
+    case String.split(name) do
+      [first | [last]] = parts when length(parts) == 2 ->
+        %{first_name: first, middle_name: "", last_name: last}
+
+      [first | [middle | [last]]] = parts when length(parts) == 3 ->
+        %{first_name: first, middle_name: middle, last_name: last}
+    end
+  end
+
+  @spec standardize_ids([map]) :: map
+  def standardize_ids(ids) do
+    Enum.reduce(ids, %{}, fn id, acc ->
+      Map.put(acc, Enrichment.standardize_media_key(id["type"]), id["id"])
+    end)
+  end
+
+  defp include_terms({official, data}) do
+    Official.changeset(official, %{terms: map_terms(data)})
+  end
+
+  defp map_terms(data) do
+    [address | _] = data["address"]
+
+    [
+      %{
+        party: Enrichment.standardize_party(data["party"]),
+        state: address["state"],
+        role: data["role"],
+        phone_number: List.first(data["phones"]),
+        emails: data["emails"],
+        website: List.first(data["urls"]),
+        address: address,
+        level: "state"
+      }
+    ]
   end
 
   defmodule API do

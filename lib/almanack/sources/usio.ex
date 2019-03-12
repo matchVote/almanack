@@ -2,7 +2,7 @@ defmodule Almanack.Sources.USIO do
   import Mockery.Macro
   alias __MODULE__.API
   alias Almanack.AddressParsing
-  alias Almanack.Officials.Official
+  alias Almanack.Officials.{Enrichment, Official}
 
   @doc """
   Retrieves data on all current Congressional officials (House and Senate) from
@@ -59,7 +59,7 @@ defmodule Almanack.Sources.USIO do
         start_date: term["start"],
         end_date: term["end"],
         role: role,
-        party: term["party"],
+        party: Enrichment.standardize_party(term["party"]),
         state: term["state"],
         state_rank: term["state_rank"],
         contact_form: term["contact_form"],

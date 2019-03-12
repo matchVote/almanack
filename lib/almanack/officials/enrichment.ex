@@ -54,4 +54,23 @@ defmodule Almanack.Officials.Enrichment do
       String.downcase(value)
     end)
   end
+
+  @spec standardize_party(String.t()) :: String.t()
+  def standardize_party(party) do
+    case party do
+      "Democratic Party" ->
+        "Democrat"
+
+      "Republican Party" ->
+        "Republican"
+
+      _ ->
+        party
+    end
+  end
+
+  @spec standardize_media_key(String.t()) :: String.t()
+  def standardize_media_key(key) do
+    String.downcase(key)
+  end
 end
