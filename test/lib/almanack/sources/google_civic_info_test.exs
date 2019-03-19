@@ -85,6 +85,23 @@ defmodule Almanack.Sources.GoogleCivicInfoTest do
       assert "Ferdinand" == result.last_name
       assert "P." == result.middle_name
     end
+
+    test "extracts suffix with middle name" do
+      result = GoogleCivicInfo.split_name("Franz P. Ferdinand Jr.")
+      assert "Franz" == result.first_name
+      assert "P." == result.middle_name
+      assert "Ferdinand" == result.last_name
+      assert "Jr." == result.suffix
+    end
+
+    @tag skip: "split_name/1 will have to be made more robust"
+    test "extracts suffix with no middle name" do
+      result = GoogleCivicInfo.split_name("Franz Ferdinand Jr.")
+      assert "Franz" == result.first_name
+      assert "" == result.middle_name
+      assert "Ferdinand" == result.last_name
+      assert "Jr." == result.suffix
+    end
   end
 
   @tag :PropEr

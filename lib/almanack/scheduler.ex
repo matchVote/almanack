@@ -4,6 +4,11 @@ defmodule Almanack.Scheduler do
   alias Almanack.{Repo, Sources}
   alias Almanack.Officials.{Enrichment, Official}
 
+  @sources [
+    Sources.USIO,
+    Sources.GoogleCivicInfo
+  ]
+
   def start_link([]) do
     GenServer.start_link(__MODULE__, [])
   end
@@ -35,9 +40,11 @@ defmodule Almanack.Scheduler do
     # Sources.StaticFiles.officials()
 
     # Async by external source
-    Sources.USIO.officials()
-    # Sources.GoogleCivicInfo.officials()
-    # BallotPedia
+    @sources
+    |> Enum.reduce([], fn source, officials ->
+      # This is sync
+      apply(source, :officials, []) ++ officials
+    end)
   end
 
   @spec enrich_officials([Ecto.Changeset.t()]) :: [Ecto.Changeset.t()]

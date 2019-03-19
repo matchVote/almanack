@@ -2,7 +2,7 @@ defmodule Almanack.SchedulerTest do
   use Almanack.RepoCase
   alias Almanack.Scheduler
   alias Almanack.Officials.{Official, Term}
-  alias Almanack.Sources.USIO
+  alias Almanack.Sources.{GoogleCivicInfo, NGA, USIO}
 
   setup_all do
     legislators = Fixtures.load("usio_legislators.json")
@@ -35,20 +35,58 @@ defmodule Almanack.SchedulerTest do
         ]
       )
 
-    {:ok, legislators: legislators, media: media, official: official, executives: exec}
+    address = %NGA{
+      line1: "1 Front Row",
+      city: "Keats",
+      state: "Hyperion",
+      zip: "12345-6789"
+    }
+
+    {:ok,
+     legislators: legislators,
+     media: media,
+     official: official,
+     executives: exec,
+     governors_addresses: [address],
+     civic_info: Fixtures.load("gci_representatives.json")}
   end
 
   describe "run_workflow/0" do
-    test "loads officials from sources and persists them to DB", context do
+    test "loads officials from all sources and presists them", context do
       mock(USIO.API, :current_legislators, context.legislators)
       mock(USIO.API, :social_media, context.media)
       mock(USIO.API, :executives, context.executives)
+      mock(NGA, :governors_addresses, context.governors_addresses)
+      mock(GoogleCivicInfo.API, :representatives, context.civic_info)
 
       Scheduler.run_workflow()
       officials = Repo.all(Official)
-      assert length(officials) == 5
+      assert length(officials) == 6
+    end
+
+    test "loads officials from USIO and persists them to DB", context do
+      mock(USIO.API, :current_legislators, context.legislators)
+      mock(USIO.API, :social_media, context.media)
+      mock(USIO.API, :executives, context.executives)
+      mock(NGA, :governors_addresses, context.governors_addresses)
+      mock(GoogleCivicInfo.API, :representatives, context.civic_info)
+
+      Scheduler.run_workflow()
+      officials = Repo.all(Official)
       assert Enum.find(officials, &(&1.first_name == "Sherrod"))
       assert Enum.find(officials, &(&1.first_name == "Maria"))
+    end
+
+    test "loads officials from GoogleCivicData and persists them to DB", context do
+      mock(USIO.API, :current_legislators, context.legislators)
+      mock(USIO.API, :social_media, context.media)
+      mock(USIO.API, :executives, context.executives)
+      mock(NGA, :governors_addresses, context.governors_addresses)
+      mock(GoogleCivicInfo.API, :representatives, context.civic_info)
+
+      Scheduler.run_workflow()
+      officials = Repo.all(Official)
+      assert Enum.find(officials, &(&1.first_name == "Bobeck"))
     end
   end
 

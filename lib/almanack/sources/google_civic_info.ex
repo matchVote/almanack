@@ -1,5 +1,6 @@
 defmodule Almanack.Sources.GoogleCivicInfo do
   import Mockery.Macro
+  require Logger
   alias __MODULE__.API
   alias Almanack.Sources.NGA
   alias Almanack.Officials.{Enrichment, Official}
@@ -14,12 +15,15 @@ defmodule Almanack.Sources.GoogleCivicInfo do
       |> map_to_official()
       |> include_terms()
     end)
+    |> Enum.reject(&is_nil/1)
   end
 
   @spec normalize_address(%NGA{}) :: String.t()
   def normalize_address(address) do
     "#{address.line1} #{address.city} #{address.state} #{address.zip}"
   end
+
+  defp extract_governor(nil), do: nil
 
   defp extract_governor(data) do
     governor_index =
@@ -31,6 +35,8 @@ defmodule Almanack.Sources.GoogleCivicInfo do
     Enum.at(data["officials"], governor_index)
     |> Map.put("role", "Governor")
   end
+
+  defp map_to_official(nil), do: nil
 
   defp map_to_official(data) do
     name_parts = split_name(data["name"])
@@ -52,8 +58,13 @@ defmodule Almanack.Sources.GoogleCivicInfo do
 
       [first | [middle | [last]]] = parts when length(parts) == 3 ->
         %{first_name: first, middle_name: middle, last_name: last}
+
+      [first | [middle | [last | [suffix]]]] = parts when length(parts) == 4 ->
+        %{first_name: first, middle_name: middle, last_name: last, suffix: suffix}
     end
   end
+
+  def standardize_ids(nil), do: %{}
 
   @spec standardize_ids([map]) :: map
   def standardize_ids(ids) do
@@ -62,21 +73,23 @@ defmodule Almanack.Sources.GoogleCivicInfo do
     end)
   end
 
+  defp include_terms(nil), do: nil
+
   defp include_terms({official, data}) do
     Official.changeset(official, %{terms: map_terms(data)})
   end
 
   defp map_terms(data) do
-    [address | _] = data["address"]
+    [address | _] = data["address"] || [%{}]
 
     [
       %{
         party: Enrichment.standardize_party(data["party"]),
         state: address["state"],
         role: data["role"],
-        phone_number: List.first(data["phones"]),
+        phone_number: List.first(data["phones"] || []),
         emails: data["emails"],
-        website: List.first(data["urls"]),
+        website: List.first(data["urls"] || []),
         address: address,
         level: "state"
       }
@@ -84,13 +97,20 @@ defmodule Almanack.Sources.GoogleCivicInfo do
   end
 
   defmodule API do
-    @spec representatives(String.t()) :: [map]
+    @spec representatives(String.t()) :: map | nil
     def representatives(address) do
-      request(config(:representatives), address)
+      case request(config(:representatives), address) do
+        %{"error" => %{"message" => msg}} ->
+          Logger.info("GoogleCivicInfo request error for '#{address}' -- #{msg}")
+          nil
+
+        reps ->
+          reps
+      end
     end
 
     defp request(resource, address) do
-      response =
+      {:ok, response} =
         %HTTPoison.Request{
           url: config(:base_url) <> resource,
           params: %{

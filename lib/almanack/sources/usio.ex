@@ -24,7 +24,7 @@ defmodule Almanack.Sources.USIO do
     Enum.map(legislators, fn data ->
       {
         Official.new(
-          identifiers: data["id"],
+          identifiers: standardize_ids(data["id"]),
           official_name: data["name"]["official_full"],
           first_name: data["name"]["first"],
           middle_name: data["name"]["middle"],
@@ -37,6 +37,12 @@ defmodule Almanack.Sources.USIO do
         ),
         data
       }
+    end)
+  end
+
+  defp standardize_ids(ids) do
+    Enum.reduce(ids, %{}, fn {key, id}, acc ->
+      Map.put(acc, Enrichment.standardize_media_key(key), id)
     end)
   end
 
