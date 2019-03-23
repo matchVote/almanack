@@ -14,6 +14,10 @@ config :almanack, :gci_api,
   base_url: "https://www.googleapis.com/civicinfo/v2/",
   representatives: "representatives"
 
+config :almanack, :ballotpedia,
+  top_mayors_url:
+    "https://ballotpedia.org/List_of_current_mayors_of_the_top_100_cities_in_the_United_States"
+
 config :almanack, ecto_repos: [Almanack.Repo]
 
 config :logger, level: :info

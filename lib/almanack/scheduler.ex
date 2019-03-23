@@ -6,7 +6,8 @@ defmodule Almanack.Scheduler do
 
   @sources [
     Sources.USIO,
-    Sources.GoogleCivicInfo
+    Sources.GoogleCivicInfo,
+    Sources.Ballotpedia
   ]
 
   def start_link([]) do

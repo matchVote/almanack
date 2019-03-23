@@ -23,4 +23,16 @@ defmodule Almanack.Officials.TermTest do
     assert msg == "has already been taken"
     assert constraint[:constraint_name] == "terms_official_id_start_date_index"
   end
+
+  test "dates must be in YYYY-MM-DD format" do
+    {:error, cs} =
+      Term.new(
+        official_id: Repo.insert!(%Official{mv_key: "some-one"}).id,
+        start_date: "02-01-1987"
+      )
+      |> Repo.insert()
+
+    {error, _} = cs.errors[:start_date]
+    assert error == "is invalid"
+  end
 end

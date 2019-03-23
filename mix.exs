@@ -25,6 +25,7 @@ defmodule Almanack.MixProject do
     [
       {:distillery, "~> 2.0.12"},
       {:ecto_sql, "~> 3.0.4"},
+      {:floki, "~> 0.20.4"},
       {:httpoison, "~> 1.4.0"},
       {:jason, "~> 1.1.0"},
       {:mockery, "~> 2.3.0", runtime: false},

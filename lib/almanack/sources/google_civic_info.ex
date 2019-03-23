@@ -39,7 +39,7 @@ defmodule Almanack.Sources.GoogleCivicInfo do
   defp map_to_official(nil), do: nil
 
   defp map_to_official(data) do
-    name_parts = split_name(data["name"])
+    name_parts = Enrichment.split_name(data["name"])
 
     {Official.new(
        official_name: data["name"],
@@ -48,20 +48,6 @@ defmodule Almanack.Sources.GoogleCivicInfo do
        last_name: name_parts.last_name,
        identifiers: standardize_ids(data["channels"])
      ), data}
-  end
-
-  @spec split_name(String.t()) :: map
-  def split_name(name) do
-    case String.split(name) do
-      [first | [last]] = parts when length(parts) == 2 ->
-        %{first_name: first, middle_name: "", last_name: last}
-
-      [first | [middle | [last]]] = parts when length(parts) == 3 ->
-        %{first_name: first, middle_name: middle, last_name: last}
-
-      [first | [middle | [last | [suffix]]]] = parts when length(parts) == 4 ->
-        %{first_name: first, middle_name: middle, last_name: last, suffix: suffix}
-    end
   end
 
   def standardize_ids(nil), do: %{}

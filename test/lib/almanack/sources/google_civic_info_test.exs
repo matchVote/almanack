@@ -71,40 +71,6 @@ defmodule Almanack.Sources.GoogleCivicInfoTest do
   end
 
   @tag :PropEr
-  describe "split_name/1" do
-    test "extracts first and last name" do
-      result = GoogleCivicInfo.split_name("Franz Ferdinand")
-      assert "Franz" == result.first_name
-      assert "Ferdinand" == result.last_name
-      assert "" == result.middle_name
-    end
-
-    test "extracts middle name" do
-      result = GoogleCivicInfo.split_name("Franz P. Ferdinand")
-      assert "Franz" == result.first_name
-      assert "Ferdinand" == result.last_name
-      assert "P." == result.middle_name
-    end
-
-    test "extracts suffix with middle name" do
-      result = GoogleCivicInfo.split_name("Franz P. Ferdinand Jr.")
-      assert "Franz" == result.first_name
-      assert "P." == result.middle_name
-      assert "Ferdinand" == result.last_name
-      assert "Jr." == result.suffix
-    end
-
-    @tag skip: "split_name/1 will have to be made more robust"
-    test "extracts suffix with no middle name" do
-      result = GoogleCivicInfo.split_name("Franz Ferdinand Jr.")
-      assert "Franz" == result.first_name
-      assert "" == result.middle_name
-      assert "Ferdinand" == result.last_name
-      assert "Jr." == result.suffix
-    end
-  end
-
-  @tag :PropEr
   describe "standardize_ids/1" do
     test "channels data is converted to map of ids with standard keys" do
       ids = [%{"type" => "Twitter", "id" => "MyName"}]

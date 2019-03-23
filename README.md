@@ -14,10 +14,7 @@ Collects and aggregates data for matchVote Officials
 ### TODO
 
 - Load custom files
-  - "2015_Governors.yml"
-  - "2017_Governors.yml"
   - "2015_HighProfile.yml"
-  - "2017_Mayors.yml"
 - Load image urls
   - /db/data/2015_SenatorProfileImageURLs.txt
   - /db/data/2017_CongressProfileImageURLs.txt

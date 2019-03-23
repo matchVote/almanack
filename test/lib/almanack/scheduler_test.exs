@@ -2,13 +2,9 @@ defmodule Almanack.SchedulerTest do
   use Almanack.RepoCase
   alias Almanack.Scheduler
   alias Almanack.Officials.{Official, Term}
-  alias Almanack.Sources.{GoogleCivicInfo, NGA, USIO}
+  alias Almanack.Sources.{Ballotpedia, GoogleCivicInfo, NGA, USIO}
 
   setup_all do
-    legislators = Fixtures.load("usio_legislators.json")
-    media = Fixtures.load("usio_social_media.json")
-    exec = Fixtures.load("usio_executives.json")
-
     official =
       Official.new(
         first_name: "Sherrod",
@@ -43,11 +39,12 @@ defmodule Almanack.SchedulerTest do
     }
 
     {:ok,
-     legislators: legislators,
-     media: media,
      official: official,
-     executives: exec,
+     legislators: Fixtures.load("usio_legislators.json"),
+     media: Fixtures.load("usio_social_media.json"),
+     executives: Fixtures.load("usio_executives.json"),
      governors_addresses: [address],
+     ballotpedia_mayors_html: Fixtures.load("ballotpedia_mayors_table.html"),
      civic_info: Fixtures.load("gci_representatives.json")}
   end
 
@@ -58,10 +55,11 @@ defmodule Almanack.SchedulerTest do
       mock(USIO.API, :executives, context.executives)
       mock(NGA, :governors_addresses, context.governors_addresses)
       mock(GoogleCivicInfo.API, :representatives, context.civic_info)
+      mock(Ballotpedia.API, :top_mayors_html, context.ballotpedia_mayors_html)
 
       Scheduler.run_workflow()
       officials = Repo.all(Official)
-      assert length(officials) == 6
+      assert length(officials) == 7
     end
 
     test "loads officials from USIO and persists them to DB", context do
@@ -70,6 +68,7 @@ defmodule Almanack.SchedulerTest do
       mock(USIO.API, :executives, context.executives)
       mock(NGA, :governors_addresses, context.governors_addresses)
       mock(GoogleCivicInfo.API, :representatives, context.civic_info)
+      mock(Ballotpedia.API, :top_mayors_html, context.ballotpedia_mayors_html)
 
       Scheduler.run_workflow()
       officials = Repo.all(Official)
@@ -83,10 +82,24 @@ defmodule Almanack.SchedulerTest do
       mock(USIO.API, :executives, context.executives)
       mock(NGA, :governors_addresses, context.governors_addresses)
       mock(GoogleCivicInfo.API, :representatives, context.civic_info)
+      mock(Ballotpedia.API, :top_mayors_html, context.ballotpedia_mayors_html)
 
       Scheduler.run_workflow()
       officials = Repo.all(Official)
       assert Enum.find(officials, &(&1.first_name == "Bobeck"))
+    end
+
+    test "loads officials from Ballotpedia and persists them to DB", context do
+      mock(USIO.API, :current_legislators, context.legislators)
+      mock(USIO.API, :social_media, context.media)
+      mock(USIO.API, :executives, context.executives)
+      mock(NGA, :governors_addresses, context.governors_addresses)
+      mock(GoogleCivicInfo.API, :representatives, context.civic_info)
+      mock(Ballotpedia.API, :top_mayors_html, context.ballotpedia_mayors_html)
+
+      Scheduler.run_workflow()
+      officials = Repo.all(Official)
+      assert Enum.find(officials, &(&1.last_name == "Blasio"))
     end
   end
 

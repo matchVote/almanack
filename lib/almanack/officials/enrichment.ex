@@ -1,6 +1,30 @@
 defmodule Almanack.Officials.Enrichment do
   alias Almanack.Officials.Official
 
+  @doc """
+  Weak suffix check, but it's satisfactory for now.
+  Refactor
+  """
+  @spec split_name(String.t()) :: map
+  def split_name(name) do
+    case String.split(name) do
+      [first | [last]] = parts when length(parts) == 2 ->
+        %{first_name: first, middle_name: "", last_name: last, suffix: ""}
+
+      [first | [middle | [last]]] = parts when length(parts) == 3 ->
+        cond do
+          String.contains?(last, ".") ->
+            %{first_name: first, middle_name: "", last_name: middle, suffix: last}
+
+          true ->
+            %{first_name: first, middle_name: middle, last_name: last, suffix: ""}
+        end
+
+      [first | [middle | [last | [suffix]]]] = parts when length(parts) == 4 ->
+        %{first_name: first, middle_name: middle, last_name: last, suffix: suffix}
+    end
+  end
+
   @spec generate_mv_key(map, [atom]) :: String.t()
   def generate_mv_key(data, fields) do
     fields
@@ -55,14 +79,26 @@ defmodule Almanack.Officials.Enrichment do
     end)
   end
 
+  @doc """
+  Perhaps move this to a config file and use it as a map?
+  """
   @spec standardize_party(String.t()) :: String.t()
   def standardize_party(party) do
     case party do
       "Democratic Party" ->
         "Democrat"
 
+      "D" ->
+        "Democrat"
+
       "Republican Party" ->
         "Republican"
+
+      "R" ->
+        "Republican"
+
+      "I" ->
+        "Independent"
 
       _ ->
         party
