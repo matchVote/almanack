@@ -16,5 +16,14 @@ defmodule Almanack.AddressParsingTest do
       AddressParsing.parse(nil)
       |> Enum.each(fn {_, v} -> assert v == "" end)
     end
+
+    test "handles address with commas" do
+      address = "123 Hey Pockey Way, Doobie, NC 12345"
+      result = AddressParsing.parse(address)
+      assert result["line1"] == "123 Hey Pockey Way"
+      assert result["city"] == "Doobie"
+      assert result["state"] == "NC"
+      assert result["zip"] == "12345"
+    end
   end
 end

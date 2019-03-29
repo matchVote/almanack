@@ -1,5 +1,5 @@
 defmodule Almanack.AddressParsing do
-  @address_regex ~r/\A(?<line1>(.+))\s(?<city>(\w+))\s(?<state>(\w{2}))\s(?<zip>(\d{5}(-\d{4})?))\z/
+  @address_regex ~r/\A(?<line1>(.+?)),?\s(?<city>(\w+)),?\s(?<state>(\w{2}))\s(?<zip>(\d{5}(-\d{4})?))\z/
 
   @doc """
   Parses given address string into a map
