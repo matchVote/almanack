@@ -58,19 +58,18 @@ defmodule Almanack.Officials.Enrichment do
     |> String.replace(".", "")
   end
 
-  @spec format_gender(Ecto.Changeset.t()) :: Ecto.Changeset.t()
-  def format_gender(official) do
-    Official.update_change(official, :gender, fn value ->
-      value
-      |> to_string()
-      |> String.capitalize()
-      |> expand_gender()
-    end)
+  @spec standardize_gender(String.t()) :: String.t()
+  def standardize_gender(gender) do
+    gender
+    |> String.downcase()
+    |> case do
+      "m" -> "male"
+      "male" -> "male"
+      "f" -> "female"
+      "female" -> "female"
+      _ -> nil
+    end
   end
-
-  defp expand_gender("M"), do: "male"
-  defp expand_gender("F"), do: "female"
-  defp expand_gender(_), do: nil
 
   @spec downcase_religion(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def downcase_religion(official) do

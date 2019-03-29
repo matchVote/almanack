@@ -109,18 +109,6 @@ defmodule Almanack.SchedulerTest do
       assert official.changes.slug == "sherrod-brown"
     end
 
-    test "formats gender values", %{official: official} do
-      [sherrod | [maria]] =
-        [
-          Official.change(official, gender: "M"),
-          Official.change(official, first_name: "Maria", gender: "F")
-        ]
-        |> Scheduler.enrich_officials()
-
-      assert sherrod.changes.gender == "male"
-      assert maria.changes.gender == "female"
-    end
-
     test "downcases religion values", %{official: official} do
       [sherrod | [maria]] =
         [

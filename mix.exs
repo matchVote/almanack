@@ -32,6 +32,7 @@ defmodule Almanack.MixProject do
       {:nimble_csv, "~> 0.5.0"},
       {:poison, "~> 3.1.0"},
       {:postgrex, "~> 0.14.1"},
+      {:yaml_elixir, "~> 2.1.0"},
       {:xlsxir, "~> 1.6.4"}
     ]
   end

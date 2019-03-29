@@ -32,7 +32,7 @@ defmodule Almanack.Sources.USIO do
           suffix: data["name"]["suffix"],
           nickname: data["name"]["nickname"],
           birthday: data["bio"]["birthday"],
-          gender: data["bio"]["gender"],
+          gender: Enrichment.standardize_gender(data["bio"]["gender"]),
           religion: data["bio"]["religion"]
         ),
         data

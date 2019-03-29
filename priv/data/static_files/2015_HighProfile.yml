@@ -1,0 +1,862 @@
+# took_office date format: YYYY-MM-DD
+
+- rep_status: Out of Office
+  state: DC
+  title: President
+  first_name: Barack
+  middle_name: Hussein
+  last_name: Obama
+  nick_name: Barack
+  address: The White House, 1600 Pennsylvania Avenue NW, Washington, DC 20500
+  fax:
+  tel: 202-456-1111
+  contact_form_url: https://www.whitehouse.gov/contact/submit-questions-and-comments
+  web: https://www.barackobama.com/
+  took_office: 2009-01-20
+  term_ends: 2016
+  party: D
+  branch: executive
+  gender: Male
+  birthday: 1961-08-04
+  religion: Christian
+  orientation: Straight
+  facebook: https://www.facebook.com/barackobama
+  twitter: https://twitter.com/barackobama
+  youtube: https://www.youtube.com/user/BarackObamadotcom
+  wiki: http://en.wikipedia.org/wiki/Barack_Obama
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/Barack_Obama.png
+  name_recognition: 54815149
+
+- rep_status: In Office
+  state: DC
+  title: Vice President
+  first_name: Joseph
+  middle_name: Robinette
+  last_name: Biden
+  nick_name: Joe
+  address: The White House, 1600 Pennsylvania Avenue NW, Washington, DC 20500
+  fax:
+  tel: 202-456-1111
+  contact_form_url: https://www.whitehouse.gov/contact/submit-questions-and-comments
+  web:
+  took_office: 2009-01-20
+  term_ends: 2016
+  party: D
+  branch: executive
+  gender: Male
+  birthday: 1942-11-20
+  religion: Catholic
+  orientation: Straight
+  facebook: https://www.facebook.com/joebiden
+  twitter: https://twitter.com/joebiden
+  youtube:
+  wiki: http://en.wikipedia.org/wiki/Joe_Biden
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/Joe_Biden.png
+  name_recognition: 1158612
+
+- rep_status: In Office
+  state: DC
+  title: Secretary
+  first_name: John
+  middle_name: Forbes
+  last_name: Kerry
+  address:
+  fax:
+  tel:
+  contact_form_url: https://register.state.gov/contactus/contactusform
+  web: http://www.state.gov/secretary/
+  took_office: 2013-02-01
+  term_ends:
+  party: D
+  branch: executive
+  gender: Male
+  birthday: 1943-12-11
+  religion: Catholic
+  orientation: Straight
+  facebook: https://www.facebook.com/johnkerry
+  twitter: https://twitter.com/johnkerry
+  youtube:
+  wiki: http://en.wikipedia.org/wiki/John_Kerry
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/John_Kerry.png
+  name_recognition: 166875
+
+- rep_status: Running
+  state: DC
+  title: Secretary
+  first_name: Hillary
+  middle_name: Rodham
+  last_name: Clinton
+  address:
+  fax:
+  tel:  646-854-1432
+  email: info@hillaryclinton.com
+  web: http://www.hillaryclinton.com/
+  took_office:
+  term_ends:
+  party: D
+  branch: executive
+  gender: Female
+  birthday: 1947-10-26
+  religion: Methodist
+  orientation: Straight
+  facebook: https://www.facebook.com/hillaryclinton
+  twitter: https://twitter.com/hillaryclinton
+  youtube:
+  wiki: http://en.wikipedia.org/wiki/Hillary_Rodham_Clinton
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/Hillary_Clinton.png
+  name_recognition: 10085386
+
+- rep_status: Out of Office
+  state: MA
+  title: Governor
+  first_name: Willard
+  middle_name: Mitt
+  last_name: Romney
+  nick_name: Mitt
+  address:
+  fax:
+  tel:
+  email:
+  web: http://www.mittromney.com/
+  took_office:
+  term_ends:
+  party: R
+  branch: executive
+  gender: Male
+  birthday: 1947-03-12
+  religion: Mormon
+  orientation: Straight
+  facebook: https://www.facebook.com/mittromney
+  twitter: https://twitter.com/mittromney
+  youtube:
+  wiki: http://en.wikipedia.org/wiki/Mitt_Romney
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/Mitt_Romney.png
+  name_recognition: 10285367
+
+- rep_status: Out of Office
+  state: DC
+  title: Vice President
+  first_name: Albert
+  middle_name: Arnold
+  last_name: Gore
+  nick_name: Al
+  address:
+  fax:
+  tel:
+  email:
+  web: http://www.algore.com/
+  took_office:
+  term_ends:
+  party: D
+  branch: executive
+  gender: Male
+  birthday: 1948-03-31
+  religion: Baptist
+  orientation: Straight
+  facebook: https://www.facebook.com/algore
+  twitter: https://twitter.com/algore
+  youtube:
+  wiki: http://en.wikipedia.org/wiki/Al_Gore
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/Al_Gore.png
+  name_recognition: 510760
+
+- rep_status: Out of Office
+  state: DC
+  title: President
+  first_name: George
+  middle_name: Walker
+  last_name: Bush
+  nick_name: George W.
+  address:
+  fax:
+  tel:
+  email:
+  web: http://www.georgewbush.com/
+  took_office:
+  term_ends:
+  party: R
+  branch: executive
+  gender: Male
+  birthday: 1946-07-06
+  religion: Methodist
+  orientation: Straight
+  facebook: https://www.facebook.com/georgewbush
+  twitter: https://twitter.com/georgewbush
+  youtube:
+  wiki: http://en.wikipedia.org/wiki/George_W._Bush
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/George_W_Bush.png
+  name_recognition: 4949500
+
+- rep_status: Running
+  state: TX
+  title: Governor
+  first_name: James
+  middle_name: Richard
+  last_name: Perry
+  nick_name: Rick
+  address:
+  fax:
+  tel:
+  email:
+  web: https://rickperry.org/
+  took_office:
+  term_ends:
+  party: R
+  branch: executive
+  gender: Male
+  birthday: 1950-03-04
+  religion: Evangelical
+  orientation: Straight
+  facebook: https://www.facebook.com/GovernorPerry
+  twitter: https://twitter.com/governorperry
+  youtube:
+  wiki: https://en.wikipedia.org/wiki/Rick_Perry
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/Rick_Perry.png
+  name_recognition: 1177295
+
+- rep_status: Running
+  state: DC
+  title: Candidate
+  first_name: Cara
+  middle_name: Carleton
+  last_name: Fiorina
+  nick_name: Carly
+  address:
+  fax:
+  tel:
+  email:
+  web: http://www.carlyforpresident.com/
+  took_office:
+  term_ends:
+  party: R
+  branch:
+  gender: Female
+  birthday: 1954-09-06
+  religion: Episcopalian
+  orientation: Straight
+  facebook: https://www.facebook.com/CarlyFiorina
+  twitter: https://twitter.com/carlyfiorina
+  youtube:
+  wiki: https://en.wikipedia.org/wiki/Carly_Fiorina
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/Carly_Fiorina.png
+  name_recognition: 602006
+
+- rep_status: Out of Office
+  state: DC
+  title: President
+  first_name: William
+  middle_name: Jefferson
+  last_name: Clinton
+  nick_name: Bill
+  address:
+  fax:
+  tel:
+  email:
+  web: http://www.billclinton.com/
+  took_office:
+  term_ends:
+  party: D
+  branch: executive
+  gender: Male
+  birthday: 1946-08-19
+  religion: Baptist
+  orientation: Straight
+  facebook: https://www.facebook.com/billclinton
+  twitter: https://twitter.com/billclinton
+  youtube:
+  wiki: http://en.wikipedia.org/wiki/Bill_Clinton
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/Bill_Clinton.png
+  name_recognition: 3988511
+
+- rep_status: Out of Office
+  state: DC
+  title: Vice President
+  first_name: Richard
+  middle_name: Bruce
+  last_name: Cheney
+  nick_name: Dick
+  address:
+  fax:
+  tel:
+  email:
+  web:
+  took_office:
+  term_ends:
+  party: R
+  branch: executive
+  gender: Male
+  birthday: 1941-01-30
+  religion: Methodist
+  orientation: Straight
+  facebook:
+  twitter:
+  youtube:
+  wiki: http://en.wikipedia.org/wiki/Dick_Cheney
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/Dick_Cheney.png
+  name_recognition: 1000000
+
+- rep_status: Out of Office
+  state: AK
+  title: Governor
+  first_name: Sarah
+  middle_name: Louise
+  last_name: Palin
+  address:
+  fax:
+  tel:
+  contact_form_url: http://www.sarahpac.com/contact/
+  web: http://www.sarahpac.com/
+  took_office:
+  term_ends:
+  party: R
+  branch: executive
+  gender: Female
+  birthday: 1964-02-11
+  religion: Christian
+  orientation: Straight
+  facebook: https://www.facebook.com/sarahpalin
+  twitter: https://twitter.com/sarahpalinusa
+  youtube:
+  wiki: http://en.wikipedia.org/wiki/Sarah_Palin
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/Sarah_Palin.png
+  name_recognition: 4842594
+
+- rep_status: Out of Office
+  state: TX
+  title: Senator
+  first_name: Ronald
+  middle_name: Ernest
+  last_name: Paul
+  nick_name: Ron
+  address: Campaign for Liberty, 5211 Port Royal Road, Suite 310, Springfield, VA 22151
+  fax: (703) 865-7549
+  tel: (703) 865-7162
+  contact_form_url: http://www.campaignforliberty.org/contact-us
+  web: http://www.campaignforliberty.org/
+  took_office:
+  term_ends:
+  party: R
+  branch: executive
+  gender: Male
+  birthday: 1935-08-20
+  religion: Southern Baptist
+  orientation: Straight
+  facebook: https://www.facebook.com/ronpaul
+  twitter: https://twitter.com/ronpaul
+  youtube: https://www.youtube.com/user/ronpaul
+  wiki: http://en.wikipedia.org/wiki/Ron_Paul
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/Ron_Paul.png
+  name_recognition: 1376268
+
+- rep_status: Running
+  state:  AR
+  title: Governor
+  first_name: Michael
+  middle_name: Dale
+  last_name: Huckabee
+  nick_name: Mike
+  address:
+  fax:
+  tel:
+  email:
+  web: http://www.mikehuckabee.com/
+  took_office: 1996-07-15
+  term_ends: January 8, 2007
+  party: R
+  branch: executive
+  gender: Male
+  birthday: 1955-08-24
+  religion: Southern Baptist
+  orientation: Straight
+  facebook: https://www.facebook.com/mikehuckabee
+  twitter: https://twitter.com/GovMikeHuckabee
+  youtube:
+  wiki: http://en.wikipedia.org/wiki/Mike_Huckabee
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/Mike_Huckabee.png
+  name_recognition: 2249660
+
+- rep_status: Running
+  state: RI
+  title: Governor
+  first_name: Lincoln
+  middle_name: Davenport
+  last_name: Chafee
+  nick_name:
+  address:
+  fax:
+  tel:
+  email:
+  web: http://www.chafee2016.com/
+  took_office: 2011-01-04
+  term_ends: January 6, 2015
+  party: D
+  branch: executive
+  gender: Male
+  birthday: 1953-03-26
+  religion: Episcopalian
+  orientation: Straight
+  facebook: https://www.facebook.com/chafee2016
+  twitter: https://twitter.com/lincolnchafee
+  youtube:
+  wiki: http://en.wikipedia.org/wiki/Lincoln_Chafee
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/Lincoln_Chafee.png
+  name_recognition: 12201
+
+- rep_status: Running
+  state: VA
+  title: Senator
+  first_name: James
+  middle_name: Henry
+  last_name: Webb
+  nick_name: Jim
+  address:
+  fax:
+  tel:
+  email:
+  web: http://www.webb2016.com/
+  took_office: 2007-01-03
+  term_ends: January 3, 2013
+  party: D
+  branch: legislative
+  gender: Male
+  birthday: 1946-02-09
+  religion: Christian
+  orientation: Straight
+  facebook: https://www.facebook.com/IHeardMyCountryCalling
+  twitter: https://twitter.com/JimWebbUSA
+  youtube:
+  wiki: http://en.wikipedia.org/wiki/Jim_Webb
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/Jim_Webb.png
+  name_recognition: 47580
+
+- rep_status: Running
+  state: DC
+  title: Candidate
+  first_name: Benjamin
+  middle_name: Solomon
+  last_name: Carson
+  nick_name: Ben
+  address:
+  fax:
+  tel:
+  email:
+  web: https://www.bencarson.com/
+  took_office:
+  term_ends:
+  party: R
+  branch: executive
+  gender: Male
+  birthday: 1951-09-18
+  religion: Evangelical
+  orientation: Straight
+  facebook: https://www.facebook.com/DrBenjaminCarson
+  twitter: https://twitter.com/RealBenCarson
+  youtube: https://www.youtube.com/user/realbencarson/
+  wiki: http://en.wikipedia.org/wiki/Ben_Carson
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/Ben_Carson.png
+  name_recognition: 5927815
+
+- rep_status: Running
+  state: DC
+  title: Commissioner
+  first_name: Mark
+  middle_name: Whitty
+  last_name: Everson
+  nick_name:
+  address:
+  fax:
+  tel:
+  email:
+  web: https://www.markforamerica.com/
+  took_office: 2002-08-01
+  term_ends: May 1, 2003
+  party: R
+  branch: executive
+  gender: Male
+  birthday: 1954-09-10
+  religion:
+  orientation: Straight
+  facebook: https://www.facebook.com/MarkForAmerica
+  twitter: https://twitter.com/MarkForAmerica
+  youtube:
+  wiki: http://en.wikipedia.org/wiki/Mark_Everson
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/Mark_Everson.png
+  name_recognition: 1815
+
+- rep_status: Out of Office
+  state: MD
+  title: Governor
+  first_name: Martin
+  middle_name: Joseph
+  last_name: "O'Malley"
+  nick_name:
+  address:
+  fax: 410-849-4048
+  tel: (443) 595-7666
+  email: info@martinomalley.com
+  web: http://martinomalley.com/
+  took_office: 2007-01-17
+  term_ends: January 21, 2015
+  party: D
+  branch: executive
+  gender: Male
+  birthday: 1963-01-18
+  religion: Catholic
+  orientation: Straight
+  facebook: https://www.facebook.com/MartinOMalley
+  twitter: https://twitter.com/governoromalley
+  youtube: https://www.youtube.com/channel/UCb7eu74-_tCNLw9FfavvKnw
+  wiki: http://en.wikipedia.org/wiki/Martin_O%27Malley
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/Martin_OMalley.png
+  name_recognition: 118720
+
+- rep_status: Out of Office
+  state: PA
+  title: Senator
+  first_name: Richard
+  middle_name: John
+  last_name: Santorum
+  nick_name: Rick
+  address:
+  fax:
+  tel: (603) 836-5941
+  email:
+  web: http://www.ricksantorum.com/
+  took_office: 1995-01-03
+  term_ends: January 3, 2007
+  party: R
+  branch: legislative
+  gender: Male
+  birthday: 1958-05-10
+  religion: Catholic
+  orientation: Straight
+  facebook: https://www.facebook.com/RickSantorum
+  twitter: https://twitter.com/ricksantorum
+  youtube: https://www.youtube.com/user/ricksantorum
+  wiki: http://en.wikipedia.org/wiki/Rick_Santorum
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/Rick_Santorum.png
+  name_recognition: 262219
+
+- rep_status: In Office
+  state: DC
+  title: President
+  first_name: Donald
+  middle_name: John
+  last_name: Trump
+  nick_name: Donald
+  address: The White House, 1600 Pennsylvania Avenue NW, Washington, DC 20500
+  fax:
+  tel:
+  email: https://www.donaldjtrump.com/contact/
+  web: https://www.donaldjtrump.com/
+  took_office:
+  term_ends:
+  party: R
+  branch: executive
+  gender: Male
+  birthday: 1946-06-14
+  religion: Presbyterian
+  orientation: Straight
+  facebook: https://www.facebook.com/DonaldTrump
+  twitter: https://twitter.com/realdonaldtrump
+  youtube: https://www.youtube.com/user/trump
+  wiki: https://en.wikipedia.org/wiki/Donald_Trump
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/Donald_Trump.png
+  name_recognition: 22660981
+
+- rep_status: Running for Office
+  state: FL
+  title: Governor
+  first_name: John
+  middle_name: Ellis
+  last_name: Bush
+  nick_name: Jeb
+  address:
+  fax:
+  tel:
+  email:
+  web: https://jeb2016.com/
+  took_office: 1999-01-05
+  term_ends: January 2, 2007
+  party: R
+  branch: executive
+  gender: Male
+  birthday: 1953-02-11
+  religion: Catholic
+  orientation: Straight
+  facebook: https://www.facebook.com/jebbush
+  twitter: https://twitter.com/JebBush
+  youtube:
+  wiki: http://en.wikipedia.org/wiki/Jeb_bush
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/Jeb_Bush.png
+  name_recognition: 338662
+
+- rep_status: Running
+  state: DC
+  title: Candidate
+  first_name: Lawrence
+  middle_name:
+  last_name: Lessig
+  nick_name: Larry
+  address: PO Box 75357, Washington, DC 20002
+  fax:
+  tel:
+  email: lessig_from_web@pobox.com
+  web: https://lessig2016.us/
+  took_office:
+  term_ends:
+  party: I
+  branch: executive
+  gender: Male
+  birthday: 1961-06-03
+  religion:
+  orientation: Straight
+  facebook: https://www.facebook.com/Lessig2016
+  twitter: https://twitter.com/lessig2016
+  youtube: https://www.youtube.com/channel/UCort472K4xvh7glSQURyARA
+  wiki: https://en.wikipedia.org/wiki/Lawrence_Lessig
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/Larry_Lessig.png
+  name_recognition: 13034
+
+- rep_status: In Office
+  state: DC
+  title: Chief Justice
+  first_name: John
+  middle_name: Glover
+  last_name: Roberts
+  nick_name:
+  address: 1 First Street NE, Washington, DC 20543
+  fax:
+  tel: 202-479-3000
+  contact_form_url:
+  web: http://www.supremecourt.gov/
+  took_office: 2005-09-29
+  term_ends:
+  party: R
+  branch: judicial
+  gender: Male
+  birthday: 1955-11-27
+  religion: Catholic
+  orientation: Straight
+  facebook:
+  twitter:
+  youtube:
+  wiki: https://en.wikipedia.org/wiki/John_Roberts
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/John_Roberts.png
+  name_recognition: 999999
+
+- rep_status: In Office
+  state: DC
+  title: Justice
+  first_name: Antonin
+  middle_name:
+  last_name: Scalia
+  nick_name:
+  address: 1 First Street NE, Washington, DC 20543
+  fax:
+  tel: 202-479-3000
+  contact_form_url:
+  web: http://www.supremecourt.gov/
+  took_office: 1986-06-24
+  term_ends:
+  party: R
+  branch: judicial
+  gender: Male
+  birthday: 1936-03-11
+  religion: Catholic
+  orientation: Straight
+  facebook:
+  twitter:
+  youtube:
+  wiki: https://en.wikipedia.org/wiki/Antonin_Scalia
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/Antonin_Scalia.png
+  name_recognition: 999998
+
+- rep_status: In Office
+  state: DC
+  title: Justice
+  first_name: Anthony
+  middle_name: McLeod
+  last_name: Kennedy
+  nick_name:
+  address: 1 First Street NE, Washington, DC 20543
+  fax:
+  tel: 202-479-3000
+  contact_form_url:
+  web: http://www.supremecourt.gov/
+  took_office: 1988-02-18
+  term_ends:
+  party: R
+  branch: judicial
+  gender: Male
+  birthday: 1936-07-23
+  religion: Catholic
+  orientation: Straight
+  facebook:
+  twitter:
+  youtube:
+  wiki: https://en.wikipedia.org/wiki/Anthony_Kennedy
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/Anthony_Kennedy.png
+  name_recognition: 999997
+
+- rep_status: In Office
+  state: DC
+  title: Justice
+  first_name: Clarence
+  middle_name:
+  last_name: Thomas
+  nick_name:
+  address: 1 First Street NE, Washington, DC 20543
+  fax:
+  tel: 202-479-3000
+  contact_form_url:
+  web: http://www.supremecourt.gov/
+  took_office: 1991-10-23
+  term_ends:
+  party: R
+  branch: judicial
+  gender: Male
+  birthday: 1948-06-23
+  religion: Catholic
+  orientation: Straight
+  facebook:
+  twitter:
+  youtube:
+  wiki: https://en.wikipedia.org/wiki/Clarence_Thomas
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/Clarence_Thomas.png
+  name_recognition: 999996
+
+- rep_status: In Office
+  state: DC
+  title: Justice
+  first_name: Ruth
+  middle_name: Bader
+  last_name: Ginsberg
+  nick_name:
+  address: 1 First Street NE, Washington, DC 20543
+  fax:
+  tel: 202-479-3000
+  contact_form_url:
+  web: http://www.supremecourt.gov/
+  took_office: 1993-08-10
+  term_ends:
+  party: D
+  branch: judicial
+  gender: Female
+  birthday: 1933-03-15
+  religion: Judaism
+  orientation: Straight
+  facebook:
+  twitter:
+  youtube:
+  wiki: https://en.wikipedia.org/wiki/Ruth_Bader_Ginsburg
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/Ruth_Bader_Ginsburg.png
+  name_recognition: 999995
+
+- rep_status: In Office
+  state: DC
+  title: Justice
+  first_name: Stephen
+  middle_name: Gerald
+  last_name: Breyer
+  nick_name:
+  address: 1 First Street NE, Washington, DC 20543
+  fax:
+  tel: 202-479-3000
+  contact_form_url:
+  web: http://www.supremecourt.gov/
+  took_office: 1986-09-26
+  term_ends:
+  party: D
+  branch: judicial
+  gender: Male
+  birthday: 1938-08-15
+  religion: Judaism
+  orientation: Straight
+  facebook:
+  twitter:
+  youtube:
+  wiki: https://en.wikipedia.org/wiki/Stephen_Breyer
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/Stephen_Breyer.png
+  name_recognition: 999994
+
+- rep_status: In Office
+  state: DC
+  title: Justice
+  first_name: Samuel
+  middle_name: Anthony
+  last_name: Alito
+  nick_name:
+  address: 1 First Street NE, Washington, DC 20543
+  fax:
+  tel: 202-479-3000
+  contact_form_url:
+  web: http://www.supremecourt.gov/
+  took_office: 2006-01-31
+  term_ends:
+  party: R
+  branch: judicial
+  gender: Male
+  birthday: 1950-04-01
+  religion: Catholic
+  orientation: Straight
+  facebook:
+  twitter:
+  youtube:
+  wiki: https://en.wikipedia.org/wiki/Samuel_Alito
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/Samuel_Alito.png
+  name_recognition: 999993
+
+- rep_status: In Office
+  state: DC
+  title: Justice
+  first_name: Sonia
+  middle_name: Maria
+  last_name: Sotomayor
+  nick_name:
+  address: 1 First Street NE, Washington, DC 20543
+  fax: http://www.supremecourt.gov/
+  tel: 202-479-3000
+  contact_form_url:
+  web:
+  took_office: 2009-08-08
+  term_ends:
+  party: D
+  branch: judicial
+  gender: Female
+  birthday: 1954-06-25
+  religion: Catholic
+  orientation: Straight
+  facebook:
+  twitter:
+  youtube:
+  wiki: https://en.wikipedia.org/wiki/Sonia_Sotomayor
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/Sonia_Sotomayor.png
+  name_recognition: 999992
+
+- rep_status: In Office
+  state: DC
+  title: Justice
+  first_name: Neil
+  middle_name: McGill
+  last_name: Gorsuch
+  nick_name:
+  address: 1 First Street NE, Washington, DC 20543
+  fax: http://www.supremecourt.gov/
+  tel: 202-479-3000
+  contact_form_url:
+  web:
+  took_office: 2017-04-09
+  term_ends:
+  party: R
+  branch: judicial
+  gender: Male
+  birthday: 1967-08-29
+  religion: Episcopal
+  orientation: Straight
+  facebook:
+  twitter:
+  youtube:
+  wiki: https://en.wikipedia.org/wiki/Neil_Gorsuch
+  profile_pic: http://data.matchvote.com/images/2015/highprofile/Neil_Gorsuch.png
+  name_recognition: 999991

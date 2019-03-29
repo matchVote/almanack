@@ -31,3 +31,7 @@ Collects and aggregates data for matchVote Officials
   - slug: "earl-ray-tomblin", url: "2015/governors/Earl_Ray_Tomblin.jpeg"
 - Load wikipedia bios
 - Name recognition
+
+### Refactor
+- Remove enrichment step from Scheduler and use those functions directly in the sources.
+- Simplify Sources; call `map_to_officials` last to avoid passing extra data

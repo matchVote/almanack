@@ -127,4 +127,20 @@ defmodule Almanack.Officials.EnrichmentTest do
       assert Enrichment.standardize_media_key("Twitter") == "twitter"
     end
   end
+
+  describe "standardize_gender/1" do
+    test "expands single characters" do
+      assert Enrichment.standardize_gender("M") == "male"
+      assert Enrichment.standardize_gender("f") == "female"
+    end
+
+    test "downcases male and female" do
+      assert Enrichment.standardize_gender("Male") == "male"
+      assert Enrichment.standardize_gender("fEmalE") == "female"
+    end
+
+    test "returns nil for unknown input" do
+      assert Enrichment.standardize_gender("LEmalE") == nil
+    end
+  end
 end

@@ -53,7 +53,6 @@ defmodule Almanack.Scheduler do
     Enum.map(officials, fn official ->
       official
       |> Enrichment.generate_slug()
-      |> Enrichment.format_gender()
       |> Enrichment.downcase_religion()
     end)
   end
