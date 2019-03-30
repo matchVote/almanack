@@ -21,6 +21,7 @@ defmodule Almanack.Officials.Official do
     field(:sexual_orientation, :string)
     field(:status, :string)
     field(:slug, :string)
+    field(:profile_pic, :string)
     timestamps(inserted_at: :created_at)
 
     has_many(:terms, Almanack.Officials.Term)
@@ -48,7 +49,8 @@ defmodule Almanack.Officials.Official do
       :religion,
       :sexual_orientation,
       :status,
-      :slug
+      :slug,
+      :profile_pic
     ]
   end
 

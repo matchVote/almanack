@@ -4,7 +4,7 @@ defmodule Almanack.Scheduler do
   alias Almanack.{Repo, Sources}
   alias Almanack.Officials.{Enrichment, Official}
 
-  @sources [
+  @async_sources [
     Sources.USIO,
     Sources.GoogleCivicInfo,
     Sources.Ballotpedia
@@ -37,15 +37,14 @@ defmodule Almanack.Scheduler do
 
   @spec compile_officials() :: [Ecto.Changeset.t()]
   def compile_officials do
-    # Sync:
-    # Sources.StaticFiles.officials()
+    officials =
+      @async_sources
+      |> Enum.reduce([], fn source, officials ->
+        # This is actually sync
+        apply(source, :officials, []) ++ officials
+      end)
 
-    # Async by external source
-    @sources
-    |> Enum.reduce([], fn source, officials ->
-      # This is sync
-      apply(source, :officials, []) ++ officials
-    end)
+    Sources.StaticFiles.officials() ++ officials
   end
 
   @spec enrich_officials([Ecto.Changeset.t()]) :: [Ecto.Changeset.t()]

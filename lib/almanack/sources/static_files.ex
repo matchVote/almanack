@@ -1,17 +1,17 @@
 defmodule Almanack.Sources.StaticFiles do
-  # import Mockery.Macro
-  require Logger
-  # alias __MODULE__.API
+  import Mockery.Macro
+  alias Almanack.AddressParsing
   alias Almanack.Officials.{Enrichment, Official}
 
   @static_files_dir :code.priv_dir(:almanack) |> Path.join("data/static_files")
 
   # @spec officials() :: [Ecto.Changeset.t()]
   def officials do
-    static_data()
+    mockable(__MODULE__).static_data()
     |> map_to_officials()
   end
 
+  @spec static_data() :: [map]
   def static_data do
     @static_files_dir
     |> File.ls!()
@@ -25,6 +25,7 @@ defmodule Almanack.Sources.StaticFiles do
     raw_officials
     |> Enum.map(fn data ->
       Official.new(
+        identifiers: collect_ids(data),
         first_name: data["first_name"],
         last_name: data["last_name"],
         middle_name: data["middle_name"],
@@ -34,31 +35,54 @@ defmodule Almanack.Sources.StaticFiles do
         gender: Enrichment.standardize_gender(data["gender"]),
         religion: data["religion"],
         sexual_orientation: data["orientation"],
-        status: data["rep_status"]
+        status: data["rep_status"],
+        profile_pic: data["profile_pic"],
+        name_recognition: data["name_recognition"],
+        terms: [create_term(data)]
       )
     end)
   end
+
+  defp collect_ids(data) do
+    %{
+      "facebook" => data["facebook"],
+      "twitter" => data["twitter"],
+      "wiki" => data["wiki"],
+      "youtube" => data["youtube"]
+    }
+  end
+
+  defp create_term(data) do
+    %{
+      start_date: Enrichment.standardize_date(data["took_office"]),
+      end_date: Enrichment.standardize_date(data["term_ends"]),
+      role: data["title"],
+      state: data["state"],
+      party: Enrichment.standardize_party(data["party"]),
+      branch: data["branch"],
+      level: data["branch"] && "federal",
+      contact_form: data["contact_form_url"],
+      phone_number: data["tel"],
+      fax_number: data["fax"],
+      website: data["web"],
+      address: parse_address(data["address"])
+    }
+  end
+
+  defp parse_address(address) do
+    address
+    |> remove_addressee()
+    |> AddressParsing.parse()
+  end
+
+  defp remove_addressee(address) do
+    cond do
+      Regex.match?(~r/^(po box|\d)/, String.downcase(address)) ->
+        address
+
+      true ->
+        [_ | parts] = String.split(address, ", ")
+        Enum.join(parts, " ")
+    end
+  end
 end
-
-# IDs
-# "facebook" => "https://www.facebook.com/barackobama",
-# "twitter" => "https://twitter.com/barackobama",
-# "wiki" => "http://en.wikipedia.org/wiki/Barack_Obama",
-# "youtube" => "https://www.youtube.com/user/BarackObamadotcom"
-
-# Terms
-# "address" => "The White House, 1600 Pennsylvania Avenue NW, Washington, DC 20500",
-# "branch" => "executive",
-# "contact_form_url" => "https://www.whitehouse.gov/contact/submit-questions-and-comments",
-# "fax" => nil,
-# "tel" => "202-456-1111",
-# "party" => "D",
-# "state" => "DC",
-# "took_office" => "2009-01-20",
-# "term_ends" => 2016,
-# "title" => "President",
-# "web" => "https://www.barackobama.com/",
-
-# Not handled
-# "name_recognition" => 54815149,
-# "profile_pic" => "http://data.matchvote.com/images/2015/highprofile/Barack_Obama.png",

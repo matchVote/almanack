@@ -108,4 +108,21 @@ defmodule Almanack.Officials.Enrichment do
   def standardize_media_key(key) do
     String.downcase(key)
   end
+
+  @spec standardize_date(integer) :: String.t()
+  def standardize_date(date) when is_integer(date) do
+    Integer.to_string(date)
+    |> standardize_date()
+  end
+
+  @spec standardize_date(String.t()) :: String.t()
+  def standardize_date(date) do
+    case String.length(date) do
+      4 ->
+        "#{date}-01-01"
+
+      10 ->
+        date
+    end
+  end
 end

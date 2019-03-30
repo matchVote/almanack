@@ -143,4 +143,18 @@ defmodule Almanack.Officials.EnrichmentTest do
       assert Enrichment.standardize_gender("LEmalE") == nil
     end
   end
+
+  describe "standardize_date/1" do
+    test "prepends month and day to year" do
+      assert Enrichment.standardize_date("1975") == "1975-01-01"
+    end
+
+    test "returns unmodified date if already in YYYY-MM-DD format" do
+      assert Enrichment.standardize_date("1975-02-12") == "1975-02-12"
+    end
+
+    test "handles a year as integer" do
+      assert Enrichment.standardize_date(1975) == "1975-01-01"
+    end
+  end
 end

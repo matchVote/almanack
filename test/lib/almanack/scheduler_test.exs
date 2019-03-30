@@ -2,7 +2,7 @@ defmodule Almanack.SchedulerTest do
   use Almanack.RepoCase
   alias Almanack.Scheduler
   alias Almanack.Officials.{Official, Term}
-  alias Almanack.Sources.{Ballotpedia, GoogleCivicInfo, NGA, USIO}
+  alias Almanack.Sources.{Ballotpedia, GoogleCivicInfo, NGA, USIO, StaticFiles}
 
   setup_all do
     official =
@@ -45,6 +45,7 @@ defmodule Almanack.SchedulerTest do
      executives: Fixtures.load("usio_executives.json"),
      governors_addresses: [address],
      ballotpedia_mayors_html: Fixtures.load("ballotpedia_mayors_table.html"),
+     static_data: Fixtures.load("static_data.json"),
      civic_info: Fixtures.load("gci_representatives.json")}
   end
 
@@ -56,10 +57,11 @@ defmodule Almanack.SchedulerTest do
       mock(NGA, :governors_addresses, context.governors_addresses)
       mock(GoogleCivicInfo.API, :representatives, context.civic_info)
       mock(Ballotpedia.API, :top_mayors_html, context.ballotpedia_mayors_html)
+      mock(StaticFiles, :static_data, context.static_data)
 
       Scheduler.run_workflow()
       officials = Repo.all(Official)
-      assert length(officials) == 7
+      assert length(officials) == 8
     end
 
     test "loads officials from USIO and persists them to DB", context do
@@ -69,6 +71,7 @@ defmodule Almanack.SchedulerTest do
       mock(NGA, :governors_addresses, context.governors_addresses)
       mock(GoogleCivicInfo.API, :representatives, context.civic_info)
       mock(Ballotpedia.API, :top_mayors_html, context.ballotpedia_mayors_html)
+      mock(StaticFiles, :static_data, context.static_data)
 
       Scheduler.run_workflow()
       officials = Repo.all(Official)
@@ -83,6 +86,7 @@ defmodule Almanack.SchedulerTest do
       mock(NGA, :governors_addresses, context.governors_addresses)
       mock(GoogleCivicInfo.API, :representatives, context.civic_info)
       mock(Ballotpedia.API, :top_mayors_html, context.ballotpedia_mayors_html)
+      mock(StaticFiles, :static_data, context.static_data)
 
       Scheduler.run_workflow()
       officials = Repo.all(Official)
@@ -96,6 +100,7 @@ defmodule Almanack.SchedulerTest do
       mock(NGA, :governors_addresses, context.governors_addresses)
       mock(GoogleCivicInfo.API, :representatives, context.civic_info)
       mock(Ballotpedia.API, :top_mayors_html, context.ballotpedia_mayors_html)
+      mock(StaticFiles, :static_data, context.static_data)
 
       Scheduler.run_workflow()
       officials = Repo.all(Official)

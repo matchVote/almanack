@@ -80,8 +80,8 @@ defmodule Almanack.Sources.Ballotpedia do
       suffix: data["suffix"],
       terms: [
         %{
-          start_date: add_day_month(data["took office"]),
-          end_date: add_day_month(data["term ends"]),
+          start_date: Enrichment.standardize_date(data["took office"]),
+          end_date: Enrichment.standardize_date(data["term ends"]),
           state: extract_state(data["city"]),
           party: data["party"],
           role: "Mayor",
@@ -89,10 +89,6 @@ defmodule Almanack.Sources.Ballotpedia do
         }
       ]
     )
-  end
-
-  defp add_day_month(year) do
-    "#{year}-01-01"
   end
 
   @spec extract_state(String.t()) :: String.t()

@@ -1,0 +1,30 @@
+[
+    {
+        "rep_status": "Out of Office",
+        "state": "DC",
+        "title": "President",
+        "first_name": "Barack",
+        "middle_name": "Hussein",
+        "last_name": "Obama",
+        "nick_name": "Barack",
+        "address": "The White House, 1600 Pennsylvania Avenue NW, Washington, DC 20500",
+        "fax": null,
+        "tel": "202-456-1111",
+        "contact_form_url": "https://www.whitehouse.gov/contact/submit-questions-and-comments",
+        "web": "https://www.barackobama.com/",
+        "took_office": "2009-01-20",
+        "term_ends": "2016",
+        "party": "D",
+        "branch": "executive",
+        "gender": "Male",
+        "birthday": "1961-08-04",
+        "religion": "Christian",
+        "orientation": "Straight",
+        "facebook": "https://www.facebook.com/barackobama",
+        "twitter": "https://twitter.com/barackobama",
+        "youtube": "https://www.youtube.com/user/BarackObamadotcom",
+        "wiki": "http://en.wikipedia.org/wiki/Barack_Obama",
+        "profile_pic": "http://data.matchvote.com/images/2015/highprofile/Barack_Obama.png",
+        "name_recognition": "54815149"
+    }
+]
