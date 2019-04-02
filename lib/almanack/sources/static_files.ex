@@ -3,7 +3,7 @@ defmodule Almanack.Sources.StaticFiles do
   alias Almanack.AddressParsing
   alias Almanack.Officials.{Enrichment, Official}
 
-  @static_files_dir :code.priv_dir(:almanack) |> Path.join("data/static_files")
+  @static_files_dir :code.priv_dir(:almanack) |> Path.join("static_data/officials")
 
   @spec officials() :: [Ecto.Changeset.t()]
   def officials do
