@@ -1,6 +1,21 @@
 defmodule Almanack.Officials.Enrichment do
   alias Almanack.Officials.Official
 
+  @month_numbers %{
+    "January" => "01",
+    "February" => "02",
+    "March" => "03",
+    "April" => "04",
+    "May" => "05",
+    "June" => "06",
+    "July" => "07",
+    "August" => "08",
+    "September" => "09",
+    "October" => "10",
+    "November" => "11",
+    "December" => "12"
+  }
+
   @doc """
   Weak suffix check, but it's satisfactory for now.
   Refactor
@@ -58,6 +73,8 @@ defmodule Almanack.Officials.Enrichment do
     |> String.replace(".", "")
   end
 
+  def standardize_gender(nil), do: nil
+
   @spec standardize_gender(String.t()) :: String.t()
   def standardize_gender(gender) do
     gender
@@ -109,6 +126,9 @@ defmodule Almanack.Officials.Enrichment do
     String.downcase(key)
   end
 
+  @spec standardize_date(nil) :: nil
+  def standardize_date(nil), do: nil
+
   @spec standardize_date(integer) :: String.t()
   def standardize_date(date) when is_integer(date) do
     Integer.to_string(date)
@@ -123,6 +143,15 @@ defmodule Almanack.Officials.Enrichment do
 
       10 ->
         date
+
+      _ ->
+        Regex.split(~r/(\s|,\s)/, date)
+        |> format_date()
     end
+  end
+
+  defp format_date([month, day, year]) do
+    day = if String.length(day) == 1, do: "0#{day}", else: day
+    "#{year}-#{@month_numbers[month]}-#{day}"
   end
 end

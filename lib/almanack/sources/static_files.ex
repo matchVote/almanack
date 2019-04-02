@@ -5,7 +5,7 @@ defmodule Almanack.Sources.StaticFiles do
 
   @static_files_dir :code.priv_dir(:almanack) |> Path.join("data/static_files")
 
-  # @spec officials() :: [Ecto.Changeset.t()]
+  @spec officials() :: [Ecto.Changeset.t()]
   def officials do
     mockable(__MODULE__).static_data()
     |> map_to_officials()
@@ -74,6 +74,8 @@ defmodule Almanack.Sources.StaticFiles do
     |> remove_addressee()
     |> AddressParsing.parse()
   end
+
+  defp remove_addressee(nil), do: nil
 
   defp remove_addressee(address) do
     cond do

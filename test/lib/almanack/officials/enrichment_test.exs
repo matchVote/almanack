@@ -142,6 +142,10 @@ defmodule Almanack.Officials.EnrichmentTest do
     test "returns nil for unknown input" do
       assert Enrichment.standardize_gender("LEmalE") == nil
     end
+
+    test "handles nil as input" do
+      assert Enrichment.standardize_gender(nil) == nil
+    end
   end
 
   describe "standardize_date/1" do
@@ -155,6 +159,14 @@ defmodule Almanack.Officials.EnrichmentTest do
 
     test "handles a year as integer" do
       assert Enrichment.standardize_date(1975) == "1975-01-01"
+    end
+
+    test "handles nil as input" do
+      assert Enrichment.standardize_date(nil) == nil
+    end
+
+    test "converts full English date to YYYY-MM-DD" do
+      assert Enrichment.standardize_date("January 9, 2015") == "2015-01-09"
     end
   end
 end
