@@ -154,7 +154,7 @@ https://data.matchvote.com/images/2015/congress/Frank_Pallone.jpeg
 https://data.matchvote.com/images/2015/congress/Fred_Upton.jpeg
 https://data.matchvote.com/images/2015/congress/Frederica_Wilson.jpeg
 https://data.matchvote.com/images/2015/congress/French_Hill.jpeg
-https://data.matchvote.com/images/2015/congress/G_K_Butterfield.jpeg
+https://data.matchvote.com/images/2015/congress/GK_Butterfield.jpeg
 https://data.matchvote.com/images/2015/congress/Garret_Graves.jpeg
 https://data.matchvote.com/images/2015/congress/Gary_Palmer.jpeg
 https://data.matchvote.com/images/2015/congress/Gene_Green.jpeg
