@@ -58,20 +58,29 @@ defmodule Almanack.Officials.Official do
     [:updated_at | fields()]
   end
 
+  @spec new([tuple]) :: Ecto.Changeset.t()
   def new(params \\ []) do
-    params = Map.new(params)
-    key = Enrichment.generate_mv_key(params, @mv_key_fields)
-    changeset(%__MODULE__{}, Map.put(params, :mv_key, key))
+    params =
+      params
+      |> Map.new()
+      |> Map.merge(%{
+        mv_key: Enrichment.generate_mv_key(params, @mv_key_fields),
+        slug: Enrichment.generate_slug(params)
+      })
+
+    changeset(%__MODULE__{}, params)
   end
 
   def change(official, params \\ []) do
     Ecto.Changeset.change(official, Map.new(params))
   end
 
+  @spec get_change(Ecto.Changeset.t(), atom(), any()) :: any()
   def get_change(official, key, default \\ nil) do
     Ecto.Changeset.get_change(official, key, default)
   end
 
+  @spec update_change(Ecto.Changeset.t(), atom(), (any() -> any())) :: Ecto.Changeset.t()
   def update_change(official, key, func) do
     Ecto.Changeset.update_change(official, key, func)
   end

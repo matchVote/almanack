@@ -45,7 +45,7 @@ defmodule Almanack.SchedulerTest do
      executives: Fixtures.load("usio_executives.json"),
      governors_addresses: [address],
      ballotpedia_mayors_html: Fixtures.load("ballotpedia_mayors_table.html"),
-     static_data: Fixtures.load("static_data.json"),
+     static_officials: Fixtures.load("static_officials.json"),
      civic_info: Fixtures.load("gci_representatives.json")}
   end
 
@@ -57,7 +57,7 @@ defmodule Almanack.SchedulerTest do
       mock(NGA, :governors_addresses, context.governors_addresses)
       mock(GoogleCivicInfo.API, :representatives, context.civic_info)
       mock(Ballotpedia.API, :top_mayors_html, context.ballotpedia_mayors_html)
-      mock(StaticFiles, :static_data, context.static_data)
+      mock(StaticFiles, :static_data, context.static_officials)
 
       Scheduler.run_workflow()
       officials = Repo.all(Official)
@@ -71,7 +71,7 @@ defmodule Almanack.SchedulerTest do
       mock(NGA, :governors_addresses, context.governors_addresses)
       mock(GoogleCivicInfo.API, :representatives, context.civic_info)
       mock(Ballotpedia.API, :top_mayors_html, context.ballotpedia_mayors_html)
-      mock(StaticFiles, :static_data, context.static_data)
+      mock(StaticFiles, :static_data, context.static_officials)
 
       Scheduler.run_workflow()
       officials = Repo.all(Official)
@@ -86,7 +86,7 @@ defmodule Almanack.SchedulerTest do
       mock(NGA, :governors_addresses, context.governors_addresses)
       mock(GoogleCivicInfo.API, :representatives, context.civic_info)
       mock(Ballotpedia.API, :top_mayors_html, context.ballotpedia_mayors_html)
-      mock(StaticFiles, :static_data, context.static_data)
+      mock(StaticFiles, :static_data, context.static_officials)
 
       Scheduler.run_workflow()
       officials = Repo.all(Official)
@@ -100,20 +100,29 @@ defmodule Almanack.SchedulerTest do
       mock(NGA, :governors_addresses, context.governors_addresses)
       mock(GoogleCivicInfo.API, :representatives, context.civic_info)
       mock(Ballotpedia.API, :top_mayors_html, context.ballotpedia_mayors_html)
-      mock(StaticFiles, :static_data, context.static_data)
+      mock(StaticFiles, :static_data, context.static_officials)
 
       Scheduler.run_workflow()
       officials = Repo.all(Official)
       assert Enum.find(officials, &(&1.last_name == "Blasio"))
     end
+
+    test "profile_pics are inserted for officials without them", context do
+      mock(USIO.API, :current_legislators, context.legislators)
+      mock(USIO.API, :social_media, context.media)
+      mock(USIO.API, :executives, context.executives)
+      mock(NGA, :governors_addresses, context.governors_addresses)
+      mock(GoogleCivicInfo.API, :representatives, context.civic_info)
+      mock(Ballotpedia.API, :top_mayors_html, context.ballotpedia_mayors_html)
+      mock(StaticFiles, :static_data, context.static_officials)
+
+      Scheduler.run_workflow()
+      brown = Repo.one(from(o in Official, where: o.last_name == "Brown"))
+      assert brown.profile_pic
+    end
   end
 
   describe "enrich_officials/1" do
-    test "official slug is added", %{official: official} do
-      [official | _] = Scheduler.enrich_officials([official])
-      assert official.changes.slug == "sherrod-brown"
-    end
-
     test "downcases religion values", %{official: official} do
       [sherrod | [maria]] =
         [

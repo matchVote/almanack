@@ -11,7 +11,6 @@ https://data.matchvote.com/images/2015/governors/Kim_Reynolds.jpeg
 https://data.matchvote.com/images/2015/governors/Matt_Bevin.jpeg
 https://data.matchvote.com/images/2015/governors/Phil_Scott.jpeg
 https://data.matchvote.com/images/2015/governors/Roy_Cooper.jpeg
-xxx
 https://data.matchvote.com/images/2015/governors/Andrew_Cuomo.jpeg
 https://data.matchvote.com/images/2015/governors/Asa_Hutchinson.jpeg
 https://data.matchvote.com/images/2015/governors/Bill_Haslam.jpeg

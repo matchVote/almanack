@@ -1,6 +1,6 @@
 defmodule Almanack.Officials.EnrichmentTest do
   use ExUnit.Case, async: true
-  alias Almanack.Officials.{Enrichment, Official}
+  alias Almanack.Officials.Enrichment
 
   @tag :PropEr
   describe "split_name/1" do
@@ -39,21 +39,35 @@ defmodule Almanack.Officials.EnrichmentTest do
 
   describe "generate_slug/1" do
     test "adds a readable composite name field to an official" do
-      official = Official.new(first_name: "Bob", last_name: "Dory")
-      result = Enrichment.generate_slug(official)
-      assert result.changes.slug == "bob-dory"
+      result = Enrichment.generate_slug(first_name: "Bob", last_name: "Dory")
+      assert result == "bob-dory"
     end
 
     test "prefers nickname over first name" do
-      official = Official.new(nickname: "Doby", first_name: "Bob", last_name: "Dory")
-      result = Enrichment.generate_slug(official)
-      assert result.changes.slug == "doby-dory"
+      result =
+        Enrichment.generate_slug(
+          nickname: "Doby",
+          first_name: "Bob",
+          last_name: "Dory"
+        )
+
+      assert result == "doby-dory"
+    end
+
+    test "uses first_name if nickname is nil" do
+      result =
+        Enrichment.generate_slug(
+          nickname: nil,
+          first_name: "Bob",
+          last_name: "Dory"
+        )
+
+      assert result == "bob-dory"
     end
 
     test "removes dots" do
-      official = Official.new(nickname: "J.R.", last_name: "Dory")
-      result = Enrichment.generate_slug(official)
-      assert result.changes.slug == "jr-dory"
+      result = Enrichment.generate_slug(nickname: "J.R.", last_name: "Dory")
+      assert result == "jr-dory"
     end
   end
 

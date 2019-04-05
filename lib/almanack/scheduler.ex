@@ -2,7 +2,7 @@ defmodule Almanack.Scheduler do
   require Logger
   use GenServer
   alias Almanack.{Repo, Sources}
-  alias Almanack.Officials.{Enrichment, Official}
+  alias Almanack.Officials.{Enrichment, Official, ProfilePics}
 
   @async_sources [
     Sources.USIO,
@@ -31,6 +31,9 @@ defmodule Almanack.Scheduler do
     |> enrich_officials()
     |> persist_officials()
 
+    ProfilePics.load()
+    # async bios
+
     cooldown()
     Logger.info("Finished\n")
   end
@@ -50,9 +53,7 @@ defmodule Almanack.Scheduler do
   @spec enrich_officials([Ecto.Changeset.t()]) :: [Ecto.Changeset.t()]
   def enrich_officials(officials) do
     Enum.map(officials, fn official ->
-      official
-      |> Enrichment.generate_slug()
-      |> Enrichment.downcase_religion()
+      Enrichment.downcase_religion(official)
     end)
   end
 

@@ -43,9 +43,16 @@ defmodule Almanack.Officials.OfficialTest do
     assert official.slug == "dilgore-kilgore"
   end
 
-  test "new/1 includes mv_key" do
-    result = Official.new(first_name: "Bo", last_name: "Berry", suffix: "Sr.")
-    assert result.changes.mv_key == "bo-berry-sr"
+  describe "new/1" do
+    test "includes mv_key" do
+      result = Official.new(first_name: "Bo", last_name: "Berry", suffix: "Sr.")
+      assert result.changes.mv_key == "bo-berry-sr"
+    end
+
+    test "includes slug" do
+      result = Official.new(first_name: "Arcus", last_name: "Post", nickname: "Arc")
+      assert result.changes.slug == "arc-post"
+    end
   end
 
   test "changeset/2 casts terms" do
