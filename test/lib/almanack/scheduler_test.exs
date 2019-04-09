@@ -1,7 +1,7 @@
 defmodule Almanack.SchedulerTest do
   use Almanack.RepoCase
   alias Almanack.Scheduler
-  alias Almanack.Officials.{Official, Term}
+  alias Almanack.Officials.{Bios, Official, Term}
   alias Almanack.Sources.{Ballotpedia, GoogleCivicInfo, NGA, USIO, StaticFiles}
 
   setup_all do
@@ -46,6 +46,7 @@ defmodule Almanack.SchedulerTest do
      governors_addresses: [address],
      ballotpedia_mayors_html: Fixtures.load("ballotpedia_mayors_table.html"),
      static_officials: Fixtures.load("static_officials.json"),
+     bio: Fixtures.load("wikipedia_bios.json") |> List.first(),
      civic_info: Fixtures.load("gci_representatives.json")}
   end
 
@@ -58,6 +59,7 @@ defmodule Almanack.SchedulerTest do
       mock(GoogleCivicInfo.API, :representatives, context.civic_info)
       mock(Ballotpedia.API, :top_mayors_html, context.ballotpedia_mayors_html)
       mock(StaticFiles, :static_data, context.static_officials)
+      mock(Bios.Wikipedia, :request_bio, context.bio)
 
       Scheduler.run_workflow()
       officials = Repo.all(Official)
@@ -72,6 +74,7 @@ defmodule Almanack.SchedulerTest do
       mock(GoogleCivicInfo.API, :representatives, context.civic_info)
       mock(Ballotpedia.API, :top_mayors_html, context.ballotpedia_mayors_html)
       mock(StaticFiles, :static_data, context.static_officials)
+      mock(Bios.Wikipedia, :request_bio, context.bio)
 
       Scheduler.run_workflow()
       officials = Repo.all(Official)
@@ -87,6 +90,7 @@ defmodule Almanack.SchedulerTest do
       mock(GoogleCivicInfo.API, :representatives, context.civic_info)
       mock(Ballotpedia.API, :top_mayors_html, context.ballotpedia_mayors_html)
       mock(StaticFiles, :static_data, context.static_officials)
+      mock(Bios.Wikipedia, :request_bio, context.bio)
 
       Scheduler.run_workflow()
       officials = Repo.all(Official)
@@ -101,6 +105,7 @@ defmodule Almanack.SchedulerTest do
       mock(GoogleCivicInfo.API, :representatives, context.civic_info)
       mock(Ballotpedia.API, :top_mayors_html, context.ballotpedia_mayors_html)
       mock(StaticFiles, :static_data, context.static_officials)
+      mock(Bios.Wikipedia, :request_bio, context.bio)
 
       Scheduler.run_workflow()
       officials = Repo.all(Official)
@@ -115,6 +120,7 @@ defmodule Almanack.SchedulerTest do
       mock(GoogleCivicInfo.API, :representatives, context.civic_info)
       mock(Ballotpedia.API, :top_mayors_html, context.ballotpedia_mayors_html)
       mock(StaticFiles, :static_data, context.static_officials)
+      mock(Bios.Wikipedia, :request_bio, context.bio)
 
       Scheduler.run_workflow()
       brown = Repo.one(from(o in Official, where: o.last_name == "Brown"))

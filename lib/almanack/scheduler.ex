@@ -31,8 +31,10 @@ defmodule Almanack.Scheduler do
     |> enrich_officials()
     |> persist_officials()
 
+    Logger.info("Loading profile pics...")
     ProfilePics.load()
-    # Bios.load()
+    Logger.info("Loading bios...")
+    Bios.load()
 
     cooldown()
     Logger.info("Finished\n")

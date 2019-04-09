@@ -7,6 +7,7 @@ defmodule Almanack.Officials.Bios do
 
   @default_bio "To Be Added"
 
+  @spec load() :: :ok
   def load do
     officials_without_bios()
     |> Enum.map(fn official ->

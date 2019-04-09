@@ -6,11 +6,13 @@ defmodule Almanack.Officials.Bios.WikipediaTest do
   This tests the external Wikipedia API.
   """
   describe "request_bio/0" do
+    @tag :integration
     test "with existing page, it returns expected JSON structure" do
       json = Wikipedia.request_bio("Amy Klobuchar")
       assert json["query"]["pages"]["1596343"]["extract"]
     end
 
+    @tag :integration
     test "when page is not found, it returns expected JSON structure" do
       json = Wikipedia.request_bio("KLDOSasl")
       assert json["query"]["pages"]["-1"]["missing"]
