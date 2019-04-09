@@ -33,9 +33,30 @@ defmodule Almanack.Officials.Bios do
   end
 
   defmodule Wikipedia do
+    @spec request_bio(String.t()) :: map
     def request_bio(key) do
+      key
+      |> sanitize()
+      |> generate_url()
+      |> request()
     end
 
+    defp sanitize(key) do
+      String.replace(key, " ", "%20")
+    end
+
+    defp generate_url(key) do
+      base = Application.get_env(:almanack, :wikipedia)[:base_url]
+      opts = "&redirects=true&prop=extracts&exintro=&explaintext="
+      "#{base}#{opts}&titles=#{key}"
+    end
+
+    defp request(url) do
+      response = HTTPoison.get!(url)
+      Jason.decode!(response.body)
+    end
+
+    @spec extract_bio(map, String.t()) :: String.t()
     def extract_bio(data, default_bio) do
       data["query"]["pages"]
       |> Map.values()
