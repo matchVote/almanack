@@ -2,7 +2,7 @@ defmodule Almanack.Scheduler do
   require Logger
   use GenServer
   alias Almanack.{Repo, Sources}
-  alias Almanack.Officials.{Enrichment, Official, ProfilePics}
+  alias Almanack.Officials.{Bios, Enrichment, Official, ProfilePics}
 
   @async_sources [
     Sources.USIO,
@@ -32,7 +32,7 @@ defmodule Almanack.Scheduler do
     |> persist_officials()
 
     ProfilePics.load()
-    # async bios
+    # Bios.load()
 
     cooldown()
     Logger.info("Finished\n")

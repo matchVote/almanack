@@ -1,0 +1,27 @@
+[
+  {
+    "batchcomplete": "",
+    "query": {
+      "pages": {
+        "1596343": {
+          "pageid": 1596343,
+          "ns": 0,
+          "title": "Arcus Training Post",
+          "extract": "My best friend is a penguin."
+        }
+      }
+    }
+  },
+  {
+    "batchcomplete": "",
+    "query": {
+      "pages": {
+        "-1": {
+          "ns": 0,
+          "title": "Data not found",
+          "missing": ""
+        }
+      }
+    }
+  }
+]

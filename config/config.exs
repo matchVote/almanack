@@ -18,6 +18,9 @@ config :almanack, :ballotpedia,
   top_mayors_url:
     "https://ballotpedia.org/List_of_current_mayors_of_the_top_100_cities_in_the_United_States"
 
+config :almanack, :wikipedia,
+  base_url: "https://en.wikipedia.org/w/api.php?format=json&action=query"
+
 config :almanack, ecto_repos: [Almanack.Repo]
 
 config :logger, level: :info
