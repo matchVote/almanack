@@ -13,7 +13,6 @@ Collects and aggregates data for matchVote Officials
 
 ### TODO
 
-- Load wikipedia bios
 - Name recognition
 
 ### Refactor

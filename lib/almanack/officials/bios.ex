@@ -9,28 +9,34 @@ defmodule Almanack.Officials.Bios do
 
   @spec load() :: :ok
   def load do
-    officials_without_bios()
-    |> Enum.map(fn official ->
-      case official.identifiers["wikipedia"] do
-        nil ->
-          Official.changeset(official, %{bio: @default_bio})
-
-        key ->
-          bio =
-            mockable(Wikipedia).request_bio(key)
-            |> Wikipedia.extract_bio(@default_bio)
-
-          Official.changeset(official, %{bio: bio})
-      end
-    end)
-    |> Enum.each(fn cs ->
-      Repo.update!(cs)
+    Task.Supervisor.async_stream(
+      Almanack.BioSupervisor,
+      officials_without_bios(),
+      &generate_bio/1
+    )
+    |> Enum.each(fn {:ok, official} ->
+      Repo.update!(official)
     end)
   end
 
-  defp officials_without_bios do
+  @spec officials_without_bios() :: [Official]
+  def officials_without_bios do
     from(o in Official, where: is_nil(o.bio))
     |> Repo.all()
+  end
+
+  @spec generate_bio(Official) :: Ecto.Changeset.t()
+  def generate_bio(official) do
+    bio =
+      with key when is_binary(key) <- official.identifiers["wikipedia"] do
+        mockable(Wikipedia).request_bio(key)
+        |> Wikipedia.extract_bio(@default_bio)
+      else
+        nil ->
+          @default_bio
+      end
+
+    Official.changeset(official, %{bio: bio})
   end
 
   defmodule Wikipedia do
@@ -57,12 +63,12 @@ defmodule Almanack.Officials.Bios do
       Jason.decode!(response.body)
     end
 
-    @spec extract_bio(map, String.t()) :: String.t()
-    def extract_bio(data, default_bio) do
+    @spec extract_bio(map, String.t() | nil) :: String.t()
+    def extract_bio(data, default \\ nil) do
       data["query"]["pages"]
       |> Map.values()
       |> List.first()
-      |> Map.get("extract", default_bio)
+      |> Map.get("extract", default)
     end
   end
 end

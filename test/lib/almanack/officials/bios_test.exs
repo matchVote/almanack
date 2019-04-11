@@ -3,44 +3,50 @@ defmodule Almanack.Officials.BiosTest do
   alias Almanack.Officials.{Bios, Official}
 
   setup do
-    [
-      %Official{mv_key: "arcus-post", identifiers: %{wikipedia: "Arcus Post"}},
-      %Official{mv_key: "sonny"},
-      %Official{mv_key: "hooboy", bio: "what?", identifiers: %{wikipedia: "Arcus Post"}},
-      %Official{mv_key: "hamman-raptura", identifiers: %{wikipedia: "unknown"}}
-    ]
-    |> Enum.each(&Repo.insert!/1)
+    officials = %{
+      arcus: %Official{mv_key: "arcus-post", identifiers: %{"wikipedia" => "Arcus Post"}},
+      sonny: %Official{mv_key: "sonny"},
+      hooboy: %Official{
+        mv_key: "hooboy",
+        bio: "what?",
+        identifiers: %{"wikipedia" => "Arcus Post"}
+      },
+      hamman: %Official{mv_key: "hamman-raptura", identifiers: %{"wikipedia" => "unknown"}}
+    }
 
-    {:ok, bios: Fixtures.load("wikipedia_bios.json")}
+    officials
+    |> Map.values()
+    |> Enum.each(fn official -> Repo.insert!(official) end)
+
+    {:ok, bios: Fixtures.load("wikipedia_bios.json"), officials: officials}
   end
 
-  describe "load/0" do
-    test "populates bio field with requested data from Wikipedia", %{bios: bios} do
-      mock(Bios.Wikipedia, :request_bio, List.first(bios))
-      Bios.load()
-      official = Repo.get_by!(Official, mv_key: "arcus-post")
-      assert official.bio == "My best friend is a penguin."
+  test "officials_without_bios returns officials where :bio is nil" do
+    officials = Bios.officials_without_bios()
+    assert length(officials) == 3
+    refute Enum.find(officials, &(&1.mv_key == "hooboy"))
+  end
+
+  describe "generate_bio/1" do
+    test "populates bio field with requested data from Wikipedia", %{
+      bios: [bio | _],
+      officials: officials
+    } do
+      mock(Bios.Wikipedia, :request_bio, bio)
+      changeset = Bios.generate_bio(officials.arcus)
+      assert changeset.changes.bio == "My best friend is a penguin."
     end
 
-    test "with no Wikipedia key, uses default bio value", %{bios: bios} do
+    test "with no Wikipedia key, uses default bio value", %{bios: bios, officials: officials} do
       mock(Bios.Wikipedia, :request_bio, List.first(bios))
-      Bios.load()
-      official = Repo.get_by!(Official, mv_key: "sonny")
-      assert official.bio == "To Be Added"
+      changeset = Bios.generate_bio(officials.sonny)
+      assert changeset.changes.bio == "To Be Added"
     end
 
-    test "with no Wikipedia data, uses default bio value", %{bios: bios} do
+    test "with no Wikipedia data, uses default bio value", %{bios: bios, officials: officials} do
       mock(Bios.Wikipedia, :request_bio, List.last(bios))
-      Bios.load()
-      official = Repo.get_by!(Official, mv_key: "hamman-raptura")
-      assert official.bio == "To Be Added"
-    end
-
-    test "does nothing if official already has a bio", %{bios: bios} do
-      mock(Bios.Wikipedia, :request_bio, List.first(bios))
-      Bios.load()
-      official = Repo.get_by!(Official, mv_key: "hooboy")
-      assert official.bio == "what?"
+      changeset = Bios.generate_bio(officials.hamman)
+      assert changeset.changes.bio == "To Be Added"
     end
   end
 end

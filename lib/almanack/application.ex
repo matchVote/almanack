@@ -6,7 +6,8 @@ defmodule Almanack.Application do
   def start(_type, _args) do
     children = [
       Almanack.Repo,
-      Almanack.Scheduler
+      Almanack.Scheduler,
+      {Task.Supervisor, name: Almanack.BioSupervisor}
     ]
 
     opts = [strategy: :one_for_one, name: Almanack.Supervisor]
