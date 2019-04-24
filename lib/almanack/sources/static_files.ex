@@ -3,8 +3,6 @@ defmodule Almanack.Sources.StaticFiles do
   alias Almanack.AddressParsing
   alias Almanack.Officials.{Enrichment, Official}
 
-  @static_files_dir Path.join(:code.priv_dir(:almanack), "static_data/officials")
-
   @spec officials() :: [Ecto.Changeset.t()]
   def officials do
     mockable(__MODULE__).static_data()
@@ -13,12 +11,17 @@ defmodule Almanack.Sources.StaticFiles do
 
   @spec static_data() :: [map]
   def static_data do
-    @static_files_dir
+    static_files_dir()
     |> File.ls!()
     |> Enum.flat_map(fn file ->
-      Path.join(@static_files_dir, file)
+      Path.join(static_files_dir(), file)
       |> YamlElixir.read_from_file!()
     end)
+  end
+
+  def static_files_dir do
+    :code.priv_dir(:almanack)
+    |> Path.join("static_data/officials")
   end
 
   defp map_to_officials(raw_officials) do

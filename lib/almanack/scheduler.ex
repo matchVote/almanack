@@ -91,7 +91,7 @@ defmodule Almanack.Scheduler do
     Process.send_after(
       self(),
       :run_workflow,
-      Application.get_env(:almanack, :loader_cooldown)
+      Application.get_env(:almanack, :scheduler_cooldown)
     )
   end
 end

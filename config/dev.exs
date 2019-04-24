@@ -8,4 +8,4 @@ config :almanack, Almanack.Repo,
   port: 5653
 
 # 10 minutes
-config :almanack, loader_cooldown: 600_000
+config :almanack, scheduler_cooldown: 600_000
