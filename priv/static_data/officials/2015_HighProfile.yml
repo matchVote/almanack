@@ -34,6 +34,7 @@
   middle_name: Robinette
   last_name: Biden
   nick_name: Joe
+  suffix: Jr.
   address: The White House, 1600 Pennsylvania Avenue NW, Washington, DC 20500
   fax:
   tel: 202-456-1111
@@ -49,8 +50,7 @@
   orientation: Straight
   facebook: https://www.facebook.com/joebiden
   twitter: https://twitter.com/joebiden
-  youtube:
-  wiki: http://en.wikipedia.org/wiki/Joe_Biden
+  wikipedia: Joe Biden
   profile_pic: http://data.matchvote.com/images/2015/highprofile/Joe_Biden.png
   name_recognition: 1158612
 
@@ -140,6 +140,7 @@
   middle_name: Arnold
   last_name: Gore
   nick_name: Al
+  suffix: Jr.
   address:
   fax:
   tel:
@@ -156,7 +157,7 @@
   facebook: https://www.facebook.com/algore
   twitter: https://twitter.com/algore
   youtube:
-  wiki: http://en.wikipedia.org/wiki/Al_Gore
+  wikipedia: Al Gore
   profile_pic: http://data.matchvote.com/images/2015/highprofile/Al_Gore.png
   name_recognition: 510760
 
@@ -541,12 +542,9 @@
   state: DC
   title: President
   first_name: Donald
-  middle_name: John
+  middle_name: J.
   last_name: Trump
-  nick_name: Donald
   address: The White House, 1600 Pennsylvania Avenue NW, Washington, DC 20500
-  fax:
-  tel:
   email: https://www.donaldjtrump.com/contact/
   web: https://www.donaldjtrump.com/
   took_office:
@@ -560,7 +558,6 @@
   facebook: https://www.facebook.com/DonaldTrump
   twitter: https://twitter.com/realdonaldtrump
   youtube: https://www.youtube.com/user/trump
-  wiki: https://en.wikipedia.org/wiki/Donald_Trump
   profile_pic: http://data.matchvote.com/images/2015/highprofile/Donald_Trump.png
   name_recognition: 22660981
 
