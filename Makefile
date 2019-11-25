@@ -14,3 +14,12 @@ build: ## Build the production Docker image
 	docker build --build-arg APP_NAME=$(APP_NAME) \
 	--build-arg APP_VSN=$(APP_VSN) \
 	-t $(APP_NAME):$(APP_VSN) .
+
+heroku-push: ## Use Heroku to build production image and push to registry
+	heroku container:push worker \
+	  --verbose \
+	  --arg APP_NAME=$(APP_NAME),APP_VSN=$(APP_VSN),MIX_ENV=prod \
+	  --app mv-almanack
+
+heroku-release: ## Deploy container from previously pushed image
+	heroku container:release worker --app mv-almanack
