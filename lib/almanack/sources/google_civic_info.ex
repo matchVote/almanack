@@ -28,7 +28,7 @@ defmodule Almanack.Sources.GoogleCivicInfo do
   defp extract_governor(data) do
     governor_index =
       data["offices"]
-      |> Enum.find(&(&1["name"] == "Governor"))
+      |> Enum.find(&Regex.match?(~r/^Governor/, &1["name"]))
       |> Map.get("officialIndices")
       |> List.first()
 

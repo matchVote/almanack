@@ -15,14 +15,14 @@
       "officialIndices": [2]
     },
     {
-      "name": "Governor",
+      "name": "Governor of Alabama",
       "divisionId": "ocd-division/country:us/state:nc",
       "levels": ["administrativeArea1"],
       "roles": ["headOfGovernment"],
       "officialIndices": [3]
     },
     {
-      "name": "Lieutenant Governor",
+      "name": "Lieutenant Governor of Alabama",
       "divisionId": "ocd-division/country:us/state:nc",
       "levels": ["administrativeArea1"],
       "roles": ["deputyHeadOfGovernment"],
