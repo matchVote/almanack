@@ -5,6 +5,7 @@ defmodule Almanack.Sources.Ballotpedia do
   alias Almanack.Officials.{Enrichment, Official}
 
   @mayors_table_class ".bptable"
+  @data_source "ballotpedia"
 
   @spec officials() :: [Ecto.Changeset.t()]
   def officials do
@@ -42,7 +43,7 @@ defmodule Almanack.Sources.Ballotpedia do
   @spec determine_party(map()) :: map()
   def determine_party(%{"mayor" => name} = data) do
     party =
-      case Regex.run(~r/.+\((.)\)$/, name, capture: :all_but_first) do
+      case Regex.run(~r/.+\((.+)\)$/, name, capture: :all_but_first) do
         [symbol] -> Enrichment.standardize_party(symbol)
         nil -> nil
       end
@@ -69,7 +70,7 @@ defmodule Almanack.Sources.Ballotpedia do
   defp remove_party(name, nil), do: name
 
   defp remove_party(name, _) do
-    String.slice(name, 0, String.length(name) - 3)
+    String.replace(name, ~r/\s?\(.+\)/, "")
   end
 
   defp map_to_official(data) do
@@ -78,6 +79,7 @@ defmodule Almanack.Sources.Ballotpedia do
       middle_name: data["middle_name"],
       last_name: data["last_name"],
       suffix: data["suffix"],
+      data_source: @data_source,
       terms: [
         %{
           start_date: Enrichment.standardize_date(data["took office"]),

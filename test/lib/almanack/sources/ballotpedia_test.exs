@@ -18,17 +18,35 @@ defmodule Almanack.Sources.BallotpediaTest do
 
       assert data["party"] == nil
     end
+
+    test "captures nonpartisan" do
+      data =
+        %{"mayor" => "London Breed (Nonpartisan)"}
+        |> Ballotpedia.determine_party()
+
+      assert data["party"] == "Nonpartisan"
+    end
   end
 
   describe "normalize_name/1" do
     test "name parts are extracted and added to data" do
       data =
-        %{"mayor" => "Alan P. Krasnoff(R)", "party" => true}
+        %{"mayor" => "Alan P. Krasnoff (R)", "party" => true}
         |> Ballotpedia.normalize_name()
 
       assert data["first_name"] == "Alan"
       assert data["last_name"] == "Krasnoff"
       assert data["middle_name"] == "P."
+    end
+
+    test "party is removed properly when more than one character" do
+      data =
+        %{"mayor" => "Alan Krasnoff (Nonpartisan)", "party" => true}
+        |> Ballotpedia.normalize_name()
+
+      assert data["first_name"] == "Alan"
+      assert data["last_name"] == "Krasnoff"
+      assert data["middle_name"] == ""
     end
 
     test "name parts without party are extracted and added to data" do

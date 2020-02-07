@@ -5,6 +5,8 @@ defmodule Almanack.Sources.GoogleCivicInfo do
   alias Almanack.Sources.NGA
   alias Almanack.Officials.{Enrichment, Official}
 
+  @data_source "google_civic_info"
+
   @spec officials() :: [Ecto.Changeset.t()]
   def officials do
     mockable(NGA).governors_addresses()
@@ -46,7 +48,8 @@ defmodule Almanack.Sources.GoogleCivicInfo do
        first_name: name_parts.first_name,
        middle_name: name_parts.middle_name,
        last_name: name_parts.last_name,
-       identifiers: standardize_ids(data["channels"])
+       identifiers: standardize_ids(data["channels"]),
+       data_source: @data_source
      ), data}
   end
 

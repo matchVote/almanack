@@ -4,6 +4,8 @@ defmodule Almanack.Sources.USIO do
   alias Almanack.AddressParsing
   alias Almanack.Officials.{Enrichment, Official}
 
+  @data_source "usio"
+
   @doc """
   Retrieves data on all current Congressional officials (House and Senate) from
   unitedstates.io and converts that data into Official changesets for further
@@ -33,7 +35,8 @@ defmodule Almanack.Sources.USIO do
           nickname: data["name"]["nickname"],
           birthday: data["bio"]["birthday"],
           gender: Enrichment.standardize_gender(data["bio"]["gender"]),
-          religion: data["bio"]["religion"]
+          religion: data["bio"]["religion"],
+          data_source: @data_source
         ),
         data
       }

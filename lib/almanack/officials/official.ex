@@ -23,6 +23,7 @@ defmodule Almanack.Officials.Official do
     field(:slug, :string)
     field(:profile_pic, :string)
     field(:bio, :string)
+    field(:data_source, :string)
     timestamps(inserted_at: :created_at)
 
     has_many(:terms, Almanack.Officials.Term)
@@ -52,7 +53,8 @@ defmodule Almanack.Officials.Official do
       :status,
       :slug,
       :bio,
-      :profile_pic
+      :profile_pic,
+      :data_source
     ]
   end
 

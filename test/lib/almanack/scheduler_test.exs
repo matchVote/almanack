@@ -78,11 +78,12 @@ defmodule Almanack.SchedulerTest do
 
       Scheduler.run_workflow()
       officials = Repo.all(Official)
-      assert Enum.find(officials, &(&1.first_name == "Sherrod"))
       assert Enum.find(officials, &(&1.first_name == "Maria"))
+      sherrod = Enum.find(officials, &(&1.first_name == "Sherrod"))
+      assert sherrod.data_source == "usio"
     end
 
-    test "loads officials from GoogleCivicData and persists them to DB", context do
+    test "loads officials from GoogleCivicInfo and persists them to DB", context do
       mock(USIO.API, :current_legislators, context.legislators)
       mock(USIO.API, :social_media, context.media)
       mock(USIO.API, :executives, context.executives)
@@ -94,7 +95,9 @@ defmodule Almanack.SchedulerTest do
 
       Scheduler.run_workflow()
       officials = Repo.all(Official)
-      assert Enum.find(officials, &(&1.first_name == "Bobeck"))
+      bobeck = Enum.find(officials, &(&1.first_name == "Bobeck"))
+      assert bobeck
+      assert bobeck.data_source == "google_civic_info"
     end
 
     test "loads officials from Ballotpedia and persists them to DB", context do
@@ -109,7 +112,9 @@ defmodule Almanack.SchedulerTest do
 
       Scheduler.run_workflow()
       officials = Repo.all(Official)
-      assert Enum.find(officials, &(&1.last_name == "Blasio"))
+      blasio = Enum.find(officials, &(&1.last_name == "Blasio"))
+      assert blasio
+      assert blasio.data_source == "ballotpedia"
     end
 
     test "profile_pics are inserted for officials without them", context do
