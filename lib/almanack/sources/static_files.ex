@@ -3,6 +3,8 @@ defmodule Almanack.Sources.StaticFiles do
   alias Almanack.AddressParsing
   alias Almanack.Officials.{Enrichment, Official}
 
+  @data_source "static_files"
+
   @spec officials() :: [Ecto.Changeset.t()]
   def officials do
     mockable(__MODULE__).static_data()
@@ -41,7 +43,8 @@ defmodule Almanack.Sources.StaticFiles do
         status: data["rep_status"],
         profile_pic: data["profile_pic"],
         name_recognition: data["name_recognition"],
-        terms: [create_term(data)]
+        terms: [create_term(data)],
+        data_source: @data_source
       )
     end)
   end
